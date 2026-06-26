@@ -14,7 +14,7 @@
 }
 html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
 
-/* LOGIN */
+/* ── LOGIN ── */
 #loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
 .login-box{width:100%;max-width:360px;padding:2rem;}
 .login-logo{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.1em;margin-bottom:.2rem;}
@@ -27,125 +27,194 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .login-btn:hover{opacity:.85;}
 .login-err{font-size:.75rem;color:var(--muted);margin-top:.75rem;display:none;}
 
-/* HEADER */
+/* ── HEADER ── */
 header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
 .header-top{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--border);}
-.h-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.12em;color:#fff;}
+.h-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.12em;}
 .h-date{font-size:.72rem;color:var(--muted);}
 .h-stats{display:flex;gap:2rem;}
-.h-stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;color:#fff;}
+.h-stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;}
 .h-stat-l{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
 .h-logout{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .15s;}
 .h-logout:hover{color:#fff;}
 
-/* BRIEF */
+/* ── BRIEF ── */
 .brief{padding:1rem 2rem;display:flex;align-items:baseline;gap:1.5rem;flex-wrap:wrap;}
 .brief-mode{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);white-space:nowrap;padding-right:1.5rem;border-right:1px solid var(--border);}
 .brief-items{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:baseline;}
 .brief-item{display:flex;align-items:baseline;gap:.4rem;}
-.brief-item-time{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.05em;color:#fff;}
+.brief-item-time{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.05em;}
 .brief-item-label{font-size:.75rem;color:var(--muted);}
 .brief-sep{color:var(--border2);font-size:.8rem;}
-.brief-empty{font-size:.78rem;color:var(--dim);font-style:italic;}
 
-/* NAV CARDS */
-.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
-.nav-card{background:var(--bg);padding:1.5rem 2rem;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
+/* ── NAV CARDS ── */
+.nav-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.nav-card{background:var(--bg);padding:1.25rem 1.5rem;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
 .nav-card:hover{background:var(--surface);}
-.nc-label{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.3rem;}
-.nc-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.08em;color:#fff;}
-.nc-meta{font-size:.72rem;color:var(--muted);margin-top:.2rem;}
-.nc-arrow{font-size:1.2rem;color:var(--border2);}
+.nc-label{font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.25rem;}
+.nc-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;}
+.nc-meta{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.nc-arrow{font-size:1rem;color:var(--border2);}
 .nav-card:hover .nc-arrow{color:#fff;}
 
-/* SECTIONS */
-.section{padding:2rem;border-bottom:1px solid var(--border);min-height:100vh;}
-.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem;}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.08em;color:#fff;}
+/* ── SECTIONS ── */
+.section{padding:2rem;border-bottom:1px solid var(--border);}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+.section-header-left{}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.08em;}
 .section-sub{font-size:.72rem;color:var(--muted);}
+.section-add-btn{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+.section-add-btn:hover{border-color:#fff;color:#fff;}
+.section-btn-row{display:flex;gap:.5rem;}
 
-/* SCANNER */
-.scanner-row{display:flex;gap:0;margin-bottom:1rem;}
+/* ── SCANNER ── */
+.scanner-row{display:flex;margin-bottom:1rem;}
 .scanner-input{flex:1;background:var(--surface);border:1px solid var(--border);border-right:none;color:#fff;padding:.8rem 1rem;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;}
 .scanner-input:focus{border-color:#fff;}
-.scanner-btn{background:#fff;color:#000;border:none;padding:0 1.5rem;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;cursor:pointer;white-space:nowrap;}
+.scanner-btn{background:#fff;color:#000;border:none;padding:0 1.5rem;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;cursor:pointer;}
 .scanner-btn:hover{opacity:.85;}
-.scanner-results{margin-bottom:1.5rem;}
 .scanner-notice{font-size:.75rem;color:var(--dim);padding:.85rem 1rem;border:1px solid var(--border);text-align:center;}
 .scan-result{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;border:1px solid var(--border);border-top:none;background:var(--surface);}
 .scan-result:first-child{border-top:1px solid var(--border);}
-.sr-name{font-size:.85rem;font-weight:600;color:#fff;}
+.sr-name{font-size:.85rem;font-weight:600;}
 .sr-meta{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
-.sr-add{background:none;border:1px solid var(--border);color:var(--muted);padding:.35rem .9rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+.sr-add{background:none;border:1px solid var(--border);color:var(--muted);padding:.35rem .9rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
 .sr-add:hover{border-color:#fff;color:#fff;}
 .sr-add.added{border-color:var(--dim);color:var(--dim);pointer-events:none;}
 
-/* CALL LIST */
-.call-list{margin-bottom:2rem;}
-.call-list-header{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
+/* ── CALL LIST ── */
+.call-list-label{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
 .call-card{border:1px solid var(--border);margin-bottom:.5rem;background:var(--surface);overflow:hidden;}
 .call-card-top{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;cursor:pointer;transition:background .15s;}
 .call-card-top:hover{background:var(--surface2);}
-.call-card-name{font-size:.88rem;font-weight:600;color:#fff;}
-.call-card-type{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+.call-card-name{font-size:.88rem;font-weight:600;}
+.call-card-meta{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
 .call-card-right{display:flex;align-items:center;gap:.75rem;}
 .call-stage{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid var(--border);color:var(--muted);}
+.call-stage.hot{border-color:var(--muted);color:#fff;}
 .call-toggle{font-size:.7rem;color:var(--dim);transition:transform .2s;}
 .call-card.open .call-toggle{transform:rotate(180deg);}
 .call-card-body{display:none;border-top:1px solid var(--border);padding:1rem;}
 .call-card.open .call-card-body{display:block;}
 .q-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
-.q-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.6rem;}
+.q-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.55rem;}
 .q-check{width:14px;height:14px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;flex-shrink:0;margin-top:1px;appearance:none;-webkit-appearance:none;position:relative;}
 .q-check:checked{background:#fff;}
 .q-check:checked::after{content:'';position:absolute;inset:2px;background:#000;}
 .q-label{font-size:.78rem;color:var(--muted);}
 .q-notes{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:.6rem .8rem;font-size:.78rem;font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:60px;margin-top:.75rem;}
 .q-notes:focus{border-color:#fff;}
-.q-action-row{display:flex;gap:.5rem;margin-top:.75rem;}
+.q-action-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;}
 .q-btn{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
 .q-btn:hover{border-color:#fff;color:#fff;}
 .q-btn-primary{background:#fff;color:#000;border-color:#fff;}
 .q-btn-primary:hover{opacity:.85;color:#000;}
+.followup-tag{font-size:.7rem;color:var(--muted);margin-top:.5rem;}
 
-/* PIPELINE STRIP */
+/* ── PIPELINE ── */
 .pipeline-strip{display:flex;gap:0;background:var(--border);border:1px solid var(--border);overflow-x:auto;}
-.pipe-col{background:var(--bg);padding:.75rem 1rem;min-width:140px;flex:1;}
-.pipe-col-head{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.pipe-col{background:var(--bg);padding:.75rem 1rem;min-width:130px;flex:1;}
+.pipe-col-head{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
 .pipe-chip{font-size:.75rem;color:var(--muted);padding:.35rem .5rem;border:1px solid var(--border);margin-bottom:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pipe-chip.won{color:#fff;border-color:var(--muted);}
+.pipe-empty{font-size:.7rem;color:var(--dim);}
 
-/* CLIENTS */
-.clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+/* ── CLIENTS ── */
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
 .client-card{background:var(--surface);overflow:hidden;}
 .client-card-top{padding:1.25rem;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
 .client-card-top:hover{background:var(--surface2);}
-.cc-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;color:#fff;line-height:1;}
+.cc-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;line-height:1;}
 .cc-type{font-size:.7rem;color:var(--muted);margin-top:.2rem;}
-.cc-fee{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;color:#fff;}
+.cc-fee{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;}
 .cc-fee-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:right;}
-.cc-toggle{font-size:.7rem;color:var(--dim);transition:transform .2s;}
+.cc-toggle{font-size:.7rem;color:var(--dim);transition:transform .2s;text-align:right;margin-top:.3rem;}
 .client-card.open .cc-toggle{transform:rotate(180deg);}
 .client-body{display:none;border-top:1px solid var(--border);padding:1.25rem;}
 .client-card.open .client-body{display:block;}
 .cb-section{margin-bottom:1.25rem;}
 .cb-section-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.6rem;}
-.social-links{display:flex;gap:.5rem;}
-.social-link{display:flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border:1px solid var(--border);text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:all .15s;}
+.social-links{display:flex;gap:.5rem;flex-wrap:wrap;}
+.social-link{padding:.45rem .9rem;border:1px solid var(--border);text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:all .15s;}
 .social-link:hover{border-color:#fff;color:#fff;}
 .analytics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
 .ar-cell{background:var(--bg);padding:.75rem .85rem;}
-.ar-n{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;color:#fff;line-height:1;}
+.ar-n{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;line-height:1;}
 .ar-l{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:.15rem;}
-.ar-plat{font-size:.65rem;color:var(--muted);margin-bottom:.5rem;}
+.client-meta-foot{font-size:.7rem;color:var(--dim);margin-bottom:.75rem;}
 
-/* UTILS */
+/* ── CALENDAR ── */
+.cal-nav{display:flex;gap:.5rem;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.cal-day{background:var(--bg);padding:.65rem;min-height:120px;display:flex;flex-direction:column;}
+.cal-today{background:var(--surface);}
+.cal-day-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.cal-day-name{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.cal-day-num{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--muted);}
+.cal-today .cal-day-num{color:#fff;}
+.cal-entries{flex:1;}
+.cal-entry{cursor:pointer;margin-bottom:.3rem;padding:.28rem .4rem;border:1px solid var(--border);transition:border-color .15s;}
+.cal-entry:hover{border-color:var(--muted);}
+.cal-entry-time{font-size:.58rem;font-weight:700;color:var(--dim);}
+.cal-entry-label{font-size:.66rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-add-btn{width:100%;margin-top:auto;padding-top:.3rem;background:none;border:1px dashed var(--border);color:var(--dim);padding:.22rem;font-size:.68rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.cal-add-btn:hover{border-color:var(--muted);color:var(--muted);}
+
+/* ── BUSINESS ── */
+.business-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;}
+.biz-col-head{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between;}
+.income-summary{display:flex;gap:0;background:var(--border);border:1px solid var(--border);margin-bottom:1rem;}
+.inc-sum-cell{background:var(--bg);padding:.75rem 1.25rem;flex:1;}
+.inc-sum-n{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.05em;}
+.inc-sum-l{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.income-month{border:1px solid var(--border);margin-bottom:.5rem;}
+.income-month-head{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);}
+.income-month-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.income-total{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;}
+.income-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
+.income-row:last-child{border-bottom:none;}
+.income-source{font-size:.78rem;color:var(--muted);}
+.income-amount{font-size:.78rem;font-weight:600;}
+.goal-item{border:1px solid var(--border);padding:.85rem 1rem;margin-bottom:.5rem;background:var(--surface);}
+.goal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;}
+.goal-label{font-size:.8rem;font-weight:600;}
+.goal-nums{font-size:.72rem;color:var(--muted);}
+.goal-bar-bg{height:2px;background:var(--border2);}
+.goal-bar-fill{height:100%;background:#fff;transition:width .4s;}
+.goal-pct{font-size:.6rem;color:var(--dim);margin-top:.3rem;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:400;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--border);width:100%;max-width:460px;max-height:90vh;overflow-y:auto;padding:2rem;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.08em;margin-bottom:1.5rem;}
+.m-field{margin-bottom:.85rem;}
+.m-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.35rem;}
+.m-input,.m-select,.m-textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:.7rem .9rem;font-size:.85rem;font-family:'Inter',sans-serif;outline:none;}
+.m-input:focus,.m-select:focus,.m-textarea:focus{border-color:#fff;}
+.m-select{appearance:none;-webkit-appearance:none;}
+.m-textarea{resize:vertical;min-height:80px;}
+.m-check-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.25rem;}
+.m-check-item{display:flex;align-items:center;gap:.35rem;cursor:pointer;}
+.m-check-item input{accent-color:#fff;cursor:pointer;width:13px;height:13px;}
+.m-check-item span{font-size:.75rem;color:var(--muted);}
+.m-actions{display:flex;gap:.5rem;margin-top:1.5rem;}
+.m-btn{flex:1;padding:.7rem;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.08em;cursor:pointer;border:1px solid var(--border);background:none;color:var(--muted);transition:all .15s;}
+.m-btn:hover{border-color:#fff;color:#fff;}
+.m-btn-primary{background:#fff;color:#000;border-color:#fff;}
+.m-btn-primary:hover{opacity:.85;color:#000;}
+
+/* ── UTILS ── */
 .label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
 .divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+.icon-btn{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.85rem;padding:.1rem .25rem;transition:color .15s;font-family:'Inter',sans-serif;}
+.icon-btn:hover{color:#fff;}
+.empty-state{font-size:.78rem;color:var(--dim);padding:1.5rem;text-align:center;border:1px solid var(--border);}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ── LOGIN ── -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">LAS MEDIA</div>
@@ -157,7 +226,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
   </div>
 </div>
 
-<!-- APP -->
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
 <div id="app" style="display:none;">
 
   <!-- HEADER -->
@@ -168,337 +245,211 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
         <div class="h-date" id="hDate"></div>
       </div>
       <div class="h-stats">
-        <div><div class="h-stat-n">4</div><div class="h-stat-l">Clients</div></div>
-        <div><div class="h-stat-n">£650</div><div class="h-stat-l">This Month</div></div>
-        <div><div class="h-stat-n">7</div><div class="h-stat-l">Open Leads</div></div>
-        <div><div class="h-stat-n">2</div><div class="h-stat-l">Calls Today</div></div>
+        <div><div class="h-stat-n" id="statClients">—</div><div class="h-stat-l">Clients</div></div>
+        <div><div class="h-stat-n" id="statIncome">—</div><div class="h-stat-l">This Month</div></div>
+        <div><div class="h-stat-n" id="statLeads">—</div><div class="h-stat-l">Open Leads</div></div>
+        <div><div class="h-stat-n" id="statToday">—</div><div class="h-stat-l">Today</div></div>
       </div>
       <button class="h-logout" onclick="doLogout()">Sign out</button>
     </div>
-    <!-- BRIEF -->
     <div class="brief" id="brief"></div>
   </header>
 
   <!-- NAV CARDS -->
   <div class="nav-cards">
-    <div class="nav-card" onclick="scrollTo('leadsSection')">
+    <div class="nav-card" onclick="jumpTo('leadsSection')">
       <div>
-        <div class="nc-label">Section One</div>
+        <div class="nc-label">Section 01</div>
         <div class="nc-title">Leads & Pipeline</div>
-        <div class="nc-meta">Scanner · Call list · Pre-call research · Pipeline</div>
+        <div class="nc-meta" id="navLeadsMeta">—</div>
       </div>
       <div class="nc-arrow">↓</div>
     </div>
-    <div class="nav-card" onclick="scrollTo('clientsSection')">
+    <div class="nav-card" onclick="jumpTo('clientsSection')">
       <div>
-        <div class="nc-label">Section Two</div>
-        <div class="nc-title">Current Clients</div>
-        <div class="nc-meta">4 active · Socials · Analytics · Monthly value</div>
+        <div class="nc-label">Section 02</div>
+        <div class="nc-title">Clients</div>
+        <div class="nc-meta" id="navClientsMeta">—</div>
+      </div>
+      <div class="nc-arrow">↓</div>
+    </div>
+    <div class="nav-card" onclick="jumpTo('calSection')">
+      <div>
+        <div class="nc-label">Section 03</div>
+        <div class="nc-title">Calendar</div>
+        <div class="nc-meta" id="navCalMeta">—</div>
+      </div>
+      <div class="nc-arrow">↓</div>
+    </div>
+    <div class="nav-card" onclick="jumpTo('bizSection')">
+      <div>
+        <div class="nc-label">Section 04</div>
+        <div class="nc-title">Business</div>
+        <div class="nc-meta" id="navBizMeta">—</div>
       </div>
       <div class="nc-arrow">↓</div>
     </div>
   </div>
 
-  <!-- LEADS SECTION -->
+  <!-- ── LEADS & PIPELINE ── -->
   <div class="section" id="leadsSection">
     <div class="section-header">
-      <div>
+      <div class="section-header-left">
         <div class="section-title">LEADS & PIPELINE</div>
-        <div class="section-sub">Scan for prospects · Build call list · Track through pipeline</div>
+        <div class="section-sub">Scan for prospects · Build call list · Track progress</div>
       </div>
+      <button class="section-add-btn" onclick="openAddLead()">+ Add Lead</button>
     </div>
 
-    <!-- SCANNER -->
     <div class="label" style="margin-bottom:.6rem;">Business Scanner</div>
     <div class="scanner-row">
       <input class="scanner-input" id="scannerInput" placeholder="e.g. 'restaurants Hartlepool' · 'barbers Stockton'" onkeydown="if(event.key==='Enter')runScanner()">
       <button class="scanner-btn" onclick="runScanner()">SCAN</button>
     </div>
-    <div id="scannerResults">
+    <div id="scannerResults" style="margin-bottom:1.5rem;">
       <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
     </div>
 
     <hr class="divider">
 
-    <!-- CALL LIST -->
-    <div class="call-list">
-      <div class="call-list-header">Call List — fill questionnaire before dialling</div>
+    <div class="call-list-label">Call List — complete questionnaire before calling</div>
+    <div id="callList" style="margin-bottom:2rem;"></div>
 
-      <div class="call-card" id="cc1">
-        <div class="call-card-top" onclick="toggleCard('cc1')">
-          <div>
-            <div class="call-card-name">Saltburn Coffee Co.</div>
-            <div class="call-card-type">Independent café · Saltburn-by-the-Sea</div>
-          </div>
-          <div class="call-card-right">
-            <span class="call-stage">Questionnaire Done</span>
-            <span class="call-toggle">▾</span>
-          </div>
-        </div>
-        <div class="call-card-body">
-          <div class="q-title">Pre-Call Research</div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Business type and services confirmed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Current social platforms checked (IG: 340 followers, last post 3 weeks ago)</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Competitor social presence reviewed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Identified content opportunity (seasonal specials, café atmosphere, staff)</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
-          <textarea class="q-notes" placeholder="Notes...">Owner is Sarah. Café opened 2022. Instagram looks neglected. Strong visual potential — nice interior, outdoor seating. Proposal sent £150/mo, following up today.</textarea>
-          <div class="q-action-row">
-            <button class="q-btn q-btn-primary">Mark as Called</button>
-            <button class="q-btn">Move to Won</button>
-            <button class="q-btn">Move to Lost</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="call-card" id="cc2">
-        <div class="call-card-top" onclick="toggleCard('cc2')">
-          <div>
-            <div class="call-card-name">Redcar Gym</div>
-            <div class="call-card-type">Independent gym · Redcar</div>
-          </div>
-          <div class="call-card-right">
-            <span class="call-stage">Called</span>
-            <span class="call-toggle">▾</span>
-          </div>
-        </div>
-        <div class="call-card-body">
-          <div class="q-title">Pre-Call Research</div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Business type and services confirmed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Current social platforms checked (FB only, TikTok gap is huge)</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Competitor social presence reviewed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Identified content opportunity</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
-          <textarea class="q-notes" placeholder="Notes...">Called 20 Jun. Spoke to manager Dave. Interested but needs to speak to owner. Calling back Friday.</textarea>
-          <div class="q-action-row">
-            <button class="q-btn q-btn-primary">Mark as Interested</button>
-            <button class="q-btn">Move to Lost</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="call-card" id="cc3">
-        <div class="call-card-top" onclick="toggleCard('cc3')">
-          <div>
-            <div class="call-card-name">Headland Barbers</div>
-            <div class="call-card-type">Barber shop · Hartlepool Headland</div>
-          </div>
-          <div class="call-card-right">
-            <span class="call-stage">Identified</span>
-            <span class="call-toggle">▾</span>
-          </div>
-        </div>
-        <div class="call-card-body">
-          <div class="q-title">Pre-Call Research — complete before calling</div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Business type and services confirmed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Current social platforms checked and noted</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Competitor social presence reviewed</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Identified specific content opportunity</label></div>
-          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
-          <textarea class="q-notes" placeholder="Add notes before calling..."></textarea>
-          <div class="q-action-row">
-            <button class="q-btn q-btn-primary">Research Done — Ready to Call</button>
-            <button class="q-btn">Remove</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PIPELINE -->
     <div class="label" style="margin-bottom:.6rem;">Pipeline</div>
-    <div class="pipeline-strip">
-      <div class="pipe-col">
-        <div class="pipe-col-head">Identified</div>
-        <div class="pipe-chip">Headland Barbers</div>
-        <div class="pipe-chip">Seaton Fish Bar</div>
-      </div>
-      <div class="pipe-col">
-        <div class="pipe-col-head">Questionnaire Done</div>
-        <div class="pipe-chip">Saltburn Coffee Co.</div>
-      </div>
-      <div class="pipe-col">
-        <div class="pipe-col-head">Called</div>
-        <div class="pipe-chip">Redcar Gym</div>
-        <div class="pipe-chip">NE Fitness Hub</div>
-      </div>
-      <div class="pipe-col">
-        <div class="pipe-col-head">Interested</div>
-        <div class="pipe-chip">NE Fitness Hub</div>
-      </div>
-      <div class="pipe-col">
-        <div class="pipe-col-head">Won</div>
-        <div class="pipe-chip">NE Auto Detailing ✓</div>
-      </div>
-      <div class="pipe-col">
-        <div class="pipe-col-head">Lost</div>
-        <div style="font-size:.72rem;color:var(--dim);">None yet</div>
-      </div>
-    </div>
+    <div class="pipeline-strip" id="pipelineStrip"></div>
   </div>
 
-  <!-- CLIENTS SECTION -->
+  <!-- ── CLIENTS ── -->
   <div class="section" id="clientsSection">
     <div class="section-header">
-      <div>
-        <div class="section-title">CURRENT CLIENTS</div>
-        <div class="section-sub">Click a client to see socials and analytics</div>
+      <div class="section-header-left">
+        <div class="section-title">CLIENTS</div>
+        <div class="section-sub">Active retainer clients · Social channels · Weekly analytics</div>
+      </div>
+      <button class="section-add-btn" onclick="openAddClient()">+ Add Client</button>
+    </div>
+    <div class="clients-grid" id="clientsGrid"></div>
+  </div>
+
+  <!-- ── CALENDAR ── -->
+  <div class="section" id="calSection">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-title">CALENDAR</div>
+        <div class="section-sub">Shoots · Posts · Meetings — current week</div>
+      </div>
+      <div class="cal-nav">
+        <button class="section-add-btn" onclick="shiftWeek(-1)">← Prev</button>
+        <button class="section-add-btn" onclick="goToday()">Today</button>
+        <button class="section-add-btn" onclick="shiftWeek(1)">Next →</button>
       </div>
     </div>
+    <div class="cal-grid" id="calendarGrid"></div>
+  </div>
 
-    <div class="clients-grid">
-
-      <!-- CLIENT 1 -->
-      <div class="client-card" id="cl1">
-        <div class="client-card-top" onclick="toggleClient('cl1')">
-          <div>
-            <div class="cc-name">Hartlepool FC</div>
-            <div class="cc-type">Football Club · Social media management</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="cc-fee">£200</div>
-            <div class="cc-fee-label">per month</div>
-            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
-          </div>
-        </div>
-        <div class="client-body">
-          <div class="cb-section">
-            <div class="cb-section-title">Social Channels</div>
-            <div class="social-links">
-              <a class="social-link" href="https://instagram.com/hartlepoolunited" target="_blank">↗ Instagram</a>
-              <a class="social-link" href="https://tiktok.com/@hartlepoolunited" target="_blank">↗ TikTok</a>
-              <a class="social-link" href="https://facebook.com/hartlepoolunited" target="_blank">↗ Facebook</a>
-            </div>
-          </div>
-          <div class="cb-section">
-            <div class="cb-section-title">This Week — Instagram</div>
-            <div class="analytics-row">
-              <div class="ar-cell"><div class="ar-n">14.2K</div><div class="ar-l">Views</div></div>
-              <div class="ar-cell"><div class="ar-n">847</div><div class="ar-l">Likes</div></div>
-              <div class="ar-cell"><div class="ar-n">+34</div><div class="ar-l">Followers</div></div>
-            </div>
-          </div>
-          <div class="cb-section">
-            <div class="cb-section-title">This Week — TikTok</div>
-            <div class="analytics-row">
-              <div class="ar-cell"><div class="ar-n">31K</div><div class="ar-l">Views</div></div>
-              <div class="ar-cell"><div class="ar-n">1.2K</div><div class="ar-l">Likes</div></div>
-              <div class="ar-cell"><div class="ar-n">+91</div><div class="ar-l">Followers</div></div>
-            </div>
-          </div>
-          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: Today · Since: April 2026</div>
-        </div>
+  <!-- ── BUSINESS ── -->
+  <div class="section" id="bizSection">
+    <div class="section-header">
+      <div class="section-header-left">
+        <div class="section-title">BUSINESS</div>
+        <div class="section-sub">Income tracking · Goals</div>
       </div>
-
-      <!-- CLIENT 2 -->
-      <div class="client-card" id="cl2">
-        <div class="client-card-top" onclick="toggleClient('cl2')">
-          <div>
-            <div class="cc-name">Cafe Roma</div>
-            <div class="cc-type">Independent Café · Church Street</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="cc-fee">£150</div>
-            <div class="cc-fee-label">per month</div>
-            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
-          </div>
-        </div>
-        <div class="client-body">
-          <div class="cb-section">
-            <div class="cb-section-title">Social Channels</div>
-            <div class="social-links">
-              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
-              <a class="social-link" href="https://facebook.com" target="_blank">↗ Facebook</a>
-            </div>
-          </div>
-          <div class="cb-section">
-            <div class="cb-section-title">This Week — Instagram</div>
-            <div class="analytics-row">
-              <div class="ar-cell"><div class="ar-n">3.1K</div><div class="ar-l">Views</div></div>
-              <div class="ar-cell"><div class="ar-n">214</div><div class="ar-l">Likes</div></div>
-              <div class="ar-cell"><div class="ar-n">+12</div><div class="ar-l">Followers</div></div>
-            </div>
-          </div>
-          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: 2 days ago · Since: May 2026</div>
-        </div>
+    </div>
+    <div class="business-grid">
+      <div>
+        <div class="biz-col-head">Income <button class="section-add-btn" onclick="openAddIncome()">+ Add</button></div>
+        <div id="incomeSummary"></div>
+        <div id="incomeList"></div>
       </div>
-
-      <!-- CLIENT 3 -->
-      <div class="client-card" id="cl3">
-        <div class="client-card-top" onclick="toggleClient('cl3')">
-          <div>
-            <div class="cc-name">Marina Hotel</div>
-            <div class="cc-type">Hotel · Hartlepool Marina</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="cc-fee">£175</div>
-            <div class="cc-fee-label">per month</div>
-            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
-          </div>
-        </div>
-        <div class="client-body">
-          <div class="cb-section">
-            <div class="cb-section-title">Social Channels</div>
-            <div class="social-links">
-              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
-              <a class="social-link" href="https://facebook.com" target="_blank">↗ Facebook</a>
-            </div>
-          </div>
-          <div class="cb-section">
-            <div class="cb-section-title">This Week — Instagram</div>
-            <div class="analytics-row">
-              <div class="ar-cell"><div class="ar-n">5.4K</div><div class="ar-l">Views</div></div>
-              <div class="ar-cell"><div class="ar-n">389</div><div class="ar-l">Likes</div></div>
-              <div class="ar-cell"><div class="ar-n">+22</div><div class="ar-l">Followers</div></div>
-            </div>
-          </div>
-          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: Yesterday · Since: May 2026</div>
-        </div>
+      <div>
+        <div class="biz-col-head">Goals <button class="section-add-btn" onclick="openAddGoal()">+ Add</button></div>
+        <div id="goalsList"></div>
       </div>
-
-      <!-- CLIENT 4 -->
-      <div class="client-card" id="cl4">
-        <div class="client-card-top" onclick="toggleClient('cl4')">
-          <div>
-            <div class="cc-name">NE Auto Detailing</div>
-            <div class="cc-type">Auto Detailing · Teesside</div>
-          </div>
-          <div style="text-align:right;">
-            <div class="cc-fee">£125</div>
-            <div class="cc-fee-label">per month</div>
-            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
-          </div>
-        </div>
-        <div class="client-body">
-          <div class="cb-section">
-            <div class="cb-section-title">Social Channels</div>
-            <div class="social-links">
-              <a class="social-link" href="https://tiktok.com" target="_blank">↗ TikTok</a>
-              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
-            </div>
-          </div>
-          <div class="cb-section">
-            <div class="cb-section-title">This Week — TikTok</div>
-            <div class="analytics-row">
-              <div class="ar-cell"><div class="ar-n">8.9K</div><div class="ar-l">Views</div></div>
-              <div class="ar-cell"><div class="ar-n">612</div><div class="ar-l">Likes</div></div>
-              <div class="ar-cell"><div class="ar-n">+47</div><div class="ar-l">Followers</div></div>
-            </div>
-          </div>
-          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: 3 days ago · Since: June 2026</div>
-        </div>
-      </div>
-
     </div>
   </div>
 
-</div>
+</div><!-- /app -->
 
 <script>
-// ── AUTH ──
+// ─────────────────────────────────────────
+// DEFAULT DATA
+// ─────────────────────────────────────────
+const DEFAULT_LEADS=[
+  {id:'l1',name:'Saltburn Coffee Co.',type:'Independent café',location:'Saltburn-by-the-Sea',stage:'Questionnaire Done',notes:'Owner is Sarah. Café opened 2022. Instagram looks neglected. Strong visual potential — nice interior, outdoor seating. Proposal sent £150/mo.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:false},followUpDate:'2026-06-27',addedDate:'2026-06-20'},
+  {id:'l2',name:'Redcar Gym',type:'Independent gym',location:'Redcar',stage:'Called',notes:'Called 20 Jun. Spoke to manager Dave. Interested but needs to speak to owner. Calling back Friday.',questionnaire:{q0:true,q1:true,q2:true,q3:false,q4:false},followUpDate:'2026-06-27',addedDate:'2026-06-18'},
+  {id:'l3',name:'Headland Barbers',type:'Barber shop',location:'Hartlepool Headland',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:'2026-06-25'},
+  {id:'l4',name:'Seaton Fish Bar',type:'Fish & chips',location:'Seaton Carew',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:'2026-06-25'},
+  {id:'l5',name:'NE Fitness Hub',type:'Gym / PT studio',location:'Teesside',stage:'Interested',notes:'Spoke on phone, very keen. Sending proposal this week.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:true},followUpDate:'2026-06-28',addedDate:'2026-06-15'},
+  {id:'l6',name:'NE Auto Detailing',type:'Auto detailing',location:'Teesside',stage:'Won',notes:'Signed June 2026. £125/mo.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:true},followUpDate:'',addedDate:'2026-06-01'},
+];
+
+const DEFAULT_CLIENTS=[
+  {id:'c1',name:'Hartlepool FC',type:'Football Club',service:'Social media management',fee:200,startDate:'April 2026',lastPost:'Today',platforms:['instagram','tiktok','facebook'],links:{instagram:'https://instagram.com/hartlepoolunited',tiktok:'https://tiktok.com/@hartlepoolunited',facebook:'https://facebook.com/hartlepoolunited'},analytics:{instagram:{views:14200,likes:847,followers:34},tiktok:{views:31000,likes:1200,followers:91}}},
+  {id:'c2',name:'Cafe Roma',type:'Independent Café',service:'Social media management',fee:150,startDate:'May 2026',lastPost:'2 days ago',platforms:['instagram','facebook'],links:{instagram:'https://instagram.com',facebook:'https://facebook.com'},analytics:{instagram:{views:3100,likes:214,followers:12}}},
+  {id:'c3',name:'Marina Hotel',type:'Hotel',service:'Social media management',fee:175,startDate:'May 2026',lastPost:'Yesterday',platforms:['instagram','facebook'],links:{instagram:'https://instagram.com',facebook:'https://facebook.com'},analytics:{instagram:{views:5400,likes:389,followers:22}}},
+  {id:'c4',name:'NE Auto Detailing',type:'Auto Detailing',service:'Social media management',fee:125,startDate:'June 2026',lastPost:'3 days ago',platforms:['tiktok','instagram'],links:{tiktok:'https://tiktok.com',instagram:'https://instagram.com'},analytics:{tiktok:{views:8900,likes:612,followers:47}}},
+];
+
+const DEFAULT_CALENDAR=[
+  {id:'cal1',date:'2026-06-26',clientId:'c1',platform:'Instagram / TikTok',contentType:'Shoot',time:'10:00',notes:'Training reel'},
+  {id:'cal2',date:'2026-06-26',clientId:'c2',platform:'Instagram',contentType:'Shoot',time:'14:30',notes:'Menu content'},
+  {id:'cal3',date:'2026-06-26',clientId:'c1',platform:'Instagram',contentType:'Post',time:'18:00',notes:'Match day reel — go live'},
+  {id:'cal4',date:'2026-06-27',clientId:'c3',platform:'Facebook / Instagram',contentType:'Post',time:'12:00',notes:'Weekend offers'},
+  {id:'cal5',date:'2026-06-28',clientId:'c4',platform:'TikTok',contentType:'Shoot',time:'11:00',notes:'Detail job exterior'},
+];
+
+const DEFAULT_INCOME=[
+  {id:'inc1',month:'2026-06',source:'Hartlepool FC',amount:200},
+  {id:'inc2',month:'2026-06',source:'Cafe Roma',amount:150},
+  {id:'inc3',month:'2026-06',source:'Marina Hotel',amount:175},
+  {id:'inc4',month:'2026-06',source:'NE Auto Detailing',amount:125},
+];
+
+const DEFAULT_GOALS=[
+  {id:'g1',label:'Monthly retainer income',target:1000,current:650},
+  {id:'g2',label:'Active clients',target:8,current:4},
+  {id:'g3',label:'New leads this month',target:20,current:7},
+];
+
+// ─────────────────────────────────────────
+// STORAGE — localStorage with memory fallback
+// ─────────────────────────────────────────
+const STORE=(()=>{
+  let mem={};
+  try{localStorage.setItem('__t__','1');localStorage.removeItem('__t__');
+    return{get:k=>{const v=localStorage.getItem(k);return v?JSON.parse(v):null;},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};}
+  catch(e){return{get:k=>mem[k]??null,set:(k,v)=>{mem[k]=v;}};}
+})();
+
+const DB={
+  leads:()=>STORE.get('LAS_leads')||DEFAULT_LEADS,
+  setLeads:d=>STORE.set('LAS_leads',d),
+  clients:()=>STORE.get('LAS_clients')||DEFAULT_CLIENTS,
+  setClients:d=>STORE.set('LAS_clients',d),
+  calendar:()=>STORE.get('LAS_cal')||DEFAULT_CALENDAR,
+  setCal:d=>STORE.set('LAS_cal',d),
+  income:()=>STORE.get('LAS_income')||DEFAULT_INCOME,
+  setIncome:d=>STORE.set('LAS_income',d),
+  goals:()=>STORE.get('LAS_goals')||DEFAULT_GOALS,
+  setGoals:d=>STORE.set('LAS_goals',d),
+};
+
+// ─────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const todayStr=()=>dateStr(new Date());
+function dateStr(d){return d.toISOString().split('T')[0];}
+function fmtNum(n){return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'K':String(n);}
+function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{month:'long',year:'numeric'});}
+
+// ─────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────
 function doLogin(){
   const e=document.getElementById('loginEmail').value.trim();
   const p=document.getElementById('loginPass').value;
-  // SUPABASE: const {data,error} = await supabase.auth.signInWithPassword({email:e,password:p})
   if(e==='lewis@lasmedia.co.uk'&&p==='lasmedia2026'){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('app').style.display='block';
@@ -510,84 +461,501 @@ function doLogin(){
 function doLogout(){
   document.getElementById('app').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginPass').value='';
 }
 
-// ── SCROLL NAV ──
-function scrollTo(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+// ─────────────────────────────────────────
+// NAV
+// ─────────────────────────────────────────
+function jumpTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
+function initApp(){
+  buildBrief();
+  renderStats();
+  renderLeads();
+  renderPipeline();
+  renderClients();
+  renderCalendar();
+  renderIncome();
+  renderGoals();
+  updateNavMeta();
 }
 
-// ── TOGGLE CARDS ──
-function toggleCard(id){
-  document.getElementById(id).classList.toggle('open');
-}
-function toggleClient(id){
-  document.getElementById(id).classList.toggle('open');
+// ─────────────────────────────────────────
+// STATS
+// ─────────────────────────────────────────
+function renderStats(){
+  const clients=DB.clients();
+  const leads=DB.leads();
+  const openLeads=leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
+  const curMonth=todayStr().slice(0,7);
+  const monthIncome=DB.income().filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+  const todayEntries=DB.calendar().filter(e=>e.date===todayStr()).length;
+  document.getElementById('statClients').textContent=clients.length;
+  document.getElementById('statIncome').textContent='£'+monthIncome;
+  document.getElementById('statLeads').textContent=openLeads;
+  document.getElementById('statToday').textContent=todayEntries;
 }
 
-// ── SCANNER ──
+function updateNavMeta(){
+  const leads=DB.leads();
+  const clients=DB.clients();
+  const open=leads.filter(l=>!['Won','Lost'].includes(l.stage));
+  const won=leads.filter(l=>l.stage==='Won');
+  const curMonth=todayStr().slice(0,7);
+  const monthTotal=DB.income().filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+  const retainerTotal=clients.reduce((s,c)=>s+c.fee,0);
+  document.getElementById('navLeadsMeta').textContent=open.length+' active · '+won.length+' won';
+  document.getElementById('navClientsMeta').textContent=clients.length+' active · £'+retainerTotal+'/mo';
+  document.getElementById('navCalMeta').textContent='Week of '+new Date(calWeekStart).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  document.getElementById('navBizMeta').textContent='This month: £'+monthTotal;
+}
+
+// ─────────────────────────────────────────
+// BRIEF
+// ─────────────────────────────────────────
+function buildBrief(){
+  document.getElementById('hDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const today=todayStr();
+  const entries=DB.calendar().filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
+  const clients=DB.clients();
+  const brief=document.getElementById('brief');
+  if(entries.length){
+    brief.innerHTML=`<div class="brief-mode">Daily Brief</div><div class="brief-items">${entries.map((e,i)=>{
+      const c=clients.find(c=>c.id===e.clientId);
+      return `${i>0?'<span class="brief-sep">·</span>':''}<div class="brief-item"><span class="brief-item-time">${esc(e.time)}</span><span class="brief-item-label">${esc(e.contentType)} — ${esc(c?c.name:e.notes)}</span></div>`;
+    }).join('')}</div>`;
+  } else {
+    const income=clients.reduce((s,c)=>s+c.fee,0);
+    const open=DB.leads().filter(l=>!['Won','Lost'].includes(l.stage)).length;
+    brief.innerHTML=`<div class="brief-mode">Weekly Summary</div><div class="brief-items">
+      <div class="brief-item"><span class="brief-item-time">£${income}</span><span class="brief-item-label">monthly retainers</span></div>
+      <span class="brief-sep">·</span>
+      <div class="brief-item"><span class="brief-item-time">${clients.length}</span><span class="brief-item-label">active clients</span></div>
+      <span class="brief-sep">·</span>
+      <div class="brief-item"><span class="brief-item-time">${open}</span><span class="brief-item-label">open leads</span></div>
+    </div>`;
+  }
+}
+
+// ─────────────────────────────────────────
+// LEADS
+// ─────────────────────────────────────────
+const STAGES=['Identified','Questionnaire Done','Called','Interested','Won','Lost'];
+const QUESTIONS=[
+  'Business type and services confirmed',
+  'Current social platforms checked and noted',
+  'Competitor social presence reviewed',
+  'Identified specific content opportunity',
+  'Decision maker identified',
+];
+
+function renderLeads(){
+  const active=DB.leads().filter(l=>!['Won','Lost'].includes(l.stage));
+  const el=document.getElementById('callList');
+  if(!active.length){el.innerHTML='<div class="empty-state">No active leads. Add manually or scan above.</div>';return;}
+  el.innerHTML=active.map(leadCardHTML).join('');
+}
+
+function leadCardHTML(l){
+  const done=QUESTIONS.filter((_,i)=>l.questionnaire&&l.questionnaire['q'+i]).length;
+  const hot=l.stage==='Interested';
+  return `<div class="call-card" id="lc_${l.id}">
+  <div class="call-card-top" onclick="toggleCard('lc_${l.id}')">
+    <div>
+      <div class="call-card-name">${esc(l.name)}</div>
+      <div class="call-card-meta">${esc(l.type)} · ${esc(l.location)}</div>
+    </div>
+    <div class="call-card-right">
+      <span class="call-stage${hot?' hot':''}">${esc(l.stage)}</span>
+      <span class="call-toggle">▾</span>
+    </div>
+  </div>
+  <div class="call-card-body">
+    <div class="q-title">Pre-Call Research — ${done}/${QUESTIONS.length} complete</div>
+    ${QUESTIONS.map((q,i)=>`<div class="q-item">
+      <input class="q-check" type="checkbox" ${l.questionnaire&&l.questionnaire['q'+i]?'checked':''} onchange="saveQCheck('${l.id}',${i},this.checked)">
+      <label class="q-label">${esc(q)}</label>
+    </div>`).join('')}
+    <textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${l.id}',this.value)">${esc(l.notes||'')}</textarea>
+    ${l.followUpDate?`<div class="followup-tag">Follow-up: ${l.followUpDate}</div>`:''}
+    <div class="q-action-row">
+      <button class="q-btn q-btn-primary" onclick="advanceStage('${l.id}')">→ Advance Stage</button>
+      <button class="q-btn" onclick="openEditLead('${l.id}')">Edit</button>
+      <button class="q-btn" onclick="deleteLead('${l.id}')">Remove</button>
+    </div>
+  </div>
+</div>`;
+}
+
+function toggleCard(id){document.getElementById(id).classList.toggle('open');}
+
+function saveQCheck(id,i,val){
+  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;
+  if(!l.questionnaire)l.questionnaire={};l.questionnaire['q'+i]=val;DB.setLeads(leads);
+}
+function saveLeadNotes(id,val){
+  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;l.notes=val;DB.setLeads(leads);
+}
+function advanceStage(id){
+  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;
+  const idx=STAGES.indexOf(l.stage);if(idx<STAGES.length-1)l.stage=STAGES[idx+1];
+  DB.setLeads(leads);renderLeads();renderPipeline();renderStats();updateNavMeta();
+}
+function deleteLead(id){
+  if(!confirm('Remove this lead?'))return;
+  DB.setLeads(DB.leads().filter(l=>l.id!==id));
+  renderLeads();renderPipeline();renderStats();updateNavMeta();
+}
+
+// ─────────────────────────────────────────
+// PIPELINE
+// ─────────────────────────────────────────
+function renderPipeline(){
+  const leads=DB.leads();
+  document.getElementById('pipelineStrip').innerHTML=STAGES.map(s=>{
+    const items=leads.filter(l=>l.stage===s);
+    return `<div class="pipe-col">
+      <div class="pipe-col-head">${s} (${items.length})</div>
+      ${items.length?items.map(l=>`<div class="pipe-chip${s==='Won'?' won':''}">${esc(l.name)}</div>`).join(''):'<div class="pipe-empty">—</div>'}
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────
+// CLIENTS
+// ─────────────────────────────────────────
+const PLAT_LABELS={instagram:'Instagram',tiktok:'TikTok',facebook:'Facebook',twitter:'Twitter',youtube:'YouTube'};
+
+function renderClients(){
+  const clients=DB.clients();
+  const el=document.getElementById('clientsGrid');
+  if(!clients.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1;">No clients yet.</div>';return;}
+  el.innerHTML=clients.map(clientCardHTML).join('');
+}
+
+function clientCardHTML(c){
+  return `<div class="client-card" id="cc_${c.id}">
+  <div class="client-card-top" onclick="toggleClient('cc_${c.id}')">
+    <div>
+      <div class="cc-name">${esc(c.name)}</div>
+      <div class="cc-type">${esc(c.type)}</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="cc-fee">£${c.fee}</div>
+      <div class="cc-fee-label">per month</div>
+      <div class="cc-toggle">▾</div>
+    </div>
+  </div>
+  <div class="client-body">
+    <div class="cb-section">
+      <div class="cb-section-title">Social Channels</div>
+      <div class="social-links">
+        ${(c.platforms||[]).map(p=>`<a class="social-link" href="${esc((c.links&&c.links[p])||'#')}" target="_blank">↗ ${esc(PLAT_LABELS[p]||p)}</a>`).join('')}
+      </div>
+    </div>
+    ${Object.entries(c.analytics||{}).map(([plat,s])=>`
+    <div class="cb-section">
+      <div class="cb-section-title">This Week — ${esc(PLAT_LABELS[plat]||plat)}</div>
+      <div class="analytics-row">
+        <div class="ar-cell"><div class="ar-n">${fmtNum(s.views||0)}</div><div class="ar-l">Views</div></div>
+        <div class="ar-cell"><div class="ar-n">${fmtNum(s.likes||0)}</div><div class="ar-l">Likes</div></div>
+        <div class="ar-cell"><div class="ar-n">+${fmtNum(s.followers||0)}</div><div class="ar-l">Followers</div></div>
+      </div>
+    </div>`).join('')}
+    <div class="client-meta-foot">Last post: ${esc(c.lastPost||'—')} · Since: ${esc(c.startDate||'—')}</div>
+    <div class="q-action-row">
+      <button class="q-btn" onclick="openEditClient('${c.id}')">Edit</button>
+      <button class="q-btn" onclick="deleteClient('${c.id}')">Remove</button>
+    </div>
+  </div>
+</div>`;
+}
+
+function toggleClient(id){document.getElementById(id).classList.toggle('open');}
+function deleteClient(id){
+  if(!confirm('Remove this client?'))return;
+  DB.setClients(DB.clients().filter(c=>c.id!==id));
+  renderClients();renderStats();buildBrief();updateNavMeta();
+}
+
+// ─────────────────────────────────────────
+// CALENDAR
+// ─────────────────────────────────────────
+function getMonday(d){const m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));m.setHours(0,0,0,0);return m;}
+let calWeekStart=getMonday(new Date());
+
+function shiftWeek(dir){calWeekStart=new Date(calWeekStart.getTime()+dir*7*86400000);renderCalendar();updateNavMeta();}
+function goToday(){calWeekStart=getMonday(new Date());renderCalendar();updateNavMeta();}
+
+function renderCalendar(){
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(calWeekStart);d.setDate(calWeekStart.getDate()+i);return d;});
+  const entries=DB.calendar();
+  const clients=DB.clients();
+  const today=todayStr();
+  document.getElementById('calendarGrid').innerHTML=days.map(d=>{
+    const ds=dateStr(d);
+    const isToday=ds===today;
+    const dayEntries=entries.filter(e=>e.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
+    return `<div class="cal-day${isToday?' cal-today':''}">
+      <div class="cal-day-head">
+        <span class="cal-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</span>
+        <span class="cal-day-num">${d.getDate()}</span>
+      </div>
+      <div class="cal-entries">
+        ${dayEntries.map(e=>{
+          const c=clients.find(c=>c.id===e.clientId);
+          return `<div class="cal-entry" onclick="openEditCalEntry('${e.id}')">
+            <div class="cal-entry-time">${esc(e.time)} ${esc(e.contentType)}</div>
+            <div class="cal-entry-label">${esc(c?c.name:e.notes)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="cal-add-btn" onclick="openAddCalEntry('${ds}')">+</button>
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────
+// INCOME
+// ─────────────────────────────────────────
+function renderIncome(){
+  const all=DB.income().slice().sort((a,b)=>b.month.localeCompare(a.month));
+  const months={};
+  all.forEach(e=>{if(!months[e.month])months[e.month]=[];months[e.month].push(e);});
+  const curMonth=todayStr().slice(0,7);
+  const curTotal=(months[curMonth]||[]).reduce((s,i)=>s+i.amount,0);
+  const allTotal=all.reduce((s,i)=>s+i.amount,0);
+
+  document.getElementById('incomeSummary').innerHTML=`<div class="income-summary">
+    <div class="inc-sum-cell"><div class="inc-sum-n">£${curTotal}</div><div class="inc-sum-l">This Month</div></div>
+    <div class="inc-sum-cell" style="border-left:1px solid var(--border);"><div class="inc-sum-n">£${allTotal}</div><div class="inc-sum-l">All Time</div></div>
+    <div class="inc-sum-cell" style="border-left:1px solid var(--border);"><div class="inc-sum-n">${Object.keys(months).length}</div><div class="inc-sum-l">Months</div></div>
+  </div>`;
+
+  if(!Object.keys(months).length){document.getElementById('incomeList').innerHTML='<div class="empty-state">No income recorded yet.</div>';return;}
+  document.getElementById('incomeList').innerHTML=Object.entries(months).map(([month,items])=>{
+    const total=items.reduce((s,i)=>s+i.amount,0);
+    return `<div class="income-month">
+      <div class="income-month-head"><span class="income-month-label">${monthLabel(month)}</span><span class="income-total">£${total}</span></div>
+      ${items.map(i=>`<div class="income-row">
+        <span class="income-source">${esc(i.source)}</span>
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <span class="income-amount">£${i.amount}</span>
+          <button class="icon-btn" onclick="deleteIncome('${i.id}')">✕</button>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function deleteIncome(id){
+  if(!confirm('Delete this income entry?'))return;
+  DB.setIncome(DB.income().filter(i=>i.id!==id));
+  renderIncome();renderStats();updateNavMeta();
+}
+
+// ─────────────────────────────────────────
+// GOALS
+// ─────────────────────────────────────────
+function renderGoals(){
+  const goals=DB.goals();
+  const el=document.getElementById('goalsList');
+  if(!goals.length){el.innerHTML='<div class="empty-state">No goals set yet.</div>';return;}
+  el.innerHTML=goals.map(g=>{
+    const pct=Math.min(100,Math.round((g.current/g.target)*100));
+    return `<div class="goal-item">
+      <div class="goal-top">
+        <span class="goal-label">${esc(g.label)}</span>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <span class="goal-nums">${g.current} / ${g.target}</span>
+          <button class="icon-btn" onclick="openEditGoal('${g.id}')">✎</button>
+          <button class="icon-btn" onclick="deleteGoal('${g.id}')">✕</button>
+        </div>
+      </div>
+      <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
+      <div class="goal-pct">${pct}% to target</div>
+    </div>`;
+  }).join('');
+}
+
+function deleteGoal(id){
+  if(!confirm('Delete this goal?'))return;
+  DB.setGoals(DB.goals().filter(g=>g.id!==id));renderGoals();
+}
+
+// ─────────────────────────────────────────
+// MODAL
+// ─────────────────────────────────────────
+let modalState=null;
+
+function openModal(title,bodyHTML){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalBody').innerHTML=bodyHTML;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');modalState=null;}
+function handleOverlayClick(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+// ── Lead modals ──
+function openAddLead(){modalState={type:'lead',id:null};openModal('Add Lead',leadFormHTML(null));}
+function openEditLead(id){const l=DB.leads().find(x=>x.id===id);if(!l)return;modalState={type:'lead',id};openModal('Edit Lead',leadFormHTML(l));}
+function leadFormHTML(l){
+  return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${esc(l?.name||'')}"></div>
+  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Independent café" value="${esc(l?.type||'')}"></div>
+  <div class="m-field"><label>Location</label><input class="m-input" id="m_location" placeholder="e.g. Hartlepool" value="${esc(l?.location||'')}"></div>
+  <div class="m-field"><label>Stage</label><select class="m-select" id="m_stage">${STAGES.map(s=>`<option value="${s}"${l?.stage===s?' selected':''}>${s}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Follow-up Date</label><input class="m-input" id="m_followup" type="date" value="${esc(l?.followUpDate||'')}"></div>
+  <div class="m-field"><label>Notes</label><textarea class="m-textarea" id="m_notes">${esc(l?.notes||'')}</textarea></div>
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="saveLead()">Save</button>
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+function saveLead(){
+  const name=document.getElementById('m_name').value.trim();
+  if(!name)return alert('Business name required.');
+  const leads=DB.leads();
+  if(modalState.id){
+    const l=leads.find(x=>x.id===modalState.id);
+    if(l){l.name=name;l.type=document.getElementById('m_type').value.trim();l.location=document.getElementById('m_location').value.trim();l.stage=document.getElementById('m_stage').value;l.followUpDate=document.getElementById('m_followup').value;l.notes=document.getElementById('m_notes').value.trim();}
+  } else {
+    leads.push({id:uid(),name,type:document.getElementById('m_type').value.trim(),location:document.getElementById('m_location').value.trim(),stage:document.getElementById('m_stage').value,notes:document.getElementById('m_notes').value.trim(),questionnaire:{},followUpDate:document.getElementById('m_followup').value,addedDate:todayStr()});
+  }
+  DB.setLeads(leads);closeModal();renderLeads();renderPipeline();renderStats();updateNavMeta();
+}
+
+// ── Client modals ──
+const ALL_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
+function openAddClient(){modalState={type:'client',id:null};openModal('Add Client',clientFormHTML(null));}
+function openEditClient(id){const c=DB.clients().find(x=>x.id===id);if(!c)return;modalState={type:'client',id};openModal('Edit Client',clientFormHTML(c));}
+function clientFormHTML(c){
+  return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${esc(c?.name||'')}"></div>
+  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Hotel" value="${esc(c?.type||'')}"></div>
+  <div class="m-field"><label>Service</label><input class="m-input" id="m_service" placeholder="Social media management" value="${esc(c?.service||'Social media management')}"></div>
+  <div class="m-field"><label>Monthly Fee (£)</label><input class="m-input" id="m_fee" type="number" placeholder="150" value="${c?.fee||''}"></div>
+  <div class="m-field"><label>Start Date</label><input class="m-input" id="m_startdate" placeholder="e.g. June 2026" value="${esc(c?.startDate||'')}"></div>
+  <div class="m-field"><label>Last Post</label><input class="m-input" id="m_lastpost" placeholder="e.g. Today" value="${esc(c?.lastPost||'')}"></div>
+  <div class="m-field"><label>Platforms</label><div class="m-check-row">${ALL_PLATS.map(p=>`<label class="m-check-item"><input type="checkbox" id="m_p_${p}"${c?.platforms?.includes(p)?' checked':''}><span>${PLAT_LABELS[p]||p}</span></label>`).join('')}</div></div>
+  <div class="m-field"><label>Instagram URL</label><input class="m-input" id="m_l_instagram" value="${esc(c?.links?.instagram||'')}"></div>
+  <div class="m-field"><label>TikTok URL</label><input class="m-input" id="m_l_tiktok" value="${esc(c?.links?.tiktok||'')}"></div>
+  <div class="m-field"><label>Facebook URL</label><input class="m-input" id="m_l_facebook" value="${esc(c?.links?.facebook||'')}"></div>
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="saveClient()">Save</button>
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+function saveClient(){
+  const name=document.getElementById('m_name').value.trim();
+  if(!name)return alert('Business name required.');
+  const fee=parseInt(document.getElementById('m_fee').value)||0;
+  const platforms=ALL_PLATS.filter(p=>document.getElementById('m_p_'+p)?.checked);
+  const links={};
+  ['instagram','tiktok','facebook'].forEach(p=>{const v=document.getElementById('m_l_'+p)?.value.trim();if(v)links[p]=v;});
+  const clients=DB.clients();
+  if(modalState.id){
+    const c=clients.find(x=>x.id===modalState.id);
+    if(c){c.name=name;c.type=document.getElementById('m_type').value.trim();c.service=document.getElementById('m_service').value.trim();c.fee=fee;c.startDate=document.getElementById('m_startdate').value.trim();c.lastPost=document.getElementById('m_lastpost').value.trim();c.platforms=platforms;c.links=links;}
+  } else {
+    clients.push({id:uid(),name,type:document.getElementById('m_type').value.trim(),service:document.getElementById('m_service').value.trim(),fee,startDate:document.getElementById('m_startdate').value.trim(),lastPost:document.getElementById('m_lastpost').value.trim()||'—',platforms,links,analytics:{}});
+  }
+  DB.setClients(clients);closeModal();renderClients();renderStats();buildBrief();updateNavMeta();
+}
+
+// ── Calendar modals ──
+const CAL_TYPES=['Shoot','Post','Reel','Story','Meeting','Call','Edit'];
+function openAddCalEntry(date){modalState={type:'cal',id:null,date};openModal('Add Entry',calFormHTML(null,date));}
+function openEditCalEntry(id){const e=DB.calendar().find(x=>x.id===id);if(!e)return;modalState={type:'cal',id};openModal('Edit Entry',calFormHTML(e,e.date));}
+function calFormHTML(e,date){
+  const clients=DB.clients();
+  return `<div class="m-field"><label>Date</label><input class="m-input" id="m_date" type="date" value="${esc(date||todayStr())}"></div>
+  <div class="m-field"><label>Time</label><input class="m-input" id="m_time" type="time" value="${esc(e?.time||'10:00')}"></div>
+  <div class="m-field"><label>Client</label><select class="m-select" id="m_client"><option value="">— select client —</option>${clients.map(c=>`<option value="${c.id}"${e?.clientId===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Type</label><select class="m-select" id="m_ctype">${CAL_TYPES.map(t=>`<option${e?.contentType===t?' selected':''}>${t}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Platform</label><input class="m-input" id="m_platform" placeholder="e.g. Instagram / TikTok" value="${esc(e?.platform||'')}"></div>
+  <div class="m-field"><label>Notes</label><input class="m-input" id="m_notes" value="${esc(e?.notes||'')}"></div>
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="saveCalEntry()">Save</button>
+    ${e?`<button class="m-btn" onclick="deleteCalEntry('${e.id}')">Delete</button>`:''}
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+function saveCalEntry(){
+  const date=document.getElementById('m_date').value;
+  const time=document.getElementById('m_time').value;
+  if(!date||!time)return alert('Date and time required.');
+  const entry={id:modalState.id||uid(),date,time,clientId:document.getElementById('m_client').value,contentType:document.getElementById('m_ctype').value,platform:document.getElementById('m_platform').value.trim(),notes:document.getElementById('m_notes').value.trim()};
+  const cal=DB.calendar();
+  if(modalState.id){const i=cal.findIndex(x=>x.id===modalState.id);if(i>=0)cal[i]=entry;else cal.push(entry);}
+  else cal.push(entry);
+  DB.setCal(cal);closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
+}
+function deleteCalEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  DB.setCal(DB.calendar().filter(e=>e.id!==id));closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
+}
+
+// ── Income modals ──
+function openAddIncome(){
+  modalState={type:'income',id:null};
+  openModal('Add Income Entry',`<div class="m-field"><label>Month</label><input class="m-input" id="m_month" type="month" value="${todayStr().slice(0,7)}"></div>
+  <div class="m-field"><label>Source</label><input class="m-input" id="m_source" placeholder="e.g. Hartlepool FC"></div>
+  <div class="m-field"><label>Amount (£)</label><input class="m-input" id="m_amount" type="number" placeholder="150"></div>
+  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="saveIncome()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`);
+}
+function saveIncome(){
+  const month=document.getElementById('m_month').value;
+  const source=document.getElementById('m_source').value.trim();
+  const amount=parseInt(document.getElementById('m_amount').value)||0;
+  if(!source||!amount)return alert('Source and amount required.');
+  const income=DB.income();income.push({id:uid(),month,source,amount});
+  DB.setIncome(income);closeModal();renderIncome();renderStats();updateNavMeta();
+}
+
+// ── Goal modals ──
+function openAddGoal(){modalState={type:'goal',id:null};openModal('Add Goal',goalFormHTML(null));}
+function openEditGoal(id){const g=DB.goals().find(x=>x.id===id);if(!g)return;modalState={type:'goal',id};openModal('Edit Goal',goalFormHTML(g));}
+function goalFormHTML(g){
+  return `<div class="m-field"><label>Goal</label><input class="m-input" id="m_label" placeholder="e.g. Monthly retainer income" value="${esc(g?.label||'')}"></div>
+  <div class="m-field"><label>Target</label><input class="m-input" id="m_target" type="number" placeholder="1000" value="${g?.target||''}"></div>
+  <div class="m-field"><label>Current Progress</label><input class="m-input" id="m_current" type="number" placeholder="0" value="${g?.current??''}"></div>
+  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="saveGoal()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`;
+}
+function saveGoal(){
+  const label=document.getElementById('m_label').value.trim();
+  const target=parseInt(document.getElementById('m_target').value)||0;
+  const current=parseInt(document.getElementById('m_current').value)||0;
+  if(!label)return alert('Goal label required.');
+  const goals=DB.goals();
+  if(modalState.id){const g=goals.find(x=>x.id===modalState.id);if(g){g.label=label;g.target=target;g.current=current;}}
+  else goals.push({id:uid(),label,target,current});
+  DB.setGoals(goals);closeModal();renderGoals();
+}
+
+// ─────────────────────────────────────────
+// SCANNER
+// ─────────────────────────────────────────
 function runScanner(){
-  const q=document.getElementById('scannerInput').value.trim();
-  if(!q)return;
-  // SUPABASE/MAPS: fetch Places API with client key
-  // Dummy results for demo
+  const q=document.getElementById('scannerInput').value.trim();if(!q)return;
   const results=[
     {name:'The Anchor Pub',meta:'Church Street, Hartlepool · No social presence detected'},
     {name:'Headland Fish & Chips',meta:'The Headland · Facebook only, last post 2 months ago'},
     {name:'Hartlepool Flowers',meta:'Lynn Street · Instagram 180 followers, weak content'},
   ];
-  document.getElementById('scannerResults').innerHTML=results.map((r,i)=>`
-    <div class="scan-result">
-      <div><div class="sr-name">${r.name}</div><div class="sr-meta">${r.meta}</div></div>
-      <button class="sr-add" id="add${i}" onclick="addToCallList(this,'${r.name}')">Add to call list</button>
-    </div>`).join('');
+  document.getElementById('scannerResults').innerHTML=results.map((r,i)=>`<div class="scan-result">
+    <div><div class="sr-name">${esc(r.name)}</div><div class="sr-meta">${esc(r.meta)}</div></div>
+    <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${esc(r.name)}')">Add to list</button>
+  </div>`).join('');
 }
-function addToCallList(btn,name){
-  btn.textContent='Added ✓';
-  btn.classList.add('added');
+function addScanResult(btn,name){
+  const leads=DB.leads();
+  leads.push({id:uid(),name,type:'',location:'',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:todayStr()});
+  DB.setLeads(leads);btn.textContent='Added ✓';btn.classList.add('added');
+  renderLeads();renderPipeline();renderStats();updateNavMeta();
 }
-
-// ── BRIEF ──
-function buildBrief(){
-  const now=new Date();
-  document.getElementById('hDate').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  // Today's schedule — SUPABASE: fetch from calendar table where date = today
-  const todayEntries=[
-    {time:'10:00',label:'Shoot — Hartlepool FC training reel'},
-    {time:'14:30',label:'Shoot — Cafe Roma menu content'},
-    {time:'18:00',label:'Post live — Hartlepool FC match day reel'},
-  ];
-
-  const brief=document.getElementById('brief');
-
-  if(todayEntries.length>0){
-    // Daily brief
-    brief.innerHTML=`<div class="brief-mode">Daily Brief</div><div class="brief-items">${
-      todayEntries.map((e,i)=>`
-        ${i>0?'<span class="brief-sep">·</span>':''}
-        <div class="brief-item">
-          <span class="brief-item-time">${e.time}</span>
-          <span class="brief-item-label">${e.label}</span>
-        </div>`).join('')
-    }</div>`;
-  } else {
-    // Weekly brief — SUPABASE: fetch week summary
-    brief.innerHTML=`
-      <div class="brief-mode">Weekly Trajectory</div>
-      <div class="brief-items">
-        <div class="brief-item"><span class="brief-item-time">£650</span><span class="brief-item-label">retainers confirmed</span></div>
-        <span class="brief-sep">·</span>
-        <div class="brief-item"><span class="brief-item-time">3</span><span class="brief-item-label">shoots this week</span></div>
-        <span class="brief-sep">·</span>
-        <div class="brief-item"><span class="brief-item-time">2</span><span class="brief-item-label">leads to chase</span></div>
-        <span class="brief-sep">·</span>
-        <div class="brief-item"><span class="brief-item-time">14</span><span class="brief-item-label">posts scheduled</span></div>
-      </div>`;
-  }
-}
-
-function initApp(){ buildBrief(); }
 </script>
 </body>
 </html>
