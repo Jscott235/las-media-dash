@@ -345,6 +345,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
         <div class="section-sub">Shoots · Posts · Meetings — current week</div>
       </div>
       <div class="cal-nav">
+        <button class="section-add-btn" onclick="openAddCalEntry(todayStr())">+ Add Entry</button>
         <button class="section-add-btn" onclick="shiftWeek(-1)">← Prev</button>
         <button class="section-add-btn" onclick="goToday()">Today</button>
         <button class="section-add-btn" onclick="shiftWeek(1)">Next →</button>
