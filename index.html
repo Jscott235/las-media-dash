@@ -204,6 +204,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .m-btn-primary{background:#fff;color:#000;border-color:#fff;}
 .m-btn-primary:hover{opacity:.85;color:#000;}
 
+/* ── SECTION VISIBILITY ── */
+.section{display:none;}
+.section.active{display:block;}
+.nav-card.active{background:var(--surface2);}
+.nav-card.active .nc-arrow{color:#fff;transform:rotate(90deg);}
+
 /* ── UTILS ── */
 .label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
 .divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
@@ -257,37 +263,37 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 
   <!-- NAV CARDS -->
   <div class="nav-cards">
-    <div class="nav-card" onclick="jumpTo('leadsSection')">
+    <div class="nav-card" id="nc_leadsSection" onclick="showSection('leadsSection')">
       <div>
         <div class="nc-label">Section 01</div>
         <div class="nc-title">Leads & Pipeline</div>
         <div class="nc-meta" id="navLeadsMeta">—</div>
       </div>
-      <div class="nc-arrow">↓</div>
+      <div class="nc-arrow">→</div>
     </div>
-    <div class="nav-card" onclick="jumpTo('clientsSection')">
+    <div class="nav-card" id="nc_clientsSection" onclick="showSection('clientsSection')">
       <div>
         <div class="nc-label">Section 02</div>
         <div class="nc-title">Clients</div>
         <div class="nc-meta" id="navClientsMeta">—</div>
       </div>
-      <div class="nc-arrow">↓</div>
+      <div class="nc-arrow">→</div>
     </div>
-    <div class="nav-card" onclick="jumpTo('calSection')">
+    <div class="nav-card" id="nc_calSection" onclick="showSection('calSection')">
       <div>
         <div class="nc-label">Section 03</div>
         <div class="nc-title">Calendar</div>
         <div class="nc-meta" id="navCalMeta">—</div>
       </div>
-      <div class="nc-arrow">↓</div>
+      <div class="nc-arrow">→</div>
     </div>
-    <div class="nav-card" onclick="jumpTo('bizSection')">
+    <div class="nav-card" id="nc_bizSection" onclick="showSection('bizSection')">
       <div>
         <div class="nc-label">Section 04</div>
         <div class="nc-title">Business</div>
         <div class="nc-meta" id="navBizMeta">—</div>
       </div>
-      <div class="nc-arrow">↓</div>
+      <div class="nc-arrow">→</div>
     </div>
   </div>
 
@@ -465,9 +471,28 @@ function doLogout(){
 }
 
 // ─────────────────────────────────────────
-// NAV
+// SECTION SWITCHER
 // ─────────────────────────────────────────
-function jumpTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+const SECTION_IDS=['leadsSection','clientsSection','calSection','bizSection'];
+let activeSection=null;
+
+function showSection(id){
+  if(activeSection===id){
+    // clicking active card collapses back to cards-only view
+    document.getElementById(id).classList.remove('active');
+    document.getElementById('nc_'+id).classList.remove('active');
+    activeSection=null;
+    return;
+  }
+  SECTION_IDS.forEach(s=>{
+    document.getElementById(s).classList.remove('active');
+    document.getElementById('nc_'+s).classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nc_'+id).classList.add('active');
+  activeSection=id;
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 // ─────────────────────────────────────────
 // INIT
