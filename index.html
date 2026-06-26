@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAS Media — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#080808;--surface:#111;--surface2:#181818;--border:#222;
+  --border2:#2a2a2a;--text:#fff;--muted:#888;--dim:#444;
+}
+html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
+.login-box{width:100%;max-width:360px;padding:2rem;}
+.login-logo{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.1em;margin-bottom:.2rem;}
+.login-tagline{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:2.5rem;}
+.field{margin-bottom:.9rem;}
+.field label{display:block;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.field input{width:100%;background:var(--surface);border:1px solid var(--border);color:#fff;padding:.8rem 1rem;font-size:.9rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;}
+.field input:focus{border-color:#fff;}
+.login-btn{width:100%;background:#fff;color:#000;border:none;padding:.85rem;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;cursor:pointer;margin-top:.25rem;transition:opacity .15s;}
+.login-btn:hover{opacity:.85;}
+.login-err{font-size:.75rem;color:var(--muted);margin-top:.75rem;display:none;}
+
+/* HEADER */
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:1px solid var(--border);}
+.h-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.12em;color:#fff;}
+.h-date{font-size:.72rem;color:var(--muted);}
+.h-stats{display:flex;gap:2rem;}
+.h-stat-n{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.05em;color:#fff;}
+.h-stat-l{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.h-logout{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .15s;}
+.h-logout:hover{color:#fff;}
+
+/* BRIEF */
+.brief{padding:1rem 2rem;display:flex;align-items:baseline;gap:1.5rem;flex-wrap:wrap;}
+.brief-mode{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);white-space:nowrap;padding-right:1.5rem;border-right:1px solid var(--border);}
+.brief-items{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:baseline;}
+.brief-item{display:flex;align-items:baseline;gap:.4rem;}
+.brief-item-time{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.05em;color:#fff;}
+.brief-item-label{font-size:.75rem;color:var(--muted);}
+.brief-sep{color:var(--border2);font-size:.8rem;}
+.brief-empty{font-size:.78rem;color:var(--dim);font-style:italic;}
+
+/* NAV CARDS */
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);}
+.nav-card{background:var(--bg);padding:1.5rem 2rem;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
+.nav-card:hover{background:var(--surface);}
+.nc-label{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.3rem;}
+.nc-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.08em;color:#fff;}
+.nc-meta{font-size:.72rem;color:var(--muted);margin-top:.2rem;}
+.nc-arrow{font-size:1.2rem;color:var(--border2);}
+.nav-card:hover .nc-arrow{color:#fff;}
+
+/* SECTIONS */
+.section{padding:2rem;border-bottom:1px solid var(--border);min-height:100vh;}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1.5rem;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.08em;color:#fff;}
+.section-sub{font-size:.72rem;color:var(--muted);}
+
+/* SCANNER */
+.scanner-row{display:flex;gap:0;margin-bottom:1rem;}
+.scanner-input{flex:1;background:var(--surface);border:1px solid var(--border);border-right:none;color:#fff;padding:.8rem 1rem;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;}
+.scanner-input:focus{border-color:#fff;}
+.scanner-btn{background:#fff;color:#000;border:none;padding:0 1.5rem;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;cursor:pointer;white-space:nowrap;}
+.scanner-btn:hover{opacity:.85;}
+.scanner-results{margin-bottom:1.5rem;}
+.scanner-notice{font-size:.75rem;color:var(--dim);padding:.85rem 1rem;border:1px solid var(--border);text-align:center;}
+.scan-result{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;border:1px solid var(--border);border-top:none;background:var(--surface);}
+.scan-result:first-child{border-top:1px solid var(--border);}
+.sr-name{font-size:.85rem;font-weight:600;color:#fff;}
+.sr-meta{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
+.sr-add{background:none;border:1px solid var(--border);color:var(--muted);padding:.35rem .9rem;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+.sr-add:hover{border-color:#fff;color:#fff;}
+.sr-add.added{border-color:var(--dim);color:var(--dim);pointer-events:none;}
+
+/* CALL LIST */
+.call-list{margin-bottom:2rem;}
+.call-list-header{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
+.call-card{border:1px solid var(--border);margin-bottom:.5rem;background:var(--surface);overflow:hidden;}
+.call-card-top{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;cursor:pointer;transition:background .15s;}
+.call-card-top:hover{background:var(--surface2);}
+.call-card-name{font-size:.88rem;font-weight:600;color:#fff;}
+.call-card-type{font-size:.7rem;color:var(--muted);margin-top:.1rem;}
+.call-card-right{display:flex;align-items:center;gap:.75rem;}
+.call-stage{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid var(--border);color:var(--muted);}
+.call-toggle{font-size:.7rem;color:var(--dim);transition:transform .2s;}
+.call-card.open .call-toggle{transform:rotate(180deg);}
+.call-card-body{display:none;border-top:1px solid var(--border);padding:1rem;}
+.call-card.open .call-card-body{display:block;}
+.q-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
+.q-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.6rem;}
+.q-check{width:14px;height:14px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;flex-shrink:0;margin-top:1px;appearance:none;-webkit-appearance:none;position:relative;}
+.q-check:checked{background:#fff;}
+.q-check:checked::after{content:'';position:absolute;inset:2px;background:#000;}
+.q-label{font-size:.78rem;color:var(--muted);}
+.q-notes{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:.6rem .8rem;font-size:.78rem;font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:60px;margin-top:.75rem;}
+.q-notes:focus{border-color:#fff;}
+.q-action-row{display:flex;gap:.5rem;margin-top:.75rem;}
+.q-btn{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .9rem;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.q-btn:hover{border-color:#fff;color:#fff;}
+.q-btn-primary{background:#fff;color:#000;border-color:#fff;}
+.q-btn-primary:hover{opacity:.85;color:#000;}
+
+/* PIPELINE STRIP */
+.pipeline-strip{display:flex;gap:0;background:var(--border);border:1px solid var(--border);overflow-x:auto;}
+.pipe-col{background:var(--bg);padding:.75rem 1rem;min-width:140px;flex:1;}
+.pipe-col-head{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.pipe-chip{font-size:.75rem;color:var(--muted);padding:.35rem .5rem;border:1px solid var(--border);margin-bottom:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* CLIENTS */
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+.client-card{background:var(--surface);overflow:hidden;}
+.client-card-top{padding:1.25rem;cursor:pointer;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
+.client-card-top:hover{background:var(--surface2);}
+.cc-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.08em;color:#fff;line-height:1;}
+.cc-type{font-size:.7rem;color:var(--muted);margin-top:.2rem;}
+.cc-fee{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;color:#fff;}
+.cc-fee-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:right;}
+.cc-toggle{font-size:.7rem;color:var(--dim);transition:transform .2s;}
+.client-card.open .cc-toggle{transform:rotate(180deg);}
+.client-body{display:none;border-top:1px solid var(--border);padding:1.25rem;}
+.client-card.open .client-body{display:block;}
+.cb-section{margin-bottom:1.25rem;}
+.cb-section-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.6rem;}
+.social-links{display:flex;gap:.5rem;}
+.social-link{display:flex;align-items:center;gap:.4rem;padding:.45rem .9rem;border:1px solid var(--border);text-decoration:none;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:all .15s;}
+.social-link:hover{border-color:#fff;color:#fff;}
+.analytics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.ar-cell{background:var(--bg);padding:.75rem .85rem;}
+.ar-n{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.05em;color:#fff;line-height:1;}
+.ar-l{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:.15rem;}
+.ar-plat{font-size:.65rem;color:var(--muted);margin-bottom:.5rem;}
+
+/* UTILS */
+.label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
+.divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">LAS MEDIA</div>
+    <div class="login-tagline">Business Dashboard</div>
+    <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="lewis@lasmedia.co.uk"></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="login-btn" onclick="doLogin()">SIGN IN</button>
+    <div class="login-err" id="loginErr">Incorrect email or password.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="h-logo">LAS MEDIA</div>
+        <div class="h-date" id="hDate"></div>
+      </div>
+      <div class="h-stats">
+        <div><div class="h-stat-n">4</div><div class="h-stat-l">Clients</div></div>
+        <div><div class="h-stat-n">£650</div><div class="h-stat-l">This Month</div></div>
+        <div><div class="h-stat-n">7</div><div class="h-stat-l">Open Leads</div></div>
+        <div><div class="h-stat-n">2</div><div class="h-stat-l">Calls Today</div></div>
+      </div>
+      <button class="h-logout" onclick="doLogout()">Sign out</button>
+    </div>
+    <!-- BRIEF -->
+    <div class="brief" id="brief"></div>
+  </header>
+
+  <!-- NAV CARDS -->
+  <div class="nav-cards">
+    <div class="nav-card" onclick="scrollTo('leadsSection')">
+      <div>
+        <div class="nc-label">Section One</div>
+        <div class="nc-title">Leads & Pipeline</div>
+        <div class="nc-meta">Scanner · Call list · Pre-call research · Pipeline</div>
+      </div>
+      <div class="nc-arrow">↓</div>
+    </div>
+    <div class="nav-card" onclick="scrollTo('clientsSection')">
+      <div>
+        <div class="nc-label">Section Two</div>
+        <div class="nc-title">Current Clients</div>
+        <div class="nc-meta">4 active · Socials · Analytics · Monthly value</div>
+      </div>
+      <div class="nc-arrow">↓</div>
+    </div>
+  </div>
+
+  <!-- LEADS SECTION -->
+  <div class="section" id="leadsSection">
+    <div class="section-header">
+      <div>
+        <div class="section-title">LEADS & PIPELINE</div>
+        <div class="section-sub">Scan for prospects · Build call list · Track through pipeline</div>
+      </div>
+    </div>
+
+    <!-- SCANNER -->
+    <div class="label" style="margin-bottom:.6rem;">Business Scanner</div>
+    <div class="scanner-row">
+      <input class="scanner-input" id="scannerInput" placeholder="e.g. 'restaurants Hartlepool' · 'barbers Stockton'" onkeydown="if(event.key==='Enter')runScanner()">
+      <button class="scanner-btn" onclick="runScanner()">SCAN</button>
+    </div>
+    <div id="scannerResults">
+      <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- CALL LIST -->
+    <div class="call-list">
+      <div class="call-list-header">Call List — fill questionnaire before dialling</div>
+
+      <div class="call-card" id="cc1">
+        <div class="call-card-top" onclick="toggleCard('cc1')">
+          <div>
+            <div class="call-card-name">Saltburn Coffee Co.</div>
+            <div class="call-card-type">Independent café · Saltburn-by-the-Sea</div>
+          </div>
+          <div class="call-card-right">
+            <span class="call-stage">Questionnaire Done</span>
+            <span class="call-toggle">▾</span>
+          </div>
+        </div>
+        <div class="call-card-body">
+          <div class="q-title">Pre-Call Research</div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Business type and services confirmed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Current social platforms checked (IG: 340 followers, last post 3 weeks ago)</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Competitor social presence reviewed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Identified content opportunity (seasonal specials, café atmosphere, staff)</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
+          <textarea class="q-notes" placeholder="Notes...">Owner is Sarah. Café opened 2022. Instagram looks neglected. Strong visual potential — nice interior, outdoor seating. Proposal sent £150/mo, following up today.</textarea>
+          <div class="q-action-row">
+            <button class="q-btn q-btn-primary">Mark as Called</button>
+            <button class="q-btn">Move to Won</button>
+            <button class="q-btn">Move to Lost</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="call-card" id="cc2">
+        <div class="call-card-top" onclick="toggleCard('cc2')">
+          <div>
+            <div class="call-card-name">Redcar Gym</div>
+            <div class="call-card-type">Independent gym · Redcar</div>
+          </div>
+          <div class="call-card-right">
+            <span class="call-stage">Called</span>
+            <span class="call-toggle">▾</span>
+          </div>
+        </div>
+        <div class="call-card-body">
+          <div class="q-title">Pre-Call Research</div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Business type and services confirmed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Current social platforms checked (FB only, TikTok gap is huge)</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox" checked><label class="q-label">Competitor social presence reviewed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Identified content opportunity</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
+          <textarea class="q-notes" placeholder="Notes...">Called 20 Jun. Spoke to manager Dave. Interested but needs to speak to owner. Calling back Friday.</textarea>
+          <div class="q-action-row">
+            <button class="q-btn q-btn-primary">Mark as Interested</button>
+            <button class="q-btn">Move to Lost</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="call-card" id="cc3">
+        <div class="call-card-top" onclick="toggleCard('cc3')">
+          <div>
+            <div class="call-card-name">Headland Barbers</div>
+            <div class="call-card-type">Barber shop · Hartlepool Headland</div>
+          </div>
+          <div class="call-card-right">
+            <span class="call-stage">Identified</span>
+            <span class="call-toggle">▾</span>
+          </div>
+        </div>
+        <div class="call-card-body">
+          <div class="q-title">Pre-Call Research — complete before calling</div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Business type and services confirmed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Current social platforms checked and noted</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Competitor social presence reviewed</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Identified specific content opportunity</label></div>
+          <div class="q-item"><input class="q-check" type="checkbox"><label class="q-label">Decision maker identified</label></div>
+          <textarea class="q-notes" placeholder="Add notes before calling..."></textarea>
+          <div class="q-action-row">
+            <button class="q-btn q-btn-primary">Research Done — Ready to Call</button>
+            <button class="q-btn">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="label" style="margin-bottom:.6rem;">Pipeline</div>
+    <div class="pipeline-strip">
+      <div class="pipe-col">
+        <div class="pipe-col-head">Identified</div>
+        <div class="pipe-chip">Headland Barbers</div>
+        <div class="pipe-chip">Seaton Fish Bar</div>
+      </div>
+      <div class="pipe-col">
+        <div class="pipe-col-head">Questionnaire Done</div>
+        <div class="pipe-chip">Saltburn Coffee Co.</div>
+      </div>
+      <div class="pipe-col">
+        <div class="pipe-col-head">Called</div>
+        <div class="pipe-chip">Redcar Gym</div>
+        <div class="pipe-chip">NE Fitness Hub</div>
+      </div>
+      <div class="pipe-col">
+        <div class="pipe-col-head">Interested</div>
+        <div class="pipe-chip">NE Fitness Hub</div>
+      </div>
+      <div class="pipe-col">
+        <div class="pipe-col-head">Won</div>
+        <div class="pipe-chip">NE Auto Detailing ✓</div>
+      </div>
+      <div class="pipe-col">
+        <div class="pipe-col-head">Lost</div>
+        <div style="font-size:.72rem;color:var(--dim);">None yet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTS SECTION -->
+  <div class="section" id="clientsSection">
+    <div class="section-header">
+      <div>
+        <div class="section-title">CURRENT CLIENTS</div>
+        <div class="section-sub">Click a client to see socials and analytics</div>
+      </div>
+    </div>
+
+    <div class="clients-grid">
+
+      <!-- CLIENT 1 -->
+      <div class="client-card" id="cl1">
+        <div class="client-card-top" onclick="toggleClient('cl1')">
+          <div>
+            <div class="cc-name">Hartlepool FC</div>
+            <div class="cc-type">Football Club · Social media management</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="cc-fee">£200</div>
+            <div class="cc-fee-label">per month</div>
+            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
+          </div>
+        </div>
+        <div class="client-body">
+          <div class="cb-section">
+            <div class="cb-section-title">Social Channels</div>
+            <div class="social-links">
+              <a class="social-link" href="https://instagram.com/hartlepoolunited" target="_blank">↗ Instagram</a>
+              <a class="social-link" href="https://tiktok.com/@hartlepoolunited" target="_blank">↗ TikTok</a>
+              <a class="social-link" href="https://facebook.com/hartlepoolunited" target="_blank">↗ Facebook</a>
+            </div>
+          </div>
+          <div class="cb-section">
+            <div class="cb-section-title">This Week — Instagram</div>
+            <div class="analytics-row">
+              <div class="ar-cell"><div class="ar-n">14.2K</div><div class="ar-l">Views</div></div>
+              <div class="ar-cell"><div class="ar-n">847</div><div class="ar-l">Likes</div></div>
+              <div class="ar-cell"><div class="ar-n">+34</div><div class="ar-l">Followers</div></div>
+            </div>
+          </div>
+          <div class="cb-section">
+            <div class="cb-section-title">This Week — TikTok</div>
+            <div class="analytics-row">
+              <div class="ar-cell"><div class="ar-n">31K</div><div class="ar-l">Views</div></div>
+              <div class="ar-cell"><div class="ar-n">1.2K</div><div class="ar-l">Likes</div></div>
+              <div class="ar-cell"><div class="ar-n">+91</div><div class="ar-l">Followers</div></div>
+            </div>
+          </div>
+          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: Today · Since: April 2026</div>
+        </div>
+      </div>
+
+      <!-- CLIENT 2 -->
+      <div class="client-card" id="cl2">
+        <div class="client-card-top" onclick="toggleClient('cl2')">
+          <div>
+            <div class="cc-name">Cafe Roma</div>
+            <div class="cc-type">Independent Café · Church Street</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="cc-fee">£150</div>
+            <div class="cc-fee-label">per month</div>
+            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
+          </div>
+        </div>
+        <div class="client-body">
+          <div class="cb-section">
+            <div class="cb-section-title">Social Channels</div>
+            <div class="social-links">
+              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
+              <a class="social-link" href="https://facebook.com" target="_blank">↗ Facebook</a>
+            </div>
+          </div>
+          <div class="cb-section">
+            <div class="cb-section-title">This Week — Instagram</div>
+            <div class="analytics-row">
+              <div class="ar-cell"><div class="ar-n">3.1K</div><div class="ar-l">Views</div></div>
+              <div class="ar-cell"><div class="ar-n">214</div><div class="ar-l">Likes</div></div>
+              <div class="ar-cell"><div class="ar-n">+12</div><div class="ar-l">Followers</div></div>
+            </div>
+          </div>
+          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: 2 days ago · Since: May 2026</div>
+        </div>
+      </div>
+
+      <!-- CLIENT 3 -->
+      <div class="client-card" id="cl3">
+        <div class="client-card-top" onclick="toggleClient('cl3')">
+          <div>
+            <div class="cc-name">Marina Hotel</div>
+            <div class="cc-type">Hotel · Hartlepool Marina</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="cc-fee">£175</div>
+            <div class="cc-fee-label">per month</div>
+            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
+          </div>
+        </div>
+        <div class="client-body">
+          <div class="cb-section">
+            <div class="cb-section-title">Social Channels</div>
+            <div class="social-links">
+              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
+              <a class="social-link" href="https://facebook.com" target="_blank">↗ Facebook</a>
+            </div>
+          </div>
+          <div class="cb-section">
+            <div class="cb-section-title">This Week — Instagram</div>
+            <div class="analytics-row">
+              <div class="ar-cell"><div class="ar-n">5.4K</div><div class="ar-l">Views</div></div>
+              <div class="ar-cell"><div class="ar-n">389</div><div class="ar-l">Likes</div></div>
+              <div class="ar-cell"><div class="ar-n">+22</div><div class="ar-l">Followers</div></div>
+            </div>
+          </div>
+          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: Yesterday · Since: May 2026</div>
+        </div>
+      </div>
+
+      <!-- CLIENT 4 -->
+      <div class="client-card" id="cl4">
+        <div class="client-card-top" onclick="toggleClient('cl4')">
+          <div>
+            <div class="cc-name">NE Auto Detailing</div>
+            <div class="cc-type">Auto Detailing · Teesside</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="cc-fee">£125</div>
+            <div class="cc-fee-label">per month</div>
+            <div class="cc-toggle" style="text-align:right;margin-top:.3rem;">▾</div>
+          </div>
+        </div>
+        <div class="client-body">
+          <div class="cb-section">
+            <div class="cb-section-title">Social Channels</div>
+            <div class="social-links">
+              <a class="social-link" href="https://tiktok.com" target="_blank">↗ TikTok</a>
+              <a class="social-link" href="https://instagram.com" target="_blank">↗ Instagram</a>
+            </div>
+          </div>
+          <div class="cb-section">
+            <div class="cb-section-title">This Week — TikTok</div>
+            <div class="analytics-row">
+              <div class="ar-cell"><div class="ar-n">8.9K</div><div class="ar-l">Views</div></div>
+              <div class="ar-cell"><div class="ar-n">612</div><div class="ar-l">Likes</div></div>
+              <div class="ar-cell"><div class="ar-n">+47</div><div class="ar-l">Followers</div></div>
+            </div>
+          </div>
+          <div style="font-size:.7rem;color:var(--dim);margin-top:.5rem;">Last post: 3 days ago · Since: June 2026</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── AUTH ──
+function doLogin(){
+  const e=document.getElementById('loginEmail').value.trim();
+  const p=document.getElementById('loginPass').value;
+  // SUPABASE: const {data,error} = await supabase.auth.signInWithPassword({email:e,password:p})
+  if(e==='lewis@lasmedia.co.uk'&&p==='lasmedia2026'){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+function doLogout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+}
+
+// ── SCROLL NAV ──
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── TOGGLE CARDS ──
+function toggleCard(id){
+  document.getElementById(id).classList.toggle('open');
+}
+function toggleClient(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── SCANNER ──
+function runScanner(){
+  const q=document.getElementById('scannerInput').value.trim();
+  if(!q)return;
+  // SUPABASE/MAPS: fetch Places API with client key
+  // Dummy results for demo
+  const results=[
+    {name:'The Anchor Pub',meta:'Church Street, Hartlepool · No social presence detected'},
+    {name:'Headland Fish & Chips',meta:'The Headland · Facebook only, last post 2 months ago'},
+    {name:'Hartlepool Flowers',meta:'Lynn Street · Instagram 180 followers, weak content'},
+  ];
+  document.getElementById('scannerResults').innerHTML=results.map((r,i)=>`
+    <div class="scan-result">
+      <div><div class="sr-name">${r.name}</div><div class="sr-meta">${r.meta}</div></div>
+      <button class="sr-add" id="add${i}" onclick="addToCallList(this,'${r.name}')">Add to call list</button>
+    </div>`).join('');
+}
+function addToCallList(btn,name){
+  btn.textContent='Added ✓';
+  btn.classList.add('added');
+}
+
+// ── BRIEF ──
+function buildBrief(){
+  const now=new Date();
+  document.getElementById('hDate').textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Today's schedule — SUPABASE: fetch from calendar table where date = today
+  const todayEntries=[
+    {time:'10:00',label:'Shoot — Hartlepool FC training reel'},
+    {time:'14:30',label:'Shoot — Cafe Roma menu content'},
+    {time:'18:00',label:'Post live — Hartlepool FC match day reel'},
+  ];
+
+  const brief=document.getElementById('brief');
+
+  if(todayEntries.length>0){
+    // Daily brief
+    brief.innerHTML=`<div class="brief-mode">Daily Brief</div><div class="brief-items">${
+      todayEntries.map((e,i)=>`
+        ${i>0?'<span class="brief-sep">·</span>':''}
+        <div class="brief-item">
+          <span class="brief-item-time">${e.time}</span>
+          <span class="brief-item-label">${e.label}</span>
+        </div>`).join('')
+    }</div>`;
+  } else {
+    // Weekly brief — SUPABASE: fetch week summary
+    brief.innerHTML=`
+      <div class="brief-mode">Weekly Trajectory</div>
+      <div class="brief-items">
+        <div class="brief-item"><span class="brief-item-time">£650</span><span class="brief-item-label">retainers confirmed</span></div>
+        <span class="brief-sep">·</span>
+        <div class="brief-item"><span class="brief-item-time">3</span><span class="brief-item-label">shoots this week</span></div>
+        <span class="brief-sep">·</span>
+        <div class="brief-item"><span class="brief-item-time">2</span><span class="brief-item-label">leads to chase</span></div>
+        <span class="brief-sep">·</span>
+        <div class="brief-item"><span class="brief-item-time">14</span><span class="brief-item-label">posts scheduled</span></div>
+      </div>`;
+  }
+}
+
+function initApp(){ buildBrief(); }
+</script>
+</body>
+</html>
