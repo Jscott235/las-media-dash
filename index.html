@@ -307,13 +307,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
       <button class="section-add-btn" onclick="openAddLead()">+ Add Lead</button>
     </div>
 
-    <div class="label" style="margin-bottom:.6rem;">Business Scanner</div>
-    <div class="scanner-row">
-      <input class="scanner-input" id="scannerInput" placeholder="e.g. 'restaurants Hartlepool' · 'barbers Stockton'" onkeydown="if(event.key==='Enter')runScanner()">
-      <button class="scanner-btn" onclick="runScanner()">SCAN</button>
-    </div>
-    <div id="scannerResults" style="margin-bottom:1.5rem;">
-      <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
+    <div class="label" style="margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between;">Business Scanner<button class="section-add-btn" onclick="toggleScanner()" id="scannerToggleBtn">+ Show Scanner</button></div>
+    <div id="scannerWrap" style="display:none;">
+      <div class="scanner-row">
+        <input class="scanner-input" id="scannerInput" placeholder="e.g. 'restaurants Hartlepool' · 'barbers Stockton'" onkeydown="if(event.key==='Enter')runScanner()">
+        <button class="scanner-btn" onclick="runScanner()">SCAN</button>
+      </div>
+      <div id="scannerResults" style="margin-bottom:1.5rem;">
+        <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
+      </div>
     </div>
 
     <hr class="divider">
@@ -447,7 +449,7 @@ const DB={
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const todayStr=()=>dateStr(new Date());
-function dateStr(d){return d.toISOString().split('T')[0];}
+function dateStr(d){const y=d.getFullYear();const m=String(d.getMonth()+1).padStart(2,'0');const day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`;}
 function fmtNum(n){return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'K':String(n);}
 function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{month:'long',year:'numeric'});}
 
@@ -694,6 +696,7 @@ function clientCardHTML(c){
     </div>`).join('')}
     <div class="client-meta-foot">Last post: ${esc(c.lastPost||'—')} · Since: ${esc(c.startDate||'—')}</div>
     <div class="q-action-row">
+      <button class="q-btn" onclick="openUpdateStats('${c.id}')">Update Stats</button>
       <button class="q-btn" onclick="openEditClient('${c.id}')">Edit</button>
       <button class="q-btn" onclick="deleteClient('${c.id}')">Remove</button>
     </div>
@@ -962,8 +965,56 @@ function saveGoal(){
 }
 
 // ─────────────────────────────────────────
-// SCANNER
+// SCANNER TOGGLE
 // ─────────────────────────────────────────
+function toggleScanner(){
+  const wrap=document.getElementById('scannerWrap');
+  const btn=document.getElementById('scannerToggleBtn');
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  btn.textContent=open?'− Hide Scanner':'+ Show Scanner';
+}
+
+// ─────────────────────────────────────────
+// ANALYTICS UPDATE MODAL
+// ─────────────────────────────────────────
+function openUpdateStats(id){
+  const c=DB.clients().find(x=>x.id===id);if(!c)return;
+  modalState={type:'stats',id};
+  const plats=c.platforms||[];
+  const fields=plats.map(p=>{
+    const s=c.analytics&&c.analytics[p]||{};
+    return `<div style="margin-bottom:1.25rem;">
+      <div class="label" style="margin-bottom:.6rem;">${esc(PLAT_LABELS[p]||p)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;">
+        <div class="m-field" style="margin:0;"><label>Views</label><input class="m-input" id="ms_${p}_views" type="number" value="${s.views||0}"></div>
+        <div class="m-field" style="margin:0;"><label>Likes</label><input class="m-input" id="ms_${p}_likes" type="number" value="${s.likes||0}"></div>
+        <div class="m-field" style="margin:0;"><label>Followers</label><input class="m-input" id="ms_${p}_followers" type="number" value="${s.followers||0}"></div>
+      </div>
+    </div>`;
+  }).join('');
+  openModal('Update Stats — '+esc(c.name), fields+`
+    <div class="m-field"><label>Last Post</label><input class="m-input" id="ms_lastpost" placeholder="e.g. Today" value="${esc(c.lastPost||'')}"></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="saveStats('${id}')">Save</button>
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+    </div>`);
+}
+
+function saveStats(id){
+  const clients=DB.clients();const c=clients.find(x=>x.id===id);if(!c)return;
+  const plats=c.platforms||[];
+  if(!c.analytics)c.analytics={};
+  plats.forEach(p=>{
+    c.analytics[p]={
+      views:parseInt(document.getElementById('ms_'+p+'_views')?.value)||0,
+      likes:parseInt(document.getElementById('ms_'+p+'_likes')?.value)||0,
+      followers:parseInt(document.getElementById('ms_'+p+'_followers')?.value)||0,
+    };
+  });
+  c.lastPost=document.getElementById('ms_lastpost')?.value.trim()||c.lastPost;
+  DB.setClients(clients);closeModal();renderClients();
+}
 function runScanner(){
   const q=document.getElementById('scannerInput').value.trim();if(!q)return;
   const results=[
