@@ -6,13 +6,17 @@
 <title>LAS Media — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#080808;--surface:#111;--surface2:#181818;--border:#222;
-  --border2:#2a2a2a;--text:#fff;--muted:#888;--dim:#444;
-}
+:root{--bg:#080808;--surface:#111;--surface2:#181818;--border:#222;--border2:#2a2a2a;--text:#fff;--muted:#888;--dim:#444;}
 html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+
+/* ── LOADING ── */
+#loadingScreen{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:998;flex-direction:column;gap:1rem;}
+.load-logo{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:.12em;}
+.load-text{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
 
 /* ── LOGIN ── */
 #loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;}
@@ -25,6 +29,7 @@ html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);co
 .field input:focus{border-color:#fff;}
 .login-btn{width:100%;background:#fff;color:#000;border:none;padding:.85rem;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;cursor:pointer;margin-top:.25rem;transition:opacity .15s;}
 .login-btn:hover{opacity:.85;}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;}
 .login-err{font-size:.75rem;color:var(--muted);margin-top:.75rem;display:none;}
 
 /* ── HEADER ── */
@@ -157,7 +162,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .cal-entry:hover{border-color:var(--muted);}
 .cal-entry-time{font-size:.58rem;font-weight:700;color:var(--dim);}
 .cal-entry-label{font-size:.66rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cal-add-btn{width:100%;margin-top:auto;padding-top:.3rem;background:none;border:1px dashed var(--border);color:var(--dim);padding:.22rem;font-size:.68rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.cal-add-btn{width:100%;margin-top:auto;background:none;border:1px dashed var(--border);color:var(--dim);padding:.22rem;font-size:.68rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
 .cal-add-btn:hover{border-color:var(--muted);color:var(--muted);}
 
 /* ── BUSINESS ── */
@@ -220,6 +225,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 </head>
 <body>
 
+<!-- ── LOADING ── -->
+<div id="loadingScreen">
+  <div class="load-logo">LAS MEDIA</div>
+  <div class="load-text">Loading...</div>
+</div>
+
 <!-- ── LOGIN ── -->
 <div id="loginScreen">
   <div class="login-box">
@@ -227,7 +238,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     <div class="login-tagline">Business Dashboard</div>
     <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="lewis@lasmedia.co.uk"></div>
     <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="login-btn" onclick="doLogin()">SIGN IN</button>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">SIGN IN</button>
     <div class="login-err" id="loginErr">Incorrect email or password.</div>
   </div>
 </div>
@@ -243,7 +254,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 <!-- ── APP ── -->
 <div id="app" style="display:none;">
 
-  <!-- HEADER -->
   <header>
     <div class="header-top">
       <div>
@@ -261,43 +271,26 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     <div class="brief" id="brief"></div>
   </header>
 
-  <!-- NAV CARDS -->
   <div class="nav-cards">
     <div class="nav-card" id="nc_leadsSection" onclick="showSection('leadsSection')">
-      <div>
-        <div class="nc-label">Section 01</div>
-        <div class="nc-title">Leads & Pipeline</div>
-        <div class="nc-meta" id="navLeadsMeta">—</div>
-      </div>
+      <div><div class="nc-label">Section 01</div><div class="nc-title">Leads & Pipeline</div><div class="nc-meta" id="navLeadsMeta">—</div></div>
       <div class="nc-arrow">→</div>
     </div>
     <div class="nav-card" id="nc_clientsSection" onclick="showSection('clientsSection')">
-      <div>
-        <div class="nc-label">Section 02</div>
-        <div class="nc-title">Clients</div>
-        <div class="nc-meta" id="navClientsMeta">—</div>
-      </div>
+      <div><div class="nc-label">Section 02</div><div class="nc-title">Clients</div><div class="nc-meta" id="navClientsMeta">—</div></div>
       <div class="nc-arrow">→</div>
     </div>
     <div class="nav-card" id="nc_calSection" onclick="showSection('calSection')">
-      <div>
-        <div class="nc-label">Section 03</div>
-        <div class="nc-title">Calendar</div>
-        <div class="nc-meta" id="navCalMeta">—</div>
-      </div>
+      <div><div class="nc-label">Section 03</div><div class="nc-title">Calendar</div><div class="nc-meta" id="navCalMeta">—</div></div>
       <div class="nc-arrow">→</div>
     </div>
     <div class="nav-card" id="nc_bizSection" onclick="showSection('bizSection')">
-      <div>
-        <div class="nc-label">Section 04</div>
-        <div class="nc-title">Business</div>
-        <div class="nc-meta" id="navBizMeta">—</div>
-      </div>
+      <div><div class="nc-label">Section 04</div><div class="nc-title">Business</div><div class="nc-meta" id="navBizMeta">—</div></div>
       <div class="nc-arrow">→</div>
     </div>
   </div>
 
-  <!-- ── LEADS & PIPELINE ── -->
+  <!-- LEADS -->
   <div class="section" id="leadsSection">
     <div class="section-header">
       <div class="section-header-left">
@@ -306,7 +299,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
       </div>
       <button class="section-add-btn" onclick="openAddLead()">+ Add Lead</button>
     </div>
-
     <div class="label" style="margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between;">Business Scanner<button class="section-add-btn" onclick="toggleScanner()" id="scannerToggleBtn">+ Show Scanner</button></div>
     <div id="scannerWrap" style="display:none;">
       <div class="scanner-row">
@@ -317,17 +309,14 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
         <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
       </div>
     </div>
-
     <hr class="divider">
-
     <div class="call-list-label">Call List — complete questionnaire before calling</div>
     <div id="callList" style="margin-bottom:2rem;"></div>
-
     <div class="label" style="margin-bottom:.6rem;">Pipeline</div>
     <div class="pipeline-strip" id="pipelineStrip"></div>
   </div>
 
-  <!-- ── CLIENTS ── -->
+  <!-- CLIENTS -->
   <div class="section" id="clientsSection">
     <div class="section-header">
       <div class="section-header-left">
@@ -339,7 +328,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     <div class="clients-grid" id="clientsGrid"></div>
   </div>
 
-  <!-- ── CALENDAR ── -->
+  <!-- CALENDAR -->
   <div class="section" id="calSection">
     <div class="section-header">
       <div class="section-header-left">
@@ -356,7 +345,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     <div class="cal-grid" id="calendarGrid"></div>
   </div>
 
-  <!-- ── BUSINESS ── -->
+  <!-- BUSINESS -->
   <div class="section" id="bizSection">
     <div class="section-header">
       <div class="section-header-left">
@@ -381,72 +370,97 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 
 <script>
 // ─────────────────────────────────────────
-// DEFAULT DATA
+// SUPABASE CONFIG — swap these two values before deploying
 // ─────────────────────────────────────────
-const DEFAULT_LEADS=[
-  {id:'l1',name:'Saltburn Coffee Co.',type:'Independent café',location:'Saltburn-by-the-Sea',stage:'Questionnaire Done',notes:'Owner is Sarah. Café opened 2022. Instagram looks neglected. Strong visual potential — nice interior, outdoor seating. Proposal sent £150/mo.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:false},followUpDate:'2026-06-27',addedDate:'2026-06-20'},
-  {id:'l2',name:'Redcar Gym',type:'Independent gym',location:'Redcar',stage:'Called',notes:'Called 20 Jun. Spoke to manager Dave. Interested but needs to speak to owner. Calling back Friday.',questionnaire:{q0:true,q1:true,q2:true,q3:false,q4:false},followUpDate:'2026-06-27',addedDate:'2026-06-18'},
-  {id:'l3',name:'Headland Barbers',type:'Barber shop',location:'Hartlepool Headland',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:'2026-06-25'},
-  {id:'l4',name:'Seaton Fish Bar',type:'Fish & chips',location:'Seaton Carew',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:'2026-06-25'},
-  {id:'l5',name:'NE Fitness Hub',type:'Gym / PT studio',location:'Teesside',stage:'Interested',notes:'Spoke on phone, very keen. Sending proposal this week.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:true},followUpDate:'2026-06-28',addedDate:'2026-06-15'},
-  {id:'l6',name:'NE Auto Detailing',type:'Auto detailing',location:'Teesside',stage:'Won',notes:'Signed June 2026. £125/mo.',questionnaire:{q0:true,q1:true,q2:true,q3:true,q4:true},followUpDate:'',addedDate:'2026-06-01'},
-];
-
-const DEFAULT_CLIENTS=[
-  {id:'c1',name:'Hartlepool FC',type:'Football Club',service:'Social media management',fee:200,startDate:'April 2026',lastPost:'Today',platforms:['instagram','tiktok','facebook'],links:{instagram:'https://instagram.com/hartlepoolunited',tiktok:'https://tiktok.com/@hartlepoolunited',facebook:'https://facebook.com/hartlepoolunited'},analytics:{instagram:{views:14200,likes:847,followers:34},tiktok:{views:31000,likes:1200,followers:91}}},
-  {id:'c2',name:'Cafe Roma',type:'Independent Café',service:'Social media management',fee:150,startDate:'May 2026',lastPost:'2 days ago',platforms:['instagram','facebook'],links:{instagram:'https://instagram.com',facebook:'https://facebook.com'},analytics:{instagram:{views:3100,likes:214,followers:12}}},
-  {id:'c3',name:'Marina Hotel',type:'Hotel',service:'Social media management',fee:175,startDate:'May 2026',lastPost:'Yesterday',platforms:['instagram','facebook'],links:{instagram:'https://instagram.com',facebook:'https://facebook.com'},analytics:{instagram:{views:5400,likes:389,followers:22}}},
-  {id:'c4',name:'NE Auto Detailing',type:'Auto Detailing',service:'Social media management',fee:125,startDate:'June 2026',lastPost:'3 days ago',platforms:['tiktok','instagram'],links:{tiktok:'https://tiktok.com',instagram:'https://instagram.com'},analytics:{tiktok:{views:8900,likes:612,followers:47}}},
-];
-
-const DEFAULT_CALENDAR=[
-  {id:'cal1',date:'2026-06-26',clientId:'c1',platform:'Instagram / TikTok',contentType:'Shoot',time:'10:00',notes:'Training reel'},
-  {id:'cal2',date:'2026-06-26',clientId:'c2',platform:'Instagram',contentType:'Shoot',time:'14:30',notes:'Menu content'},
-  {id:'cal3',date:'2026-06-26',clientId:'c1',platform:'Instagram',contentType:'Post',time:'18:00',notes:'Match day reel — go live'},
-  {id:'cal4',date:'2026-06-27',clientId:'c3',platform:'Facebook / Instagram',contentType:'Post',time:'12:00',notes:'Weekend offers'},
-  {id:'cal5',date:'2026-06-28',clientId:'c4',platform:'TikTok',contentType:'Shoot',time:'11:00',notes:'Detail job exterior'},
-];
-
-const DEFAULT_INCOME=[
-  {id:'inc1',month:'2026-06',source:'Hartlepool FC',amount:200},
-  {id:'inc2',month:'2026-06',source:'Cafe Roma',amount:150},
-  {id:'inc3',month:'2026-06',source:'Marina Hotel',amount:175},
-  {id:'inc4',month:'2026-06',source:'NE Auto Detailing',amount:125},
-];
-
-const DEFAULT_GOALS=[
-  {id:'g1',label:'Monthly retainer income',target:1000,current:650},
-  {id:'g2',label:'Active clients',target:8,current:4},
-  {id:'g3',label:'New leads this month',target:20,current:7},
-];
+const SUPABASE_URL  = 'REPLACE_WITH_SUPABASE_URL';
+const SUPABASE_ANON = 'REPLACE_WITH_SUPABASE_ANON_KEY';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ─────────────────────────────────────────
-// STORAGE — localStorage with memory fallback
+// IN-MEMORY STATE
 // ─────────────────────────────────────────
-const STORE=(()=>{
-  let mem={};
-  try{localStorage.setItem('__t__','1');localStorage.removeItem('__t__');
-    return{get:k=>{const v=localStorage.getItem(k);return v?JSON.parse(v):null;},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};}
-  catch(e){return{get:k=>mem[k]??null,set:(k,v)=>{mem[k]=v;}};}
-})();
+const S = { leads:[], clients:[], calendar:[], income:[], goals:[] };
 
-const DB={
-  leads:()=>STORE.get('LAS_leads')||DEFAULT_LEADS,
-  setLeads:d=>STORE.set('LAS_leads',d),
-  clients:()=>STORE.get('LAS_clients')||DEFAULT_CLIENTS,
-  setClients:d=>STORE.set('LAS_clients',d),
-  calendar:()=>STORE.get('LAS_cal')||DEFAULT_CALENDAR,
-  setCal:d=>STORE.set('LAS_cal',d),
-  income:()=>STORE.get('LAS_income')||DEFAULT_INCOME,
-  setIncome:d=>STORE.set('LAS_income',d),
-  goals:()=>STORE.get('LAS_goals')||DEFAULT_GOALS,
-  setGoals:d=>STORE.set('LAS_goals',d),
-};
+// ─────────────────────────────────────────
+// FIELD MAPPERS  JS camelCase <-> DB snake_case
+// ─────────────────────────────────────────
+const fromLead   = r => ({...r, followUpDate:r.follow_up_date, addedDate:r.added_date});
+const toLead     = ({followUpDate,addedDate,...r}) => ({...r, follow_up_date:followUpDate||null, added_date:addedDate||null});
+const fromClient = r => ({...r, startDate:r.start_date, lastPost:r.last_post});
+const toClient   = ({startDate,lastPost,...r}) => ({...r, start_date:startDate||null, last_post:lastPost||null});
+const fromCal    = r => ({...r, clientId:r.client_id, contentType:r.content_type});
+const toCal      = ({clientId,contentType,...r}) => ({...r, client_id:clientId||null, content_type:contentType||null});
+
+// ─────────────────────────────────────────
+// DATA LOAD
+// ─────────────────────────────────────────
+async function loadAll(){
+  const [l,c,cal,inc,g] = await Promise.all([
+    sb.from('leads').select('*').order('added_date',{ascending:false}),
+    sb.from('clients').select('*').order('name'),
+    sb.from('calendar').select('*').order('date'),
+    sb.from('income').select('*').order('month',{ascending:false}),
+    sb.from('goals').select('*').order('label'),
+  ]);
+  S.leads    = (l.data||[]).map(fromLead);
+  S.clients  = (c.data||[]).map(fromClient);
+  S.calendar = (cal.data||[]).map(fromCal);
+  S.income   = inc.data||[];
+  S.goals    = g.data||[];
+}
+
+// ─────────────────────────────────────────
+// SUPABASE CRUD HELPERS
+// ─────────────────────────────────────────
+async function sbUp(table,record){
+  const {error}=await sb.from(table).upsert(record);
+  if(error) console.error(table+' upsert:',error.message);
+}
+async function sbDel(table,id){
+  const {error}=await sb.from(table).delete().eq('id',id);
+  if(error) console.error(table+' delete:',error.message);
+}
+
+// ─────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const btn=document.getElementById('loginBtn');
+  const err=document.getElementById('loginErr');
+  err.style.display='none';
+  btn.disabled=true; btn.textContent='SIGNING IN...';
+  const {error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){
+    err.style.display='block';
+    btn.disabled=false; btn.textContent='SIGN IN';
+    return;
+  }
+  await showApp();
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginPass').value='';
+  document.getElementById('loginBtn').disabled=false;
+  document.getElementById('loginBtn').textContent='SIGN IN';
+}
+
+async function showApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('loadingScreen').style.display='flex';
+  await initApp();
+  document.getElementById('loadingScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+}
 
 // ─────────────────────────────────────────
 // UTILS
 // ─────────────────────────────────────────
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const todayStr=()=>dateStr(new Date());
 function dateStr(d){const y=d.getFullYear();const m=String(d.getMonth()+1).padStart(2,'0');const day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`;}
@@ -454,38 +468,15 @@ function fmtNum(n){return n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'K':Str
 function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{month:'long',year:'numeric'});}
 
 // ─────────────────────────────────────────
-// AUTH
-// ─────────────────────────────────────────
-function doLogin(){
-  const e=document.getElementById('loginEmail').value.trim();
-  const p=document.getElementById('loginPass').value;
-  if(e==='lewis@lasmedia.co.uk'&&p==='lasmedia2026'){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('app').style.display='block';
-    initApp();
-  } else {
-    document.getElementById('loginErr').style.display='block';
-  }
-}
-function doLogout(){
-  document.getElementById('app').style.display='none';
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('loginPass').value='';
-}
-
-// ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
 const SECTION_IDS=['leadsSection','clientsSection','calSection','bizSection'];
 let activeSection=null;
-
 function showSection(id){
   if(activeSection===id){
-    // clicking active card collapses back to cards-only view
     document.getElementById(id).classList.remove('active');
     document.getElementById('nc_'+id).classList.remove('active');
-    activeSection=null;
-    return;
+    activeSection=null; return;
   }
   SECTION_IDS.forEach(s=>{
     document.getElementById(s).classList.remove('active');
@@ -500,44 +491,34 @@ function showSection(id){
 // ─────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────
-function initApp(){
-  buildBrief();
-  renderStats();
-  renderLeads();
-  renderPipeline();
-  renderClients();
-  renderCalendar();
-  renderIncome();
-  renderGoals();
-  updateNavMeta();
+async function initApp(){
+  await loadAll();
+  buildBrief(); renderStats(); renderLeads(); renderPipeline();
+  renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
 }
 
 // ─────────────────────────────────────────
 // STATS
 // ─────────────────────────────────────────
 function renderStats(){
-  const clients=DB.clients();
-  const leads=DB.leads();
-  const openLeads=leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
+  const openLeads=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
   const curMonth=todayStr().slice(0,7);
-  const monthIncome=DB.income().filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
-  const todayEntries=DB.calendar().filter(e=>e.date===todayStr()).length;
-  document.getElementById('statClients').textContent=clients.length;
+  const monthIncome=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+  const todayEntries=S.calendar.filter(e=>e.date===todayStr()).length;
+  document.getElementById('statClients').textContent=S.clients.length;
   document.getElementById('statIncome').textContent='£'+monthIncome;
   document.getElementById('statLeads').textContent=openLeads;
   document.getElementById('statToday').textContent=todayEntries;
 }
 
 function updateNavMeta(){
-  const leads=DB.leads();
-  const clients=DB.clients();
-  const open=leads.filter(l=>!['Won','Lost'].includes(l.stage));
-  const won=leads.filter(l=>l.stage==='Won');
+  const open=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
+  const won=S.leads.filter(l=>l.stage==='Won');
   const curMonth=todayStr().slice(0,7);
-  const monthTotal=DB.income().filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
-  const retainerTotal=clients.reduce((s,c)=>s+c.fee,0);
+  const monthTotal=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+  const retainerTotal=S.clients.reduce((s,c)=>s+c.fee,0);
   document.getElementById('navLeadsMeta').textContent=open.length+' active · '+won.length+' won';
-  document.getElementById('navClientsMeta').textContent=clients.length+' active · £'+retainerTotal+'/mo';
+  document.getElementById('navClientsMeta').textContent=S.clients.length+' active · £'+retainerTotal+'/mo';
   document.getElementById('navCalMeta').textContent='Week of '+new Date(calWeekStart).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   document.getElementById('navBizMeta').textContent='This month: £'+monthTotal;
 }
@@ -548,21 +529,20 @@ function updateNavMeta(){
 function buildBrief(){
   document.getElementById('hDate').textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const today=todayStr();
-  const entries=DB.calendar().filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
-  const clients=DB.clients();
+  const entries=S.calendar.filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
   const brief=document.getElementById('brief');
   if(entries.length){
     brief.innerHTML=`<div class="brief-mode">Daily Brief</div><div class="brief-items">${entries.map((e,i)=>{
-      const c=clients.find(c=>c.id===e.clientId);
+      const c=S.clients.find(c=>c.id===e.clientId);
       return `${i>0?'<span class="brief-sep">·</span>':''}<div class="brief-item"><span class="brief-item-time">${esc(e.time)}</span><span class="brief-item-label">${esc(e.contentType)} — ${esc(c?c.name:e.notes)}</span></div>`;
     }).join('')}</div>`;
   } else {
-    const income=clients.reduce((s,c)=>s+c.fee,0);
-    const open=DB.leads().filter(l=>!['Won','Lost'].includes(l.stage)).length;
+    const income=S.clients.reduce((s,c)=>s+c.fee,0);
+    const open=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
     brief.innerHTML=`<div class="brief-mode">Weekly Summary</div><div class="brief-items">
       <div class="brief-item"><span class="brief-item-time">£${income}</span><span class="brief-item-label">monthly retainers</span></div>
       <span class="brief-sep">·</span>
-      <div class="brief-item"><span class="brief-item-time">${clients.length}</span><span class="brief-item-label">active clients</span></div>
+      <div class="brief-item"><span class="brief-item-time">${S.clients.length}</span><span class="brief-item-label">active clients</span></div>
       <span class="brief-sep">·</span>
       <div class="brief-item"><span class="brief-item-time">${open}</span><span class="brief-item-label">open leads</span></div>
     </div>`;
@@ -582,9 +562,9 @@ const QUESTIONS=[
 ];
 
 function renderLeads(){
-  const active=DB.leads().filter(l=>!['Won','Lost'].includes(l.stage));
+  const active=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
   const el=document.getElementById('callList');
-  if(!active.length){el.innerHTML='<div class="empty-state">No active leads. Add manually or scan above.</div>';return;}
+  if(!active.length){el.innerHTML='<div class="empty-state">No active leads. Add manually or use the scanner above.</div>';return;}
   el.innerHTML=active.map(leadCardHTML).join('');
 }
 
@@ -613,7 +593,7 @@ function leadCardHTML(l){
     <div class="q-action-row">
       <button class="q-btn q-btn-primary" onclick="advanceStage('${l.id}')">→ Advance Stage</button>
       <button class="q-btn" onclick="openEditLead('${l.id}')">Edit</button>
-      <button class="q-btn" onclick="deleteLead('${l.id}')">Remove</button>
+      <button class="q-btn" onclick="doDeleteLead('${l.id}')">Remove</button>
     </div>
   </div>
 </div>`;
@@ -621,21 +601,31 @@ function leadCardHTML(l){
 
 function toggleCard(id){document.getElementById(id).classList.toggle('open');}
 
-function saveQCheck(id,i,val){
-  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;
-  if(!l.questionnaire)l.questionnaire={};l.questionnaire['q'+i]=val;DB.setLeads(leads);
+async function saveQCheck(id,i,val){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  if(!l.questionnaire)l.questionnaire={};
+  l.questionnaire['q'+i]=val;
+  await sbUp('leads',toLead(l));
 }
-function saveLeadNotes(id,val){
-  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;l.notes=val;DB.setLeads(leads);
+
+async function saveLeadNotes(id,val){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  l.notes=val;
+  await sbUp('leads',toLead(l));
 }
-function advanceStage(id){
-  const leads=DB.leads();const l=leads.find(x=>x.id===id);if(!l)return;
-  const idx=STAGES.indexOf(l.stage);if(idx<STAGES.length-1)l.stage=STAGES[idx+1];
-  DB.setLeads(leads);renderLeads();renderPipeline();renderStats();updateNavMeta();
+
+async function advanceStage(id){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  const idx=STAGES.indexOf(l.stage);
+  if(idx<STAGES.length-1)l.stage=STAGES[idx+1];
+  await sbUp('leads',toLead(l));
+  renderLeads();renderPipeline();renderStats();updateNavMeta();
 }
-function deleteLead(id){
+
+async function doDeleteLead(id){
   if(!confirm('Remove this lead?'))return;
-  DB.setLeads(DB.leads().filter(l=>l.id!==id));
+  await sbDel('leads',id);
+  S.leads=S.leads.filter(l=>l.id!==id);
   renderLeads();renderPipeline();renderStats();updateNavMeta();
 }
 
@@ -643,9 +633,8 @@ function deleteLead(id){
 // PIPELINE
 // ─────────────────────────────────────────
 function renderPipeline(){
-  const leads=DB.leads();
   document.getElementById('pipelineStrip').innerHTML=STAGES.map(s=>{
-    const items=leads.filter(l=>l.stage===s);
+    const items=S.leads.filter(l=>l.stage===s);
     return `<div class="pipe-col">
       <div class="pipe-col-head">${s} (${items.length})</div>
       ${items.length?items.map(l=>`<div class="pipe-chip${s==='Won'?' won':''}">${esc(l.name)}</div>`).join(''):'<div class="pipe-empty">—</div>'}
@@ -659,10 +648,9 @@ function renderPipeline(){
 const PLAT_LABELS={instagram:'Instagram',tiktok:'TikTok',facebook:'Facebook',twitter:'Twitter',youtube:'YouTube'};
 
 function renderClients(){
-  const clients=DB.clients();
   const el=document.getElementById('clientsGrid');
-  if(!clients.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1;">No clients yet.</div>';return;}
-  el.innerHTML=clients.map(clientCardHTML).join('');
+  if(!S.clients.length){el.innerHTML='<div class="empty-state" style="grid-column:1/-1;">No clients yet.</div>';return;}
+  el.innerHTML=S.clients.map(clientCardHTML).join('');
 }
 
 function clientCardHTML(c){
@@ -698,16 +686,18 @@ function clientCardHTML(c){
     <div class="q-action-row">
       <button class="q-btn" onclick="openUpdateStats('${c.id}')">Update Stats</button>
       <button class="q-btn" onclick="openEditClient('${c.id}')">Edit</button>
-      <button class="q-btn" onclick="deleteClient('${c.id}')">Remove</button>
+      <button class="q-btn" onclick="doDeleteClient('${c.id}')">Remove</button>
     </div>
   </div>
 </div>`;
 }
 
 function toggleClient(id){document.getElementById(id).classList.toggle('open');}
-function deleteClient(id){
+
+async function doDeleteClient(id){
   if(!confirm('Remove this client?'))return;
-  DB.setClients(DB.clients().filter(c=>c.id!==id));
+  await sbDel('clients',id);
+  S.clients=S.clients.filter(c=>c.id!==id);
   renderClients();renderStats();buildBrief();updateNavMeta();
 }
 
@@ -722,13 +712,11 @@ function goToday(){calWeekStart=getMonday(new Date());renderCalendar();updateNav
 
 function renderCalendar(){
   const days=Array.from({length:7},(_,i)=>{const d=new Date(calWeekStart);d.setDate(calWeekStart.getDate()+i);return d;});
-  const entries=DB.calendar();
-  const clients=DB.clients();
   const today=todayStr();
   document.getElementById('calendarGrid').innerHTML=days.map(d=>{
     const ds=dateStr(d);
     const isToday=ds===today;
-    const dayEntries=entries.filter(e=>e.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
+    const dayEntries=S.calendar.filter(e=>e.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
     return `<div class="cal-day${isToday?' cal-today':''}">
       <div class="cal-day-head">
         <span class="cal-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</span>
@@ -736,7 +724,7 @@ function renderCalendar(){
       </div>
       <div class="cal-entries">
         ${dayEntries.map(e=>{
-          const c=clients.find(c=>c.id===e.clientId);
+          const c=S.clients.find(c=>c.id===e.clientId);
           return `<div class="cal-entry" onclick="openEditCalEntry('${e.id}')">
             <div class="cal-entry-time">${esc(e.time)} ${esc(e.contentType)}</div>
             <div class="cal-entry-label">${esc(c?c.name:e.notes)}</div>
@@ -752,19 +740,17 @@ function renderCalendar(){
 // INCOME
 // ─────────────────────────────────────────
 function renderIncome(){
-  const all=DB.income().slice().sort((a,b)=>b.month.localeCompare(a.month));
+  const all=S.income.slice().sort((a,b)=>b.month.localeCompare(a.month));
   const months={};
   all.forEach(e=>{if(!months[e.month])months[e.month]=[];months[e.month].push(e);});
   const curMonth=todayStr().slice(0,7);
   const curTotal=(months[curMonth]||[]).reduce((s,i)=>s+i.amount,0);
   const allTotal=all.reduce((s,i)=>s+i.amount,0);
-
   document.getElementById('incomeSummary').innerHTML=`<div class="income-summary">
     <div class="inc-sum-cell"><div class="inc-sum-n">£${curTotal}</div><div class="inc-sum-l">This Month</div></div>
     <div class="inc-sum-cell" style="border-left:1px solid var(--border);"><div class="inc-sum-n">£${allTotal}</div><div class="inc-sum-l">All Time</div></div>
     <div class="inc-sum-cell" style="border-left:1px solid var(--border);"><div class="inc-sum-n">${Object.keys(months).length}</div><div class="inc-sum-l">Months</div></div>
   </div>`;
-
   if(!Object.keys(months).length){document.getElementById('incomeList').innerHTML='<div class="empty-state">No income recorded yet.</div>';return;}
   document.getElementById('incomeList').innerHTML=Object.entries(months).map(([month,items])=>{
     const total=items.reduce((s,i)=>s+i.amount,0);
@@ -774,16 +760,17 @@ function renderIncome(){
         <span class="income-source">${esc(i.source)}</span>
         <div style="display:flex;align-items:center;gap:.75rem;">
           <span class="income-amount">£${i.amount}</span>
-          <button class="icon-btn" onclick="deleteIncome('${i.id}')">✕</button>
+          <button class="icon-btn" onclick="doDeleteIncome('${i.id}')">✕</button>
         </div>
       </div>`).join('')}
     </div>`;
   }).join('');
 }
 
-function deleteIncome(id){
+async function doDeleteIncome(id){
   if(!confirm('Delete this income entry?'))return;
-  DB.setIncome(DB.income().filter(i=>i.id!==id));
+  await sbDel('income',id);
+  S.income=S.income.filter(i=>i.id!==id);
   renderIncome();renderStats();updateNavMeta();
 }
 
@@ -791,10 +778,9 @@ function deleteIncome(id){
 // GOALS
 // ─────────────────────────────────────────
 function renderGoals(){
-  const goals=DB.goals();
   const el=document.getElementById('goalsList');
-  if(!goals.length){el.innerHTML='<div class="empty-state">No goals set yet.</div>';return;}
-  el.innerHTML=goals.map(g=>{
+  if(!S.goals.length){el.innerHTML='<div class="empty-state">No goals set yet.</div>';return;}
+  el.innerHTML=S.goals.map(g=>{
     const pct=Math.min(100,Math.round((g.current/g.target)*100));
     return `<div class="goal-item">
       <div class="goal-top">
@@ -802,7 +788,7 @@ function renderGoals(){
         <div style="display:flex;align-items:center;gap:.5rem;">
           <span class="goal-nums">${g.current} / ${g.target}</span>
           <button class="icon-btn" onclick="openEditGoal('${g.id}')">✎</button>
-          <button class="icon-btn" onclick="deleteGoal('${g.id}')">✕</button>
+          <button class="icon-btn" onclick="doDeleteGoal('${g.id}')">✕</button>
         </div>
       </div>
       <div class="goal-bar-bg"><div class="goal-bar-fill" style="width:${pct}%"></div></div>
@@ -811,16 +797,17 @@ function renderGoals(){
   }).join('');
 }
 
-function deleteGoal(id){
+async function doDeleteGoal(id){
   if(!confirm('Delete this goal?'))return;
-  DB.setGoals(DB.goals().filter(g=>g.id!==id));renderGoals();
+  await sbDel('goals',id);
+  S.goals=S.goals.filter(g=>g.id!==id);
+  renderGoals();
 }
 
 // ─────────────────────────────────────────
-// MODAL
+// MODAL ENGINE
 // ─────────────────────────────────────────
 let modalState=null;
-
 function openModal(title,bodyHTML){
   document.getElementById('modalTitle').textContent=title;
   document.getElementById('modalBody').innerHTML=bodyHTML;
@@ -829,38 +816,44 @@ function openModal(title,bodyHTML){
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');modalState=null;}
 function handleOverlayClick(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
 
-// ── Lead modals ──
+// ── LEAD MODALS ──
 function openAddLead(){modalState={type:'lead',id:null};openModal('Add Lead',leadFormHTML(null));}
-function openEditLead(id){const l=DB.leads().find(x=>x.id===id);if(!l)return;modalState={type:'lead',id};openModal('Edit Lead',leadFormHTML(l));}
+function openEditLead(id){const l=S.leads.find(x=>x.id===id);if(!l)return;modalState={type:'lead',id};openModal('Edit Lead',leadFormHTML(l));}
 function leadFormHTML(l){
   return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${esc(l?.name||'')}"></div>
-  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Independent café" value="${esc(l?.type||'')}"></div>
+  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Café" value="${esc(l?.type||'')}"></div>
   <div class="m-field"><label>Location</label><input class="m-input" id="m_location" placeholder="e.g. Hartlepool" value="${esc(l?.location||'')}"></div>
   <div class="m-field"><label>Stage</label><select class="m-select" id="m_stage">${STAGES.map(s=>`<option value="${s}"${l?.stage===s?' selected':''}>${s}</option>`).join('')}</select></div>
   <div class="m-field"><label>Follow-up Date</label><input class="m-input" id="m_followup" type="date" value="${esc(l?.followUpDate||'')}"></div>
   <div class="m-field"><label>Notes</label><textarea class="m-textarea" id="m_notes">${esc(l?.notes||'')}</textarea></div>
   <div class="m-actions">
-    <button class="m-btn m-btn-primary" onclick="saveLead()">Save</button>
+    <button class="m-btn m-btn-primary" onclick="doSaveLead()">Save</button>
     <button class="m-btn" onclick="closeModal()">Cancel</button>
   </div>`;
 }
-function saveLead(){
+async function doSaveLead(){
   const name=document.getElementById('m_name').value.trim();
   if(!name)return alert('Business name required.');
-  const leads=DB.leads();
-  if(modalState.id){
-    const l=leads.find(x=>x.id===modalState.id);
-    if(l){l.name=name;l.type=document.getElementById('m_type').value.trim();l.location=document.getElementById('m_location').value.trim();l.stage=document.getElementById('m_stage').value;l.followUpDate=document.getElementById('m_followup').value;l.notes=document.getElementById('m_notes').value.trim();}
-  } else {
-    leads.push({id:uid(),name,type:document.getElementById('m_type').value.trim(),location:document.getElementById('m_location').value.trim(),stage:document.getElementById('m_stage').value,notes:document.getElementById('m_notes').value.trim(),questionnaire:{},followUpDate:document.getElementById('m_followup').value,addedDate:todayStr()});
-  }
-  DB.setLeads(leads);closeModal();renderLeads();renderPipeline();renderStats();updateNavMeta();
+  const id=modalState.id||uid();
+  const existing=S.leads.find(x=>x.id===id);
+  const lead={id,name,
+    type:document.getElementById('m_type').value.trim(),
+    location:document.getElementById('m_location').value.trim(),
+    stage:document.getElementById('m_stage').value,
+    notes:document.getElementById('m_notes').value.trim(),
+    questionnaire:existing?.questionnaire||{},
+    followUpDate:document.getElementById('m_followup').value||null,
+    addedDate:existing?.addedDate||todayStr(),
+  };
+  await sbUp('leads',toLead(lead));
+  if(existing){Object.assign(existing,lead);}else{S.leads.unshift(lead);}
+  closeModal();renderLeads();renderPipeline();renderStats();updateNavMeta();
 }
 
-// ── Client modals ──
+// ── CLIENT MODALS ──
 const ALL_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
 function openAddClient(){modalState={type:'client',id:null};openModal('Add Client',clientFormHTML(null));}
-function openEditClient(id){const c=DB.clients().find(x=>x.id===id);if(!c)return;modalState={type:'client',id};openModal('Edit Client',clientFormHTML(c));}
+function openEditClient(id){const c=S.clients.find(x=>x.id===id);if(!c)return;modalState={type:'client',id};openModal('Edit Client',clientFormHTML(c));}
 function clientFormHTML(c){
   return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${esc(c?.name||'')}"></div>
   <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Hotel" value="${esc(c?.type||'')}"></div>
@@ -873,113 +866,117 @@ function clientFormHTML(c){
   <div class="m-field"><label>TikTok URL</label><input class="m-input" id="m_l_tiktok" value="${esc(c?.links?.tiktok||'')}"></div>
   <div class="m-field"><label>Facebook URL</label><input class="m-input" id="m_l_facebook" value="${esc(c?.links?.facebook||'')}"></div>
   <div class="m-actions">
-    <button class="m-btn m-btn-primary" onclick="saveClient()">Save</button>
+    <button class="m-btn m-btn-primary" onclick="doSaveClient()">Save</button>
     <button class="m-btn" onclick="closeModal()">Cancel</button>
   </div>`;
 }
-function saveClient(){
+async function doSaveClient(){
   const name=document.getElementById('m_name').value.trim();
   if(!name)return alert('Business name required.');
   const fee=parseInt(document.getElementById('m_fee').value)||0;
   const platforms=ALL_PLATS.filter(p=>document.getElementById('m_p_'+p)?.checked);
   const links={};
   ['instagram','tiktok','facebook'].forEach(p=>{const v=document.getElementById('m_l_'+p)?.value.trim();if(v)links[p]=v;});
-  const clients=DB.clients();
-  if(modalState.id){
-    const c=clients.find(x=>x.id===modalState.id);
-    if(c){c.name=name;c.type=document.getElementById('m_type').value.trim();c.service=document.getElementById('m_service').value.trim();c.fee=fee;c.startDate=document.getElementById('m_startdate').value.trim();c.lastPost=document.getElementById('m_lastpost').value.trim();c.platforms=platforms;c.links=links;}
-  } else {
-    clients.push({id:uid(),name,type:document.getElementById('m_type').value.trim(),service:document.getElementById('m_service').value.trim(),fee,startDate:document.getElementById('m_startdate').value.trim(),lastPost:document.getElementById('m_lastpost').value.trim()||'—',platforms,links,analytics:{}});
-  }
-  DB.setClients(clients);closeModal();renderClients();renderStats();buildBrief();updateNavMeta();
+  const id=modalState.id||uid();
+  const existing=S.clients.find(x=>x.id===id);
+  const client={id,name,
+    type:document.getElementById('m_type').value.trim(),
+    service:document.getElementById('m_service').value.trim(),
+    fee,
+    startDate:document.getElementById('m_startdate').value.trim()||null,
+    lastPost:document.getElementById('m_lastpost').value.trim()||'—',
+    platforms,links,
+    analytics:existing?.analytics||{},
+  };
+  await sbUp('clients',toClient(client));
+  if(existing){Object.assign(existing,client);}else{S.clients.push(client);}
+  closeModal();renderClients();renderStats();buildBrief();updateNavMeta();
 }
 
-// ── Calendar modals ──
+// ── CALENDAR MODALS ──
 const CAL_TYPES=['Shoot','Post','Reel','Story','Meeting','Call','Edit'];
 function openAddCalEntry(date){modalState={type:'cal',id:null,date};openModal('Add Entry',calFormHTML(null,date));}
-function openEditCalEntry(id){const e=DB.calendar().find(x=>x.id===id);if(!e)return;modalState={type:'cal',id};openModal('Edit Entry',calFormHTML(e,e.date));}
+function openEditCalEntry(id){const e=S.calendar.find(x=>x.id===id);if(!e)return;modalState={type:'cal',id};openModal('Edit Entry',calFormHTML(e,e.date));}
 function calFormHTML(e,date){
-  const clients=DB.clients();
   return `<div class="m-field"><label>Date</label><input class="m-input" id="m_date" type="date" value="${esc(date||todayStr())}"></div>
   <div class="m-field"><label>Time</label><input class="m-input" id="m_time" type="time" value="${esc(e?.time||'10:00')}"></div>
-  <div class="m-field"><label>Client</label><select class="m-select" id="m_client"><option value="">— select client —</option>${clients.map(c=>`<option value="${c.id}"${e?.clientId===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Client</label><select class="m-select" id="m_client"><option value="">— select client —</option>${S.clients.map(c=>`<option value="${c.id}"${e?.clientId===c.id?' selected':''}>${esc(c.name)}</option>`).join('')}</select></div>
   <div class="m-field"><label>Type</label><select class="m-select" id="m_ctype">${CAL_TYPES.map(t=>`<option${e?.contentType===t?' selected':''}>${t}</option>`).join('')}</select></div>
   <div class="m-field"><label>Platform</label><input class="m-input" id="m_platform" placeholder="e.g. Instagram / TikTok" value="${esc(e?.platform||'')}"></div>
   <div class="m-field"><label>Notes</label><input class="m-input" id="m_notes" value="${esc(e?.notes||'')}"></div>
   <div class="m-actions">
-    <button class="m-btn m-btn-primary" onclick="saveCalEntry()">Save</button>
-    ${e?`<button class="m-btn" onclick="deleteCalEntry('${e.id}')">Delete</button>`:''}
+    <button class="m-btn m-btn-primary" onclick="doSaveCalEntry()">Save</button>
+    ${e?`<button class="m-btn" onclick="doDeleteCalEntry('${e.id}')">Delete</button>`:''}
     <button class="m-btn" onclick="closeModal()">Cancel</button>
   </div>`;
 }
-function saveCalEntry(){
+async function doSaveCalEntry(){
   const date=document.getElementById('m_date').value;
   const time=document.getElementById('m_time').value;
   if(!date||!time)return alert('Date and time required.');
-  const entry={id:modalState.id||uid(),date,time,clientId:document.getElementById('m_client').value,contentType:document.getElementById('m_ctype').value,platform:document.getElementById('m_platform').value.trim(),notes:document.getElementById('m_notes').value.trim()};
-  const cal=DB.calendar();
-  if(modalState.id){const i=cal.findIndex(x=>x.id===modalState.id);if(i>=0)cal[i]=entry;else cal.push(entry);}
-  else cal.push(entry);
-  DB.setCal(cal);closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
+  const id=modalState.id||uid();
+  const entry={id,date,time,
+    clientId:document.getElementById('m_client').value||null,
+    contentType:document.getElementById('m_ctype').value,
+    platform:document.getElementById('m_platform').value.trim(),
+    notes:document.getElementById('m_notes').value.trim(),
+  };
+  await sbUp('calendar',toCal(entry));
+  const idx=S.calendar.findIndex(x=>x.id===id);
+  if(idx>=0){S.calendar[idx]=entry;}else{S.calendar.push(entry);}
+  closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
 }
-function deleteCalEntry(id){
+async function doDeleteCalEntry(id){
   if(!confirm('Delete this entry?'))return;
-  DB.setCal(DB.calendar().filter(e=>e.id!==id));closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
+  await sbDel('calendar',id);
+  S.calendar=S.calendar.filter(e=>e.id!==id);
+  closeModal();renderCalendar();renderStats();buildBrief();updateNavMeta();
 }
 
-// ── Income modals ──
+// ── INCOME MODAL ──
 function openAddIncome(){
   modalState={type:'income',id:null};
   openModal('Add Income Entry',`<div class="m-field"><label>Month</label><input class="m-input" id="m_month" type="month" value="${todayStr().slice(0,7)}"></div>
   <div class="m-field"><label>Source</label><input class="m-input" id="m_source" placeholder="e.g. Hartlepool FC"></div>
   <div class="m-field"><label>Amount (£)</label><input class="m-input" id="m_amount" type="number" placeholder="150"></div>
-  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="saveIncome()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`);
+  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="doSaveIncome()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`);
 }
-function saveIncome(){
+async function doSaveIncome(){
   const month=document.getElementById('m_month').value;
   const source=document.getElementById('m_source').value.trim();
   const amount=parseInt(document.getElementById('m_amount').value)||0;
   if(!source||!amount)return alert('Source and amount required.');
-  const income=DB.income();income.push({id:uid(),month,source,amount});
-  DB.setIncome(income);closeModal();renderIncome();renderStats();updateNavMeta();
+  const entry={id:uid(),month,source,amount};
+  await sbUp('income',entry);
+  S.income.unshift(entry);
+  closeModal();renderIncome();renderStats();updateNavMeta();
 }
 
-// ── Goal modals ──
+// ── GOAL MODALS ──
 function openAddGoal(){modalState={type:'goal',id:null};openModal('Add Goal',goalFormHTML(null));}
-function openEditGoal(id){const g=DB.goals().find(x=>x.id===id);if(!g)return;modalState={type:'goal',id};openModal('Edit Goal',goalFormHTML(g));}
+function openEditGoal(id){const g=S.goals.find(x=>x.id===id);if(!g)return;modalState={type:'goal',id};openModal('Edit Goal',goalFormHTML(g));}
 function goalFormHTML(g){
   return `<div class="m-field"><label>Goal</label><input class="m-input" id="m_label" placeholder="e.g. Monthly retainer income" value="${esc(g?.label||'')}"></div>
   <div class="m-field"><label>Target</label><input class="m-input" id="m_target" type="number" placeholder="1000" value="${g?.target||''}"></div>
   <div class="m-field"><label>Current Progress</label><input class="m-input" id="m_current" type="number" placeholder="0" value="${g?.current??''}"></div>
-  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="saveGoal()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`;
+  <div class="m-actions"><button class="m-btn m-btn-primary" onclick="doSaveGoal()">Save</button><button class="m-btn" onclick="closeModal()">Cancel</button></div>`;
 }
-function saveGoal(){
+async function doSaveGoal(){
   const label=document.getElementById('m_label').value.trim();
   const target=parseInt(document.getElementById('m_target').value)||0;
   const current=parseInt(document.getElementById('m_current').value)||0;
   if(!label)return alert('Goal label required.');
-  const goals=DB.goals();
-  if(modalState.id){const g=goals.find(x=>x.id===modalState.id);if(g){g.label=label;g.target=target;g.current=current;}}
-  else goals.push({id:uid(),label,target,current});
-  DB.setGoals(goals);closeModal();renderGoals();
+  const id=modalState.id||uid();
+  const goal={id,label,target,current};
+  await sbUp('goals',goal);
+  const existing=S.goals.find(x=>x.id===id);
+  if(existing){Object.assign(existing,goal);}else{S.goals.push(goal);}
+  closeModal();renderGoals();
 }
 
-// ─────────────────────────────────────────
-// SCANNER TOGGLE
-// ─────────────────────────────────────────
-function toggleScanner(){
-  const wrap=document.getElementById('scannerWrap');
-  const btn=document.getElementById('scannerToggleBtn');
-  const open=wrap.style.display==='none';
-  wrap.style.display=open?'block':'none';
-  btn.textContent=open?'− Hide Scanner':'+ Show Scanner';
-}
-
-// ─────────────────────────────────────────
-// ANALYTICS UPDATE MODAL
-// ─────────────────────────────────────────
+// ── ANALYTICS UPDATE ──
 function openUpdateStats(id){
-  const c=DB.clients().find(x=>x.id===id);if(!c)return;
+  const c=S.clients.find(x=>x.id===id);if(!c)return;
   modalState={type:'stats',id};
   const plats=c.platforms||[];
   const fields=plats.map(p=>{
@@ -993,16 +990,15 @@ function openUpdateStats(id){
       </div>
     </div>`;
   }).join('');
-  openModal('Update Stats — '+esc(c.name), fields+`
+  openModal('Update Stats — '+esc(c.name),fields+`
     <div class="m-field"><label>Last Post</label><input class="m-input" id="ms_lastpost" placeholder="e.g. Today" value="${esc(c.lastPost||'')}"></div>
     <div class="m-actions">
-      <button class="m-btn m-btn-primary" onclick="saveStats('${id}')">Save</button>
+      <button class="m-btn m-btn-primary" onclick="doSaveStats('${id}')">Save</button>
       <button class="m-btn" onclick="closeModal()">Cancel</button>
     </div>`);
 }
-
-function saveStats(id){
-  const clients=DB.clients();const c=clients.find(x=>x.id===id);if(!c)return;
+async function doSaveStats(id){
+  const c=S.clients.find(x=>x.id===id);if(!c)return;
   const plats=c.platforms||[];
   if(!c.analytics)c.analytics={};
   plats.forEach(p=>{
@@ -1013,12 +1009,24 @@ function saveStats(id){
     };
   });
   c.lastPost=document.getElementById('ms_lastpost')?.value.trim()||c.lastPost;
-  DB.setClients(clients);closeModal();renderClients();
+  await sbUp('clients',toClient(c));
+  closeModal();renderClients();
+}
+
+// ─────────────────────────────────────────
+// SCANNER (Google Maps API wired at handover)
+// ─────────────────────────────────────────
+function toggleScanner(){
+  const wrap=document.getElementById('scannerWrap');
+  const btn=document.getElementById('scannerToggleBtn');
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  btn.textContent=open?'− Hide Scanner':'+ Show Scanner';
 }
 function runScanner(){
   const q=document.getElementById('scannerInput').value.trim();if(!q)return;
   const results=[
-    {name:'The Anchor Pub',meta:'Church Street, Hartlepool · No social presence detected'},
+    {name:'The Anchor Pub',meta:'Church Street · No social presence detected'},
     {name:'Headland Fish & Chips',meta:'The Headland · Facebook only, last post 2 months ago'},
     {name:'Hartlepool Flowers',meta:'Lynn Street · Instagram 180 followers, weak content'},
   ];
@@ -1027,12 +1035,24 @@ function runScanner(){
     <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${esc(r.name)}')">Add to list</button>
   </div>`).join('');
 }
-function addScanResult(btn,name){
-  const leads=DB.leads();
-  leads.push({id:uid(),name,type:'',location:'',stage:'Identified',notes:'',questionnaire:{},followUpDate:'',addedDate:todayStr()});
-  DB.setLeads(leads);btn.textContent='Added ✓';btn.classList.add('added');
+async function addScanResult(btn,name){
+  const lead={id:uid(),name,type:'',location:'',stage:'Identified',notes:'',questionnaire:{},followUpDate:null,addedDate:todayStr()};
+  await sbUp('leads',toLead(lead));
+  S.leads.unshift(lead);
+  btn.textContent='Added ✓';btn.classList.add('added');
   renderLeads();renderPipeline();renderStats();updateNavMeta();
 }
+
+// ─────────────────────────────────────────
+// SESSION RESTORE ON LOAD
+// ─────────────────────────────────────────
+window.addEventListener('load',async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    document.getElementById('loginScreen').style.display='none';
+    await showApp();
+  }
+});
 </script>
 </body>
 </html>
