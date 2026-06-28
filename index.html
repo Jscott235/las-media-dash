@@ -283,7 +283,61 @@ body::before{
 .sr-add:hover{border-color:var(--accent);color:var(--accent);}
 .sr-add.added{border-color:var(--dim);color:var(--dim);pointer-events:none;}
 
-/* ── VOICE INPUT ── */
+/* ── HOME SECTION ── */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.home-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1rem;}
+.home-card{
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.25rem;
+  backdrop-filter:blur(12px);transition:all .2s var(--ease);
+}
+.home-card:hover{border-color:rgba(99,102,241,0.2);box-shadow:0 4px 24px rgba(0,0,0,0.2);}
+.home-card-label{font-size:.56rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;}
+.home-card-value{
+  font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,#fff,rgba(165,180,252,0.85));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.home-card-sub{font-size:.68rem;color:var(--muted);margin-top:.35rem;}
+.home-card-accent{border-color:rgba(99,102,241,0.25);background:rgba(99,102,241,0.05);}
+.home-section-title{font-family:'Space Grotesk',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.85rem;display:flex;align-items:center;gap:.4rem;}
+.home-section-title::before{content:'';display:inline-block;width:10px;height:2px;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:1px;}
+.home-lead-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.6rem .75rem;border:1px solid var(--border);border-radius:var(--rs);
+  margin-bottom:.4rem;background:rgba(255,255,255,0.02);
+  transition:all .15s;cursor:pointer;
+}
+.home-lead-row:hover{border-color:rgba(99,102,241,0.2);background:rgba(99,102,241,0.04);}
+.home-lead-name{font-size:.82rem;font-weight:600;}
+.home-lead-meta{font-size:.65rem;color:var(--muted);margin-top:.1rem;}
+.home-stage-pill{font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .55rem;border:1px solid var(--border);border-radius:99px;color:var(--dim);white-space:nowrap;}
+.home-stage-pill.hot{color:#a5b4fc;border-color:rgba(99,102,241,0.4);background:rgba(99,102,241,0.08);}
+.home-pipe-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.5rem;}
+.home-pipe-label{font-size:.68rem;color:var(--muted);width:82px;flex-shrink:0;}
+.home-pipe-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;}
+.home-pipe-bar{height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:99px;transition:width .5s var(--ease);}
+.home-pipe-count{font-size:.65rem;font-weight:700;color:var(--muted);min-width:16px;text-align:right;}
+.home-cal-item{display:flex;align-items:flex-start;gap:.7rem;padding:.6rem .75rem;border:1px solid var(--border);border-radius:var(--rs);margin-bottom:.4rem;background:rgba(255,255,255,0.02);}
+.home-cal-time{font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:700;color:var(--accent);min-width:42px;flex-shrink:0;}
+.home-cal-label{font-size:.78rem;font-weight:600;}
+.home-cal-sub{font-size:.65rem;color:var(--muted);margin-top:.1rem;}
+.home-goal-row{margin-bottom:.75rem;}
+.home-goal-label{font-size:.75rem;font-weight:600;margin-bottom:.45rem;display:flex;justify-content:space-between;align-items:center;}
+.home-goal-nums{font-size:.65rem;color:var(--muted);}
+.home-bar-bg{height:5px;background:rgba(255,255,255,0.07);border-radius:99px;overflow:hidden;}
+.home-bar-fill{height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6,#22d3ee);border-radius:99px;transition:width .6s var(--ease);}
+.home-empty{font-size:.72rem;color:var(--dim);padding:.75rem;text-align:center;}
+.home-quick-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.home-qa-btn{
+  padding:.55rem 1.1rem;border:1px solid var(--border);border-radius:var(--rs);
+  background:var(--surface);color:var(--muted);font-size:.7rem;font-weight:600;
+  letter-spacing:.05em;font-family:'Inter',sans-serif;cursor:pointer;
+  transition:all .18s var(--ease);display:flex;align-items:center;gap:.4rem;
+}
+.home-qa-btn:hover{border-color:rgba(99,102,241,0.35);color:#a5b4fc;background:rgba(99,102,241,0.07);}
+.home-greeting{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.25rem;}
+.home-greeting-sub{font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;}
 .voice-btn{
   display:flex;align-items:center;gap:.45rem;
   padding:.5rem 1rem;border:1px solid rgba(99,102,241,0.35);border-radius:var(--rs);
@@ -703,6 +757,14 @@ body::before{
 
     <nav class="sidebar-nav">
       <span class="sidebar-nav-label">Navigation</span>
+      <div class="nav-card" id="nc_homeSection" onclick="showSection('homeSection')">
+        <div class="nc-icon">⌂</div>
+        <div class="nc-content">
+          <div class="nc-title">Home</div>
+          <div class="nc-meta">At a glance</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
       <div class="nav-card" id="nc_leadsSection" onclick="showSection('leadsSection')">
         <div class="nc-icon">◈</div>
         <div class="nc-content">
@@ -753,6 +815,44 @@ body::before{
   <!-- MAIN -->
   <main class="main">
     <div class="brief-bar" id="brief"></div>
+
+    <!-- HOME -->
+    <div class="section" id="homeSection">
+      <div class="home-greeting" id="homeGreeting">Good morning, Lewis.</div>
+      <div class="home-greeting-sub" id="homeGreetingSub">Here's where things stand today.</div>
+
+      <div class="home-quick-actions">
+        <button class="home-qa-btn" onclick="startVoiceLead()">🎙 Voice Add Lead</button>
+        <button class="home-qa-btn" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)">+ Add Lead</button>
+        <button class="home-qa-btn" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)">+ Calendar Entry</button>
+        <button class="home-qa-btn" onclick="showSection('clientsSection');setTimeout(()=>openAddClient(),100)">+ Add Client</button>
+        <button class="home-qa-btn" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)">£ Log Income</button>
+      </div>
+
+      <div class="home-grid-4" id="homeStats"></div>
+
+      <div class="home-grid">
+        <div class="home-card">
+          <div class="home-section-title">Today's Schedule</div>
+          <div id="homeTodayCal"></div>
+        </div>
+        <div class="home-card">
+          <div class="home-section-title">Pipeline</div>
+          <div id="homePipeline"></div>
+        </div>
+      </div>
+
+      <div class="home-grid">
+        <div class="home-card">
+          <div class="home-section-title">Recent Leads</div>
+          <div id="homeRecentLeads"></div>
+        </div>
+        <div class="home-card">
+          <div class="home-section-title">Goals</div>
+          <div id="homeGoals"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- LEADS -->
     <div class="section" id="leadsSection">
@@ -947,7 +1047,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['leadsSection','clientsSection','calSection','bizSection'];
+const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection'];
 let activeSection=null;
 function showSection(id){
   if(activeSection===id){
@@ -970,13 +1070,115 @@ function showSection(id){
 // ─────────────────────────────────────────
 async function initApp(){
   await loadAll();
-  buildBrief(); renderStats(); renderLeads(); renderPipeline(); showSection('leadsSection');
+  buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
+  renderHome(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
-// STATS
+// HOME
 // ─────────────────────────────────────────
+function renderHome(){
+  const now=new Date();
+  const hour=now.getHours();
+  const greeting=hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';
+  document.getElementById('homeGreeting').textContent=`${greeting}, Lewis.`;
+  const today=todayStr();
+  const todayEntries=S.calendar.filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
+  const upcoming=S.calendar.filter(e=>e.date>today).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).slice(0,3);
+  const sub=todayEntries.length?`${todayEntries.length} thing${todayEntries.length!==1?'s':''} scheduled today.`:'Nothing scheduled today — clear run.';
+  document.getElementById('homeGreetingSub').textContent=sub;
+  // Stat cards
+  const mrr=S.clients.reduce((s,c)=>s+c.fee,0);
+  const curMonth=today.slice(0,7);
+  const monthIncome=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+  const openLeads=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
+  const hotLeads=openLeads.filter(l=>l.stage==='Interested').length;
+  document.getElementById('homeStats').innerHTML=`
+    <div class="home-card home-card-accent">
+      <div class="home-card-label">Monthly Retainers</div>
+      <div class="home-card-value">£${mrr}</div>
+      <div class="home-card-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div>
+    </div>
+    <div class="home-card">
+      <div class="home-card-label">Income This Month</div>
+      <div class="home-card-value">£${monthIncome}</div>
+      <div class="home-card-sub">${curMonth.replace('-',' / ')}</div>
+    </div>
+    <div class="home-card">
+      <div class="home-card-label">Open Leads</div>
+      <div class="home-card-value">${openLeads.length}</div>
+      <div class="home-card-sub">${hotLeads} interested</div>
+    </div>
+    <div class="home-card">
+      <div class="home-card-label">Today</div>
+      <div class="home-card-value">${todayEntries.length}</div>
+      <div class="home-card-sub">${todayEntries.length?'entries scheduled':'clear schedule'}</div>
+    </div>`;
+  // Today's calendar
+  const calEl=document.getElementById('homeTodayCal');
+  const showEntries=[...todayEntries,...(todayEntries.length<3?upcoming.slice(0,3-todayEntries.length):[])];
+  if(!showEntries.length){
+    calEl.innerHTML='<div class="home-empty">Nothing coming up — add something to the calendar.</div>';
+  } else {
+    calEl.innerHTML=showEntries.map(e=>{
+      const c=S.clients.find(x=>x.id===e.clientId);
+      const isToday=e.date===today;
+      const dateLabel=isToday?'Today':`${new Date(e.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}`;
+      return `<div class="home-cal-item">
+        <div class="home-cal-time">${isToday?esc(e.time):dateLabel}</div>
+        <div>
+          <div class="home-cal-label">${esc(e.contentType)}${e.platform?' · '+esc(e.platform):''}</div>
+          <div class="home-cal-sub">${esc(c?c.name:e.notes||'—')}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  // Pipeline bars
+  const pipeEl=document.getElementById('homePipeline');
+  const activeStages=STAGES.filter(s=>!['Won','Lost'].includes(s));
+  const maxCount=Math.max(1,...activeStages.map(s=>S.leads.filter(l=>l.stage===s).length));
+  pipeEl.innerHTML=STAGES.map(s=>{
+    const count=S.leads.filter(l=>l.stage===s).length;
+    const pct=Math.round((count/maxCount)*100);
+    const isWon=s==='Won';
+    return `<div class="home-pipe-row">
+      <div class="home-pipe-label">${s}</div>
+      <div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${count?pct:0}%;${isWon?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div>
+      <div class="home-pipe-count">${count}</div>
+    </div>`;
+  }).join('');
+  // Recent leads
+  const leadsEl=document.getElementById('homeRecentLeads');
+  const recent=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).slice(0,5);
+  if(!recent.length){
+    leadsEl.innerHTML='<div class="home-empty">No active leads yet.</div>';
+  } else {
+    leadsEl.innerHTML=recent.map(l=>`
+      <div class="home-lead-row" onclick="showSection('leadsSection')">
+        <div>
+          <div class="home-lead-name">${esc(l.name)}</div>
+          <div class="home-lead-meta">${esc(l.type||'—')} · ${esc(l.location||'—')}</div>
+        </div>
+        <span class="home-stage-pill${l.stage==='Interested'?' hot':''}">${esc(l.stage)}</span>
+      </div>`).join('');
+  }
+  // Goals
+  const goalsEl=document.getElementById('homeGoals');
+  if(!S.goals.length){
+    goalsEl.innerHTML='<div class="home-empty">No goals set yet.</div>';
+  } else {
+    goalsEl.innerHTML=S.goals.map(g=>{
+      const pct=Math.min(100,Math.round((g.current/g.target)*100));
+      return `<div class="home-goal-row">
+        <div class="home-goal-label">${esc(g.label)}<span class="home-goal-nums">${g.current} / ${g.target}</span></div>
+        <div class="home-bar-bg"><div class="home-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+}
+
+
 function renderStats(){
   const openLeads=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
   const curMonth=todayStr().slice(0,7);
