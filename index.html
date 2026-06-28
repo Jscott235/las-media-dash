@@ -2950,30 +2950,44 @@ function pbRecommend(){
     .map(item=>({...item,roi:PB_ROI_ADDON[item.id]||0}))
     .sort((a,b)=>b.roi-a.roi);
 
-  // 3. Greedy fill with remaining budget
-  const selected=[];
-  for(const item of rankedAddons){
-    if(item.price<=remaining){
-      selected.push(item);
+  // 3. Iterative fill — repeatedly pick best-ROI item that fits remaining budget
+  // Monthly add-ons added once only; per-item add-ons can stack (×2 reels, etc.)
+  const selected=new Map(); // id -> {item, qty}
+  let guard=0;
+  while(remaining>0&&guard<300){
+    guard++;
+    let added=false;
+    for(const item of rankedAddons){
+      if(item.price>remaining)continue;
+      if(item.type==='monthly'&&selected.has(item.id))continue; // monthly: one only
+      if(!selected.has(item.id)){
+        selected.set(item.id,{item,qty:1});
+      } else {
+        selected.get(item.id).qty++;
+      }
       remaining-=item.price;
+      added=true;
+      break; // restart from top with updated remaining
     }
-    if(remaining<=0)break;
+    if(!added)break; // nothing fits — done
   }
 
   // 4. Apply to builder state
   PB.base=bestBase.id;
   PB.addons={};
-  selected.forEach(item=>{PB.addons[item.id]={on:true,qty:1,price:item.price};});
+  selected.forEach(({item,qty})=>{PB.addons[item.id]={on:true,qty,price:item.price};});
   initPackageBuilder();
 
   // 5. Show result summary
-  const totalSpend=bestBase.price+selected.reduce((s,i)=>s+i.price,0);
+  const addonSpend=Array.from(selected.values()).reduce((s,{item,qty})=>s+(item.price*qty),0);
+  const totalSpend=bestBase.price+addonSpend;
   const leftover=Math.round(budget-totalSpend);
   const baseLabel=bestBase.id==='bespoke'?'Bespoke (add-ons only)':`${bestBase.name} — £${bestBase.price}/mo`;
+  const chips=Array.from(selected.values()).map(({item,qty})=>`<span class="pbr-chip">${item.name}${qty>1?` ×${qty}`:''}</span>`).join('');
   resultEl.innerHTML=`
     <div class="pbr-header">✦ Best package for £${budget}/mo</div>
     <div class="pbr-base">Base: <strong>${baseLabel}</strong></div>
-    ${selected.length?`<div class="pbr-chips">${selected.map(i=>`<span class="pbr-chip">${i.name}</span>`).join('')}</div>`:
+    ${chips?`<div class="pbr-chips">${chips}</div>`:
     `<div class="pbr-none" style="font-style:normal;font-size:.7rem;">No individual add-ons fit this budget — consider discussing a custom arrangement.</div>`}
     <div class="pbr-spend">Total: £${totalSpend}/mo${leftover>0?` &nbsp;<span class="pbr-unalloc">· £${leftover} unallocated</span>`:''}</div>
   `;
