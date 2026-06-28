@@ -1428,7 +1428,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection'];
 let activeSection=null;
 function showSection(id){
-  if(isMobile())closeMobileSidebar();
+  if(isMobile()) setTimeout(closeMobileSidebar, 150);
   if(activeSection===id){
     document.getElementById(id).classList.remove('active');
     document.getElementById('nc_'+id).classList.remove('active');
