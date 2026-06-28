@@ -586,6 +586,11 @@ body::before{
   background:rgba(4,4,14,0.85);backdrop-filter:blur(12px);
 }
 .voice-overlay.active{display:flex;}
+/* ── BUG REPORT FAB ── */
+.bug-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:450;width:42px;height:42px;border-radius:50%;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#f87171;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:0 4px 16px rgba(0,0,0,0.4);}
+.bug-fab:hover{background:rgba(239,68,68,0.25);border-color:#ef4444;transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,0.2);}
+.bug-toast{position:fixed;bottom:5rem;right:1.5rem;z-index:500;background:#10b981;color:#fff;padding:.55rem 1rem;border-radius:8px;font-size:.75rem;font-weight:700;letter-spacing:.03em;box-shadow:0 4px 16px rgba(16,185,129,0.3);animation:toastIn .2s ease;pointer-events:none;}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .voice-card{
   background:rgba(11,11,30,0.98);border:1px solid rgba(255,255,255,0.1);
   border-radius:var(--rl);padding:2.5rem;text-align:center;
@@ -1243,6 +1248,7 @@ body::before{
 
   </main>
 </div>
+<button class="bug-fab" onclick="openBugReport()" title="Report a bug">🐛</button>
 </div><!-- /app -->
 
 
@@ -3085,6 +3091,57 @@ function pbClearRecommend(){
   PB.base='starter';
   PB.addons={};
   initPackageBuilder();
+}
+
+// ─────────────────────────────────────────
+// BUG REPORT
+// ─────────────────────────────────────────
+function openBugReport(){
+  const sectionLabels={
+    homeSection:'Home',leadsSection:'Leads / Pipeline',clientsSection:'Clients',
+    calSection:'Calendar',bizSection:'Business',pkgSection:'Package Builder'
+  };
+  const current=activeSection||'';
+  openModal('🐛 Report a Bug',`
+    <div class="m-field"><label>Which section?</label>
+      <select class="m-select" id="bug_section">
+        ${SECTION_IDS.map(s=>`<option value="${sectionLabels[s]||s}"${s===current?' selected':''}>${sectionLabels[s]||s}</option>`).join('')}
+        <option value="Other">Other / General</option>
+      </select>
+    </div>
+    <div class="m-field"><label>What went wrong?</label>
+      <textarea class="m-textarea" id="bug_desc" placeholder="Describe what happened, what you clicked, and what you expected..." style="min-height:100px;"></textarea>
+    </div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" id="bugSubmitBtn" onclick="submitBugReport()">Send Report</button>
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+    </div>`);
+}
+
+async function submitBugReport(){
+  const section=document.getElementById('bug_section')?.value||'Unknown';
+  const desc=(document.getElementById('bug_desc')?.value||'').trim();
+  if(!desc){alert('Please describe the issue first.');return;}
+  const btn=document.getElementById('bugSubmitBtn');
+  if(btn){btn.disabled=true;btn.textContent='Sending...';}
+  const ts=new Date().toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const ua=navigator.userAgent;
+  // 1. Supabase
+  try{await sb.from('bug_reports').insert({section,description:desc,user_agent:ua});}
+  catch(e){console.error('Bug Supabase:',e);}
+  // 2. ntfy
+  try{
+    await fetch('https://ntfy.sh/las-media-dash',{
+      method:'POST',
+      body:`Section: ${section}\n\n${desc}\n\nTime: ${ts}`,
+      headers:{'Title':'🐛 LAS Media Bug Report','Priority':'high','Tags':'bug'}
+    });
+  }catch(e){console.error('Bug ntfy:',e);}
+  closeModal();
+  const t=document.createElement('div');
+  t.className='bug-toast';t.textContent='✓ Bug report sent to Josh';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
 }
 
 window.addEventListener('load',async()=>{
