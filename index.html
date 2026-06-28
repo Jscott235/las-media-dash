@@ -21,6 +21,7 @@
   --text:#eeeeff;
   --muted:rgba(220,220,255,0.5);
   --dim:rgba(220,220,255,0.22);
+  color-scheme:dark;
   --accent:#6366f1;
   --accent2:#8b5cf6;
   --cyan:#22d3ee;
@@ -35,6 +36,9 @@
   --ease:cubic-bezier(0.4,0,0.2,1);
 }
 html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+select{background:#0f0f28;color:#eeeeff;}
+select option{background:#0f0f28;color:#eeeeff;}
+select option:checked{background:#1e1e4a;}
 
 /* ── AMBIENT BACKGROUND ── */
 body::before{
@@ -388,8 +392,9 @@ body::before{
 .pkg-panel-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,#6366f1,#8b5cf6);border-radius:2px;}
 .pkg-field{margin-bottom:1.1rem;}
 .pkg-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.45rem;}
-.pkg-select,.pkg-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.65rem .9rem;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;appearance:none;transition:all .18s;}
+.pkg-select,.pkg-input{width:100%;background:#0f0f28;border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.65rem .9rem;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;appearance:none;transition:all .18s;}
 .pkg-select:focus,.pkg-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);}
+.pkg-select option{background:#0f0f28;color:#eeeeff;}
 .pkg-stepper{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;width:fit-content;}
 .pkg-step-btn{width:36px;height:36px;background:rgba(255,255,255,0.04);border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:flex;align-items:center;justify-content:center;}
 .pkg-step-btn:hover{background:rgba(99,102,241,0.12);color:#a5b4fc;}
@@ -508,8 +513,9 @@ body::before{
 .pkg-total-row .val{font-weight:700;}
 .pkg-total-row.final .val{background:linear-gradient(135deg,#fff,rgba(165,180,252,0.9));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .pkg-discount-row{display:flex;gap:.4rem;margin-bottom:.85rem;align-items:center;}
-.pkg-discount-type{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);padding:.35rem .6rem;font-size:.65rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;transition:all .15s;}
+.pkg-discount-type{background:#0f0f28;border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);padding:.35rem .6rem;font-size:.65rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;transition:all .15s;}
 .pkg-discount-type:focus{border-color:#6366f1;}
+.pkg-discount-type option{background:#0f0f28;color:#eeeeff;}
 .pkg-discount-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.35rem .6rem;font-size:.75rem;font-family:'Inter',sans-serif;outline:none;transition:all .15s;}
 .pkg-discount-input:focus{border-color:#6366f1;}
 .pkg-discount-label{font-size:.6rem;color:var(--dim);white-space:nowrap;}
@@ -879,16 +885,17 @@ body::before{
 .m-field{margin-bottom:.85rem;}
 .m-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.4rem;}
 .m-input,.m-select,.m-textarea{
-  width:100%;background:rgba(255,255,255,0.05);
+  width:100%;background:#0f0f28;
   border:1px solid rgba(255,255,255,0.1);border-radius:var(--rs);
   color:var(--text);padding:.7rem .9rem;font-size:.85rem;font-family:'Inter',sans-serif;outline:none;
   transition:all .18s var(--ease);
 }
 .m-input:focus,.m-select:focus,.m-textarea:focus{
   border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);
-  background:rgba(99,102,241,0.05);
+  background:#11113a;
 }
 .m-select{appearance:none;-webkit-appearance:none;}
+.m-select option{background:#0f0f28;color:#eeeeff;}
 .m-textarea{resize:vertical;min-height:80px;}
 .m-check-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.25rem;}
 .m-check-item{display:flex;align-items:center;gap:.35rem;cursor:pointer;}
