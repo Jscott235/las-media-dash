@@ -146,8 +146,9 @@ body::before{
   display:flex;align-items:center;justify-content:center;
   font-family:'Bebas Neue',sans-serif;font-size:.85rem;letter-spacing:.05em;color:#fff;
   box-shadow:0 4px 12px rgba(99,102,241,0.35);
-  margin-bottom:.85rem;
+  margin-bottom:.85rem;cursor:pointer;transition:opacity .15s;flex-shrink:0;
 }
+.sidebar-mark:hover{opacity:.8;}
 .sidebar-brand{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:-.01em;}
 .sidebar-sub{font-size:.58rem;font-weight:500;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:.1rem;}
 
@@ -614,6 +615,41 @@ body::before{
   background:rgba(4,4,14,0.85);backdrop-filter:blur(12px);
 }
 .voice-overlay.active{display:flex;}
+/* ── MOBILE ── */
+.mob-menu-btn{display:none;align-items:center;justify-content:center;width:32px;height:32px;border-radius:7px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:1rem;cursor:pointer;flex-shrink:0;transition:all .15s;}
+.mob-menu-btn:hover{border-color:var(--accent);color:var(--text);}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99;backdrop-filter:blur(2px);}
+.sidebar-backdrop.active{display:block;}
+@media(max-width:768px){
+  .mob-menu-btn{display:flex;}
+  .sidebar{
+    transform:translateX(-100%);
+    transition:transform .25s var(--ease);
+    width:var(--sw)!important;
+    z-index:200;
+  }
+  .sidebar.mobile-open{transform:translateX(0);}
+  .sidebar.collapsed{width:var(--sw)!important;}
+  .main,.main.collapsed{margin-left:0!important;transition:none;}
+  .brief-bar{padding:.65rem 1rem;gap:.75rem;}
+  .section{padding:1.25rem 1rem;}
+  .section-title{font-size:1.25rem;}
+  .pkg-builder-layout{grid-template-columns:1fr!important;}
+  .pkg-base-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .home-grid{grid-template-columns:1fr!important;}
+  .home-grid-4{grid-template-columns:repeat(2,1fr)!important;}
+  .pkg-proposal-panel{position:static;}
+  .pipeline-board{gap:.75rem;}
+  .q-action-row{flex-wrap:wrap;}
+  .modal-box{width:95vw!important;max-width:95vw!important;padding:1.25rem!important;}
+  .m-actions{flex-direction:column;}
+  .m-btn{width:100%;}
+  .bug-fab{bottom:1rem;right:1rem;}
+  .suggest-fab{bottom:4rem;right:1rem;}
+  .pkg-client-row{flex-direction:column;}
+  .pkg-budget-row{flex-direction:column;align-items:stretch;}
+  .pkg-budget-btn{width:100%;}
+}
 /* ── BUG REPORT FAB ── */
 .bug-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:450;width:42px;height:42px;border-radius:50%;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#f87171;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:0 4px 16px rgba(0,0,0,0.4);}
 .bug-fab:hover{background:rgba(239,68,68,0.25);border-color:#ef4444;transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,0.2);}
@@ -1004,6 +1040,8 @@ body::before{
   </div>
 </div>
 
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
 <!-- ── APP ── -->
 <div id="app">
 <div class="app-layout">
@@ -1011,8 +1049,7 @@ body::before{
   <!-- SIDEBAR -->
   <aside class="sidebar" id="appSidebar">
     <div class="sidebar-head">
-      <button class="sidebar-toggle" onclick="toggleSidebar()" title="Collapse sidebar">‹</button>
-      <div class="sidebar-mark" onclick="showSection('homeSection')" style="cursor:pointer;" title="Home">L</div>
+      <div class="sidebar-mark" onclick="toggleSidebar()" title="Toggle sidebar">L</div>
       <div class="sidebar-brand">LAS Media</div>
       <div class="sidebar-sub">Business OS</div>
     </div>
@@ -1084,7 +1121,7 @@ body::before{
 
   <!-- MAIN -->
   <main class="main" id="appMain">
-    <div class="brief-bar" id="brief"></div>
+    <div class="brief-bar" id="brief"><button class="mob-menu-btn" onclick="toggleSidebar()">☰</button></div>
 
     <!-- HOME -->
     <div class="section" id="homeSection">
@@ -1389,6 +1426,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection'];
 let activeSection=null;
 function showSection(id){
+  if(isMobile())closeMobileSidebar();
   if(activeSection===id){
     document.getElementById(id).classList.remove('active');
     document.getElementById('nc_'+id).classList.remove('active');
@@ -3227,16 +3265,29 @@ async function submitSuggestion(){
 // ─────────────────────────────────────────
 // SIDEBAR TOGGLE
 // ─────────────────────────────────────────
+function isMobile(){return window.innerWidth<=768;}
 function toggleSidebar(){
   const s=document.getElementById('appSidebar');
   const m=document.getElementById('appMain');
-  if(!s||!m)return;
-  const collapsed=s.classList.toggle('collapsed');
-  m.classList.toggle('collapsed',collapsed);
-  localStorage.setItem('las_sb_collapsed',collapsed?'1':'0');
+  const bd=document.getElementById('sidebarBackdrop');
+  if(!s)return;
+  if(isMobile()){
+    const open=s.classList.toggle('mobile-open');
+    if(bd)bd.classList.toggle('active',open);
+  } else {
+    const collapsed=s.classList.toggle('collapsed');
+    if(m)m.classList.toggle('collapsed',collapsed);
+    localStorage.setItem('las_sb_collapsed',collapsed?'1':'0');
+  }
+}
+function closeMobileSidebar(){
+  const s=document.getElementById('appSidebar');
+  const bd=document.getElementById('sidebarBackdrop');
+  if(s)s.classList.remove('mobile-open');
+  if(bd)bd.classList.remove('active');
 }
 function restoreSidebar(){
-  if(localStorage.getItem('las_sb_collapsed')==='1'){
+  if(!isMobile()&&localStorage.getItem('las_sb_collapsed')==='1'){
     document.getElementById('appSidebar')?.classList.add('collapsed');
     document.getElementById('appMain')?.classList.add('collapsed');
   }
