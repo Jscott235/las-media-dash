@@ -694,12 +694,16 @@ body::before{
         <button class="section-add-btn" onclick="toggleScanner()" id="scannerToggleBtn">+ Show Scanner</button>
       </div>
       <div id="scannerWrap" style="display:none;">
+        <div id="scannerKeyRow" class="scanner-row" style="display:none;">
+          <input class="scanner-input" id="mapsKeyInput" placeholder="Paste Google Maps API key here to activate scanner...">
+          <button class="scanner-btn" onclick="saveMapsKey()">Save Key</button>
+        </div>
         <div class="scanner-row">
           <input class="scanner-input" id="scannerInput" placeholder="e.g. 'restaurants Hartlepool' · 'barbers Stockton'" onkeydown="if(event.key==='Enter')runScanner()">
           <button class="scanner-btn" onclick="runScanner()">Scan</button>
         </div>
         <div id="scannerResults" style="margin-bottom:1.5rem;">
-          <div class="scanner-notice">Enter a search above to find local businesses — Google Maps API activates at handover.</div>
+          <div class="scanner-notice">Enter a search above to find local businesses.</div>
         </div>
       </div>
       <hr class="divider">
@@ -1455,31 +1459,105 @@ async function doSaveStats(id){
 // ─────────────────────────────────────────
 // SCANNER (Google Maps API wired at handover)
 // ─────────────────────────────────────────
+// ─────────────────────────────────────────
+// SCANNER — Google Maps Places API
+// ─────────────────────────────────────────
+let _mapsApiLoaded=false;
+
+function getMapsKey(){return localStorage.getItem('las_maps_key')||'';}
+
+function saveMapsKey(){
+  const k=document.getElementById('mapsKeyInput').value.trim();
+  if(!k)return;
+  localStorage.setItem('las_maps_key',k);
+  document.getElementById('scannerKeyRow').style.display='none';
+  document.getElementById('scannerResults').innerHTML='<div class="scanner-notice">API key saved. Enter a search to scan.</div>';
+}
+
+function initScanner(){
+  const key=getMapsKey();
+  if(!key){
+    document.getElementById('scannerKeyRow').style.display='flex';
+    document.getElementById('scannerResults').innerHTML='<div class="scanner-notice">Enter your Google Maps API key above to activate the scanner.</div>';
+  }
+}
+
+function loadMapsApi(key){
+  return new Promise((resolve,reject)=>{
+    if(window.google?.maps?.places){resolve();return;}
+    if(_mapsApiLoaded){
+      const wait=()=>window.google?.maps?.places?resolve():setTimeout(wait,100);wait();return;
+    }
+    _mapsApiLoaded=true;
+    window._mapsReady=resolve;
+    const s=document.createElement('script');
+    s.src=`https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&libraries=places&callback=_mapsReady`;
+    s.onerror=()=>reject(new Error('Failed to load Maps API — check your key'));
+    document.head.appendChild(s);
+  });
+}
+
+async function runScanner(){
+  const q=document.getElementById('scannerInput').value.trim();
+  if(!q)return;
+  const key=getMapsKey();
+  if(!key){
+    document.getElementById('scannerKeyRow').style.display='flex';
+    document.getElementById('scannerResults').innerHTML='<div class="scanner-notice">API key required. Paste it above.</div>';
+    return;
+  }
+  const resultsEl=document.getElementById('scannerResults');
+  resultsEl.innerHTML='<div class="scanner-notice" id="scanStatus">Loading Maps API...</div>';
+  try{
+    await loadMapsApi(key);
+    document.getElementById('scanStatus').textContent='Scanning...';
+    const dummy=document.createElement('div');
+    const svc=new google.maps.places.PlacesService(dummy);
+    svc.textSearch({query:q},(results,status)=>{
+      if(status!==google.maps.places.PlacesServiceStatus.OK||!results?.length){
+        resultsEl.innerHTML='<div class="scanner-notice">No results found. Try a broader search.</div>';
+        return;
+      }
+      resultsEl.innerHTML=results.slice(0,10).map((r,i)=>{
+        const rawType=(r.types||[]).filter(t=>!['point_of_interest','establishment','geocode'].includes(t))[0]||'';
+        const type=rawType.replace(/_/g,' ');
+        const addr=r.formatted_address||r.vicinity||'';
+        const rating=r.rating?`${r.rating}★ · ${r.user_ratings_total||0} reviews`:'No reviews';
+        const meta=`${addr} · ${rating}`;
+        const safeName=esc(r.name);
+        const safeType=esc(type);
+        const safeAddr=esc(addr);
+        return `<div class="scan-result">
+          <div>
+            <div class="sr-name">${safeName}</div>
+            <div class="sr-meta">${esc(meta)}</div>
+          </div>
+          <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${safeName}','${safeType}','${safeAddr}')">Add to list</button>
+        </div>`;
+      }).join('');
+    });
+  }catch(e){
+    resultsEl.innerHTML=`<div class="scanner-notice">Error: ${esc(e.message)}</div>`;
+    localStorage.removeItem('las_maps_key');
+    document.getElementById('scannerKeyRow').style.display='flex';
+  }
+}
+
+async function addScanResult(btn,name,type,location){
+  const lead={id:uid(),name,type:type||'',location:location||'',stage:'Identified',notes:'',socialCheck:{},followUpDate:null,addedDate:todayStr()};
+  await sbUp('leads',toLead(lead));
+  S.leads.unshift(lead);
+  btn.textContent='Added ✓';btn.classList.add('added');
+  renderLeads();renderPipeline();renderStats();updateNavMeta();
+}
+
 function toggleScanner(){
   const wrap=document.getElementById('scannerWrap');
   const btn=document.getElementById('scannerToggleBtn');
   const open=wrap.style.display==='none';
   wrap.style.display=open?'block':'none';
   btn.textContent=open?'− Hide Scanner':'+ Show Scanner';
-}
-function runScanner(){
-  const q=document.getElementById('scannerInput').value.trim();if(!q)return;
-  const results=[
-    {name:'The Anchor Pub',meta:'Church Street · No social presence detected'},
-    {name:'Headland Fish & Chips',meta:'The Headland · Facebook only, last post 2 months ago'},
-    {name:'Hartlepool Flowers',meta:'Lynn Street · Instagram 180 followers, weak content'},
-  ];
-  document.getElementById('scannerResults').innerHTML=results.map((r,i)=>`<div class="scan-result">
-    <div><div class="sr-name">${esc(r.name)}</div><div class="sr-meta">${esc(r.meta)}</div></div>
-    <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${esc(r.name)}')">Add to list</button>
-  </div>`).join('');
-}
-async function addScanResult(btn,name){
-  const lead={id:uid(),name,type:'',location:'',stage:'Identified',notes:'',socialCheck:{},followUpDate:null,addedDate:todayStr()};
-  await sbUp('leads',toLead(lead));
-  S.leads.unshift(lead);
-  btn.textContent='Added ✓';btn.classList.add('added');
-  renderLeads();renderPipeline();renderStats();updateNavMeta();
+  if(open)initScanner();
 }
 
 // ─────────────────────────────────────────
