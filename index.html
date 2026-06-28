@@ -400,6 +400,87 @@ body::before{
 .pkg-post-btn.primary:hover{background:rgba(99,102,241,0.2);}
 .pkg-empty-posts{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:.75rem;font-size:.78rem;color:var(--dim);border:1px dashed rgba(255,255,255,0.08);border-radius:var(--r);}
 .pkg-empty-icon{font-size:2rem;opacity:.3;}
+/* ── PACKAGE BUILDER v2 ── */
+.pkg-builder-layout{display:grid;grid-template-columns:1fr 360px;gap:1.25rem;align-items:start;}
+.pkg-base-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.25rem;}
+.pkg-base-card{border:1px solid var(--border);border-radius:var(--r);padding:1rem;cursor:pointer;transition:all .18s;background:rgba(255,255,255,0.02);position:relative;}
+.pkg-base-card:hover{border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.04);}
+.pkg-base-card.selected{border-color:#6366f1;background:rgba(99,102,241,0.1);box-shadow:0 0 20px rgba(99,102,241,0.12);}
+.pkg-base-name{font-family:'Space Grotesk',sans-serif;font-size:.78rem;font-weight:700;margin-bottom:.2rem;}
+.pkg-base-price{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;background:linear-gradient(135deg,#fff,rgba(165,180,252,0.8));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pkg-base-sub{font-size:.58rem;color:var(--dim);margin-top:.1rem;}
+.pkg-popular-badge{position:absolute;top:-.5rem;right:.6rem;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:.15rem .5rem;border-radius:99px;}
+.pkg-client-row{display:flex;gap:.6rem;margin-bottom:1.1rem;}
+.pkg-client-row .pkg-select{flex:1;}
+.pkg-client-row .pkg-input{flex:1;}
+.pkg-addons-wrap{display:flex;flex-direction:column;gap:.4rem;}
+.pkg-cat{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .18s;}
+.pkg-cat:hover{border-color:rgba(255,255,255,0.1);}
+.pkg-cat-head{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1rem;cursor:pointer;background:rgba(255,255,255,0.02);user-select:none;}
+.pkg-cat-head:hover{background:rgba(255,255,255,0.04);}
+.pkg-cat-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
+.pkg-cat-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:.6;}
+.pkg-cat-meta{font-size:.62rem;color:var(--dim);}
+.pkg-cat-arrow{font-size:.65rem;color:var(--dim);transition:transform .2s;}
+.pkg-cat.open .pkg-cat-arrow{transform:rotate(180deg);}
+.pkg-cat-body{display:none;padding:.5rem .75rem .75rem;}
+.pkg-cat.open .pkg-cat-body{display:block;}
+.pkg-addon-row{display:flex;align-items:center;gap:.55rem;padding:.42rem .25rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.pkg-addon-row:last-child{border-bottom:none;}
+.pkg-addon-row.on .pkg-addon-name{color:var(--text);}
+.pkg-addon-cb{width:15px;height:15px;border:1px solid var(--border);border-radius:3px;background:rgba(255,255,255,0.04);cursor:pointer;flex-shrink:0;appearance:none;-webkit-appearance:none;position:relative;transition:all .15s;}
+.pkg-addon-cb:checked{background:#6366f1;border-color:#6366f1;}
+.pkg-addon-cb:checked::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:700;}
+.pkg-addon-name{font-size:.72rem;color:var(--muted);flex:1;line-height:1.3;transition:color .15s;}
+.pkg-addon-note{font-size:.55rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:4px;padding:.1rem .35rem;white-space:nowrap;flex-shrink:0;}
+.pkg-addon-qty{display:flex;align-items:center;border:1px solid var(--border);border-radius:4px;overflow:hidden;flex-shrink:0;}
+.pkg-addon-qty-btn{width:20px;height:22px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.pkg-addon-qty-btn:hover{background:rgba(99,102,241,0.15);color:#a5b4fc;}
+.pkg-addon-qty-val{min-width:22px;text-align:center;font-size:.7rem;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border);line-height:22px;}
+.pkg-addon-price-wrap{display:flex;align-items:center;gap:.1rem;flex-shrink:0;}
+.pkg-addon-price-prefix{font-size:.65rem;color:var(--dim);}
+.pkg-addon-price-input{width:44px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;color:var(--text);padding:.2rem .3rem;font-size:.7rem;font-family:'Inter',sans-serif;text-align:right;outline:none;transition:border-color .15s;}
+.pkg-addon-price-input:focus{border-color:#6366f1;}
+.pkg-addon-line{font-size:.68rem;font-weight:700;color:var(--muted);min-width:42px;text-align:right;flex-shrink:0;}
+.pkg-addon-line.active{color:var(--text);}
+.pkg-proposal-panel{position:sticky;top:56px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;backdrop-filter:blur(12px);}
+.pkg-proposal-title{font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:-.01em;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;}
+.pkg-proposal-title::before{content:'';width:3px;height:12px;background:linear-gradient(180deg,#6366f1,#8b5cf6);border-radius:2px;}
+.pkg-proposal-client{font-size:.65rem;color:var(--dim);margin-bottom:.75rem;padding-bottom:.65rem;border-bottom:1px solid var(--border);}
+.pkg-proposal-client strong{color:var(--muted);}
+.pkg-proposal-base{margin-bottom:.85rem;padding-bottom:.85rem;border-bottom:1px solid var(--border);}
+.pkg-proposal-base-name{font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:.4rem;display:flex;justify-content:space-between;}
+.pkg-proposal-include{font-size:.65rem;color:var(--dim);line-height:1.8;}
+.pkg-proposal-include span{display:block;}
+.pkg-proposal-include span::before{content:'✓ ';color:rgba(99,102,241,0.7);}
+.pkg-addons-list{margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+.pkg-addons-list-title{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;}
+.pkg-proposal-line{display:flex;justify-content:space-between;align-items:baseline;font-size:.72rem;margin-bottom:.3rem;}
+.pkg-proposal-line-name{color:var(--muted);flex:1;}
+.pkg-proposal-line-val{font-weight:600;color:var(--text);white-space:nowrap;margin-left:.5rem;}
+.pkg-totals{margin-bottom:.85rem;}
+.pkg-total-row{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;margin-bottom:.3rem;}
+.pkg-total-row.final{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);}
+.pkg-total-row .label{color:var(--muted);}
+.pkg-total-row .val{font-weight:700;}
+.pkg-total-row.final .val{background:linear-gradient(135deg,#fff,rgba(165,180,252,0.9));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pkg-discount-row{display:flex;gap:.4rem;margin-bottom:.85rem;align-items:center;}
+.pkg-discount-type{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);padding:.35rem .6rem;font-size:.65rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer;transition:all .15s;}
+.pkg-discount-type:focus{border-color:#6366f1;}
+.pkg-discount-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.35rem .6rem;font-size:.75rem;font-family:'Inter',sans-serif;outline:none;transition:all .15s;}
+.pkg-discount-input:focus{border-color:#6366f1;}
+.pkg-discount-label{font-size:.6rem;color:var(--dim);white-space:nowrap;}
+.pkg-rate-row{display:flex;gap:.5rem;margin-bottom:.85rem;}
+.pkg-rate-badge{flex:1;padding:.5rem .65rem;border-radius:var(--rs);border:1px solid var(--border);text-align:center;}
+.pkg-rate-badge-val{font-family:'Space Grotesk',sans-serif;font-size:.9rem;font-weight:700;}
+.pkg-rate-badge-label{font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:.1rem;}
+.pkg-warn{font-size:.68rem;padding:.5rem .75rem;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:var(--rs);color:var(--amber);margin-bottom:.75rem;display:none;}
+.pkg-warn.show{display:block;}
+.pkg-action-row{display:flex;gap:.4rem;flex-wrap:wrap;}
+.pkg-action-btn{flex:1;padding:.5rem;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--muted);font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-family:'Inter',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.pkg-action-btn:hover{border-color:var(--border-h);color:var(--text);}
+.pkg-action-btn.primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(99,102,241,0.3);}
+.pkg-action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,0.4);}
 .voice-btn{
   display:flex;align-items:center;gap:.45rem;
   padding:.5rem 1rem;border:1px solid rgba(99,102,241,0.35);border-radius:var(--rs);
@@ -1015,87 +1096,48 @@ body::before{
       <div class="section-header">
         <div>
           <div class="section-title">Package Builder</div>
-          <div class="section-sub">Configure client packages · AI-generate static post content</div>
+          <div class="section-sub">Build bespoke quotes · Add-ons · Hourly rate checker · Copy proposal</div>
         </div>
       </div>
-      <div class="pkg-layout">
-        <!-- CONFIG PANEL -->
-        <div class="pkg-panel">
-          <div class="pkg-panel-title">Package Configuration</div>
-          <div class="pkg-field">
-            <label>Client</label>
-            <select class="pkg-select" id="pkgClient" onchange="pkgUpdate()">
-              <option value="">— Custom / No client —</option>
+      <div class="pkg-builder-layout">
+        <!-- LEFT: CLIENT + ADD-ONS -->
+        <div>
+          <div class="pkg-client-row">
+            <select class="pkg-select" id="pkgClient" onchange="pbClientChange()" style="max-width:220px;">
+              <option value="">— No client / Custom —</option>
             </select>
+            <input class="pkg-input" id="pkgClientName" placeholder="Client / Quote name">
           </div>
-          <div class="pkg-field">
-            <label>Business Name</label>
-            <input class="pkg-input" id="pkgBizName" placeholder="e.g. Wallis & Co" oninput="pkgUpdate()">
-          </div>
-          <div class="pkg-field">
-            <label>Business Type / Niche</label>
-            <input class="pkg-input" id="pkgBizType" placeholder="e.g. Restaurant, Marina" oninput="pkgUpdate()">
-          </div>
-          <div class="pkg-field">
-            <label>Content Tone</label>
-            <select class="pkg-select" id="pkgTone" onchange="pkgUpdate()">
-              <option value="professional">Professional</option>
-              <option value="friendly and casual">Friendly & Casual</option>
-              <option value="fun and energetic">Fun & Energetic</option>
-              <option value="luxury and premium">Luxury & Premium</option>
-              <option value="local and community-focused">Local & Community</option>
-            </select>
-          </div>
-          <div class="pkg-field">
-            <label>Platforms</label>
-            <div class="pkg-platforms" id="pkgPlatforms">
-              <div class="pkg-plat-chip active" data-plat="Instagram" onclick="pkgTogglePlat(this)">Instagram</div>
-              <div class="pkg-plat-chip active" data-plat="TikTok" onclick="pkgTogglePlat(this)">TikTok</div>
-              <div class="pkg-plat-chip" data-plat="Facebook" onclick="pkgTogglePlat(this)">Facebook</div>
-              <div class="pkg-plat-chip" data-plat="Twitter" onclick="pkgTogglePlat(this)">Twitter/X</div>
-            </div>
-          </div>
-          <div class="pkg-field">
-            <label>Videos per month</label>
-            <div class="pkg-stepper">
-              <button class="pkg-step-btn" onclick="pkgStep('videos',-1)">−</button>
-              <div class="pkg-step-val" id="pkgVideosVal">4</div>
-              <button class="pkg-step-btn" onclick="pkgStep('videos',1)">+</button>
-            </div>
-          </div>
-          <div class="pkg-field">
-            <label>Static posts per month</label>
-            <div class="pkg-stepper">
-              <button class="pkg-step-btn" onclick="pkgStep('posts',-1)">−</button>
-              <div class="pkg-step-val" id="pkgPostsVal">8</div>
-              <button class="pkg-step-btn" onclick="pkgStep('posts',1)">+</button>
-            </div>
-          </div>
-          <div class="pkg-field">
-            <div class="pkg-toggle-row">
-              <span class="pkg-toggle-label">Auto-schedule to calendar</span>
-              <label class="pkg-toggle">
-                <input type="checkbox" id="pkgSchedule" onchange="pkgUpdate()">
-                <div class="pkg-toggle-track"></div>
-                <div class="pkg-toggle-thumb"></div>
-              </label>
-            </div>
-          </div>
-          <div class="pkg-summary" id="pkgSummary"></div>
-          <div style="font-size:.72rem;color:var(--dim);padding:.75rem;border:1px dashed rgba(255,255,255,0.08);border-radius:var(--rs);text-align:center;line-height:1.6;">
-            ✦ To generate AI posts, open a <strong style="color:var(--muted);">Client card</strong> and click <strong style="color:var(--muted);">Generate Posts</strong>
-          </div>
+          <div class="pkg-base-grid" id="pbBaseGrid"></div>
+          <div class="pkg-addons-wrap" id="pbAddonsWrap"></div>
         </div>
-        <!-- PACKAGE NOTES -->
-        <div class="pkg-panel">
-          <div class="pkg-panel-title">How it works</div>
-          <div style="font-size:.78rem;color:var(--muted);line-height:1.8;">
-            <div style="margin-bottom:.85rem;">Use this panel to plan the package for each client — set how many videos and static posts per month, which platforms, and whether to auto-schedule.</div>
-            <div style="margin-bottom:.85rem;"><strong style="color:var(--text);">To generate AI captions:</strong><br>Go to <strong>Clients</strong>, open any client card, and click <strong>✦ Generate Posts</strong>. You'll be able to give context on what each post is about before generating.</div>
-            <div style="padding:.85rem;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:var(--rs);font-size:.72rem;">
-              <strong style="color:#a5b4fc;">AI generation uses your Anthropic API key.</strong><br>
-              You'll be prompted for it the first time you generate in a client card. It's saved in your browser — you won't need to enter it again.
+        <!-- RIGHT: LIVE PROPOSAL -->
+        <div class="pkg-proposal-panel">
+          <div class="pkg-proposal-title">Live Quote</div>
+          <div class="pkg-proposal-client" id="pbProposalClient">No client selected</div>
+          <div class="pkg-proposal-base" id="pbProposalBase"></div>
+          <div class="pkg-addons-list" id="pbProposalAddons" style="display:none;">
+            <div class="pkg-addons-list-title">Add-Ons</div>
+            <div id="pbAddonLines"></div>
+          </div>
+          <div class="pkg-totals" id="pbTotals"></div>
+          <div style="margin-bottom:.6rem;">
+            <div class="pkg-discount-label" style="margin-bottom:.35rem;">Discount</div>
+            <div class="pkg-discount-row">
+              <select class="pkg-discount-type" id="pbDiscType" onchange="pbCalc()">
+                <option value="pct">%</option>
+                <option value="fixed">£</option>
+              </select>
+              <input class="pkg-discount-input" id="pbDiscVal" type="number" min="0" placeholder="0" oninput="pbCalc()">
+              <span class="pkg-discount-label" id="pbDiscLabel"></span>
             </div>
+          </div>
+          <div class="pkg-rate-row" id="pbRateRow"></div>
+          <div class="pkg-warn" id="pbWarn">⚠ Rate below £25/hr — consider pricing up</div>
+          <div class="pkg-action-row">
+            <button class="pkg-action-btn primary" onclick="pbCopyProposal()">Copy Proposal</button>
+            <button class="pkg-action-btn" onclick="pbSaveTemplate()">Save Template</button>
+            <button class="pkg-action-btn" onclick="pbLoadTemplate()">Load Template</button>
           </div>
         </div>
       </div>
@@ -2267,121 +2309,296 @@ function processVoiceLead(text){
 // ─────────────────────────────────────────
 // PACKAGE BUILDER
 // ─────────────────────────────────────────
-const PKG={videos:4,posts:8};
+// ─────────────────────────────────────────
+// PACKAGE BUILDER v2
+// ─────────────────────────────────────────
+const BASE_PKGS={
+  starter:{id:'starter',name:'Starter',price:250,hours:14,popular:false,includes:['1 shoot per month','4 professionally edited reels','4 branded static posts','Content planning','Scheduling','Caption writing','Facebook & Instagram']},
+  growth:{id:'growth',name:'Growth',price:450,hours:27,popular:true,includes:['1 shoot per month','8 reels','8 static posts','Drone footage','Meta Glasses POV','Content planning','Scheduling','Captions','Monthly strategy call']},
+  premium:{id:'premium',name:'Premium',price:700,hours:48,popular:false,includes:['2 shoots per month','12–16 reels','12 static posts','Drone footage','Meta Glasses','Professional photography','Priority editing','Full social management','Monthly performance report']},
+  bespoke:{id:'bespoke',name:'Bespoke',price:0,hours:0,popular:false,includes:['Fully custom package — build with add-ons below']}
+};
+const ADDON_CATS=[
+  {id:'content',label:'Content',items:[
+    {id:'xreel',name:'Extra Reel (30–60 sec)',price:40,type:'each',hours:2.5},
+    {id:'xstatic',name:'Extra Static Graphic',price:20,type:'each',hours:0.5},
+    {id:'carousel',name:'Carousel Post (up to 5 slides)',price:30,type:'each',hours:1},
+    {id:'storyset',name:'Story Set (3 branded stories)',price:20,type:'each',hours:0.5},
+    {id:'shortpromo',name:'Short Promo Video (15–20 sec)',price:35,type:'each',hours:1.5},
+    {id:'longpromo',name:'Long Promo Video (60–90 sec)',price:75,type:'each',hours:3},
+    {id:'photography',name:'Professional Photography (10 edited)',price:50,type:'each',hours:2},
+    {id:'ximage',name:'Extra Edited Images',price:5,type:'each',hours:0.25},
+  ]},
+  {id:'filming',label:'Filming',items:[
+    {id:'xshoot',name:'Extra Shoot (up to 2 hours)',price:100,type:'each',hours:2},
+    {id:'halfday',name:'Half Day Shoot',price:175,type:'each',hours:4},
+    {id:'fullday',name:'Full Day Shoot',price:300,type:'each',hours:8},
+    {id:'drone',name:'Drone Footage Only',price:75,type:'each',hours:1.5},
+    {id:'metaglasses',name:'Meta Glasses POV Shoot',price:50,type:'each',hours:1},
+    {id:'sunrise',name:'Sunrise / Sunset Shoot',price:50,type:'each',hours:2},
+    {id:'event',name:'Event Coverage',price:150,type:'each',hours:4,note:'From'},
+  ]},
+  {id:'social',label:'Social Media',items:[
+    {id:'captionwriting',name:'Caption Writing',price:25,type:'monthly',hours:1},
+    {id:'scheduling',name:'Content Scheduling',price:40,type:'monthly',hours:1},
+    {id:'fb_mgmt',name:'Facebook Management',price:75,type:'monthly',hours:3},
+    {id:'ig_mgmt',name:'Instagram Management',price:75,type:'monthly',hours:3},
+    {id:'tt_mgmt',name:'TikTok Management',price:75,type:'monthly',hours:3},
+    {id:'li_mgmt',name:'LinkedIn Management',price:75,type:'monthly',hours:3},
+    {id:'xplatform',name:'Additional Platform',price:50,type:'monthly',hours:2},
+    {id:'hashtags',name:'Hashtag Research',price:20,type:'monthly',hours:0.5},
+    {id:'analytics_rep',name:'Monthly Analytics Report',price:40,type:'monthly',hours:1.5},
+    {id:'strategy_call',name:'Monthly Strategy Call',price:50,type:'monthly',hours:1},
+    {id:'community_mgmt',name:'Community Management',price:150,type:'monthly',hours:5,note:'From'},
+  ]},
+  {id:'branding',label:'Branding',items:[
+    {id:'logo',name:'Logo Design',price:200,type:'each',hours:6},
+    {id:'menudesign',name:'Menu Design',price:75,type:'each',hours:3},
+    {id:'poster',name:'Poster Design',price:30,type:'each',hours:1.5},
+    {id:'flyer',name:'Flyer Design',price:50,type:'each',hours:2},
+    {id:'giftvoucher',name:'Gift Voucher Design',price:30,type:'each',hours:1},
+    {id:'pricelist',name:'Price List Design',price:30,type:'each',hours:1},
+    {id:'bizcard',name:'Business Card Design',price:50,type:'each',hours:1.5},
+  ]},
+  {id:'advertising',label:'Advertising',items:[
+    {id:'fb_ads',name:'Facebook Ad Setup',price:100,type:'each',hours:2},
+    {id:'ig_ads',name:'Instagram Ad Setup',price:100,type:'each',hours:2},
+    {id:'ad_mgmt',name:'Monthly Ad Management',price:200,type:'monthly',hours:4,note:'From'},
+  ]},
+  {id:'website',label:'Website',items:[
+    {id:'landing',name:'Landing Page',price:250,type:'each',hours:8},
+    {id:'webaudit',name:'Website Audit',price:75,type:'each',hours:2},
+    {id:'googlebiz',name:'Google Business Optimisation',price:75,type:'each',hours:2},
+  ]},
+  {id:'travel',label:'Travel',items:[
+    {id:'travel20',name:'Travel within 20 miles',price:0,type:'each',hours:0,note:'Included'},
+    {id:'travel50',name:'Travel 20–50 miles',price:20,type:'each',hours:0},
+    {id:'travel100',name:'Travel 50–100 miles',price:40,type:'each',hours:0},
+    {id:'travel100plus',name:'Travel 100+ miles',price:0,type:'each',hours:0,note:'Custom'},
+    {id:'abroad',name:'Abroad Shoots',price:0,type:'each',hours:0,note:'Custom'},
+  ]},
+  {id:'hospitality',label:'Hospitality',items:[
+    {id:'roomtour',name:'Room Tour',price:60,type:'each',hours:1.5},
+    {id:'restaurant_show',name:'Restaurant Showcase',price:60,type:'each',hours:1.5},
+    {id:'pool_show',name:'Pool Showcase',price:50,type:'each',hours:1},
+    {id:'spa_show',name:'Spa Showcase',price:50,type:'each',hours:1},
+    {id:'dining_feat',name:'Breakfast / Lunch / Dinner Feature',price:40,type:'each',hours:1},
+    {id:'guestreel',name:'Guest Experience Reel',price:50,type:'each',hours:1.5},
+    {id:'lifestyle',name:'Lifestyle Shoot',price:75,type:'each',hours:2},
+  ]},
+];
+const MIN_RATE=25;
+let PB={base:'starter',addons:{},openCats:new Set(['content'])};
 
-function pkgStep(field,dir){
-  PKG[field]=Math.max(0,(PKG[field]||0)+dir);
-  document.getElementById(field==='videos'?'pkgVideosVal':'pkgPostsVal').textContent=PKG[field];
-  pkgUpdate();
-}
-function pkgTogglePlat(el){el.classList.toggle('active');pkgUpdate();}
-function pkgUpdate(){
-  const clientId=document.getElementById('pkgClient')?.value;
-  if(clientId){const c=S.clients.find(x=>x.id===clientId);if(c){document.getElementById('pkgBizName').value=c.name;document.getElementById('pkgBizType').value=c.type||'';}}
-  const plats=[...document.querySelectorAll('.pkg-plat-chip.active')].map(el=>el.dataset.plat);
-  const videos=PKG.videos,posts=PKG.posts;
-  const scheduled=document.getElementById('pkgSchedule')?.checked;
-  document.getElementById('pkgSummary').innerHTML=`
-    <div class="pkg-summary-row"><span class="pkg-summary-label">Videos / month</span><span class="pkg-summary-val">${videos}</span></div>
-    <div class="pkg-summary-row"><span class="pkg-summary-label">Static posts / month</span><span class="pkg-summary-val">${posts}</span></div>
-    <div class="pkg-summary-row"><span class="pkg-summary-label">Platforms</span><span class="pkg-summary-val">${plats.length?plats.join(', '):'None'}</span></div>
-    <div class="pkg-summary-row"><span class="pkg-summary-label">Scheduled</span><span class="pkg-summary-val">${scheduled?'Yes':'No'}</span></div>
-    <div class="pkg-summary-row"><span class="pkg-summary-label">Total pieces</span><span class="pkg-summary-val accent">${videos+posts}</span></div>`;
-}
 function getPkgAiKey(){return localStorage.getItem('las_ai_key')||'';}
-function savePkgAiKey(){
-  const k=document.getElementById('pkgAiKey').value.trim();if(!k)return;
-  localStorage.setItem('las_ai_key',k);
-  document.getElementById('pkgAiKeyRow').style.display='none';
-  generatePosts();
+
+function initPackageBuilder(){
+  // Client dropdown
+  const sel=document.getElementById('pkgClient');
+  if(sel) sel.innerHTML='<option value="">— No client / Custom —</option>'+S.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  // Base packages
+  const bg=document.getElementById('pbBaseGrid');
+  if(bg) bg.innerHTML=Object.values(BASE_PKGS).map(p=>`<div class="pkg-base-card${p.id===PB.base?' selected':''}" onclick="pbSelectBase('${p.id}')">
+    ${p.popular?'<div class="pkg-popular-badge">Popular</div>':''}
+    <div class="pkg-base-name">${p.name}</div>
+    <div class="pkg-base-price">${p.price?'£'+p.price:'Custom'}</div>
+    <div class="pkg-base-sub">${p.price?'per month':''}</div>
+  </div>`).join('');
+  // Add-ons
+  const aw=document.getElementById('pbAddonsWrap');
+  if(aw) aw.innerHTML=ADDON_CATS.map(cat=>`<div class="pkg-cat${PB.openCats.has(cat.id)?' open':''}" id="pbcat_${cat.id}">
+    <div class="pkg-cat-head" onclick="pbToggleCat('${cat.id}')">
+      <span class="pkg-cat-label"><span class="pkg-cat-dot"></span>${cat.label}</span>
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <span class="pkg-cat-meta" id="pbcatmeta_${cat.id}"></span>
+        <span class="pkg-cat-arrow">▾</span>
+      </div>
+    </div>
+    <div class="pkg-cat-body">
+      ${cat.items.map(item=>{
+        const st=PB.addons[item.id]||{on:false,qty:1,price:item.price};
+        const isMonthly=item.type==='monthly';
+        const isCustom=item.price===0&&item.note==='Custom';
+        return `<div class="pkg-addon-row${st.on?' on':''}" id="pbrow_${item.id}">
+          <input type="checkbox" class="pkg-addon-cb" id="pbcb_${item.id}"${st.on?' checked':''} onchange="pbToggleAddon('${item.id}')">
+          <label class="pkg-addon-name" for="pbcb_${item.id}">${item.name}${isMonthly?'<span style="font-size:.58rem;color:var(--dim);"> /mo</span>':''}</label>
+          ${item.note?`<span class="pkg-addon-note">${item.note}</span>`:''}
+          ${!isMonthly&&!isCustom?`<div class="pkg-addon-qty">
+            <button class="pkg-addon-qty-btn" onclick="pbAdjQty('${item.id}',-1)">−</button>
+            <div class="pkg-addon-qty-val" id="pbqty_${item.id}">${st.qty}</div>
+            <button class="pkg-addon-qty-btn" onclick="pbAdjQty('${item.id}',1)">+</button>
+          </div>`:''}
+          ${!isCustom?`<div class="pkg-addon-price-wrap">
+            <span class="pkg-addon-price-prefix">£</span>
+            <input class="pkg-addon-price-input" type="number" id="pbprice_${item.id}" value="${st.price}" oninput="pbPriceChange('${item.id}',this.value)" min="0">
+          </div>
+          <div class="pkg-addon-line${st.on?' active':''}" id="pbline_${item.id}">£${isMonthly?st.price:st.qty*st.price}</div>`:'<div class="pkg-addon-line" style="color:var(--dim)">TBC</div>'}
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`).join('');
+  pbCalc();
 }
-async function generatePosts(){
-  const key=getPkgAiKey();
-  if(!key){document.getElementById('pkgAiKeyRow').style.display='block';document.getElementById('pkgPostsOutput').innerHTML='<div class="pkg-empty-posts"><div class="pkg-empty-icon">🔑</div><div>Enter your Anthropic API key above.</div></div>';return;}
-  const bizName=document.getElementById('pkgBizName').value.trim()||'this business';
-  const bizType=document.getElementById('pkgBizType').value.trim()||'local business';
-  const tone=document.getElementById('pkgTone').value;
-  const plats=[...document.querySelectorAll('.pkg-plat-chip.active')].map(el=>el.dataset.plat);
-  const postCount=Math.max(1,PKG.posts);
-  const scheduled=document.getElementById('pkgSchedule')?.checked;
-  const btn=document.getElementById('pkgGenBtn');
-  const out=document.getElementById('pkgPostsOutput');
-  btn.disabled=true;btn.textContent='✦ Generating...';
-  out.innerHTML='<div class="pkg-empty-posts"><div class="pkg-empty-icon" style="animation:pulse 1.2s infinite">✦</div><div>Writing your posts...</div></div>';
-  const prompt=`You are a social media content creator for a UK social media agency. Generate ${postCount} static social media post captions.
-Business: ${bizName}
-Type: ${bizType}
-Platforms: ${plats.length?plats.join(', '):'Instagram, Facebook'}
-Tone: ${tone}
-Location: UK
 
-Return ONLY a JSON array of exactly ${postCount} objects. Each object:
-{"platform":"Instagram","caption":"caption text with emojis, 80-150 words, UK English","visual":"ideal image description 1-2 sentences","hashtags":["tag1","tag2","tag3","tag4","tag5","tag6"]}
+function pbClientChange(){
+  const id=document.getElementById('pkgClient')?.value;
+  if(id){const c=S.clients.find(x=>x.id===id);if(c)document.getElementById('pkgClientName').value=c.name;}
+  pbCalc();
+}
 
-Vary post types: promotional, behind-the-scenes, educational, community, showcase. No markdown, no explanation.`;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})
+function pbSelectBase(id){
+  PB.base=id;
+  document.querySelectorAll('.pkg-base-card').forEach(el=>el.classList.remove('selected'));
+  const cards=document.querySelectorAll('.pkg-base-card');
+  const idx=Object.keys(BASE_PKGS).indexOf(id);
+  if(cards[idx])cards[idx].classList.add('selected');
+  pbCalc();
+}
+
+function pbToggleCat(id){
+  const el=document.getElementById('pbcat_'+id);
+  if(!el)return;
+  el.classList.toggle('open');
+  if(el.classList.contains('open'))PB.openCats.add(id);else PB.openCats.delete(id);
+}
+
+function pbToggleAddon(id){
+  const cb=document.getElementById('pbcb_'+id);
+  if(!PB.addons[id]){const item=ADDON_CATS.flatMap(c=>c.items).find(x=>x.id===id);PB.addons[id]={on:false,qty:1,price:item?.price||0};}
+  PB.addons[id].on=cb.checked;
+  const row=document.getElementById('pbrow_'+id);
+  if(row){row.classList.toggle('on',cb.checked);}
+  pbCalc();
+}
+
+function pbAdjQty(id,dir){
+  if(!PB.addons[id]){const item=ADDON_CATS.flatMap(c=>c.items).find(x=>x.id===id);PB.addons[id]={on:false,qty:1,price:item?.price||0};}
+  PB.addons[id].qty=Math.max(1,(PB.addons[id].qty||1)+dir);
+  const el=document.getElementById('pbqty_'+id);if(el)el.textContent=PB.addons[id].qty;
+  pbCalc();
+}
+
+function pbPriceChange(id,val){
+  if(!PB.addons[id]){const item=ADDON_CATS.flatMap(c=>c.items).find(x=>x.id===id);PB.addons[id]={on:false,qty:1,price:item?.price||0};}
+  PB.addons[id].price=parseFloat(val)||0;
+  pbCalc();
+}
+
+function pbCalc(){
+  const base=BASE_PKGS[PB.base]||BASE_PKGS.starter;
+  let addonTotal=0,addonHours=0;
+  const enabledAddons=[];
+  ADDON_CATS.forEach(cat=>{
+    let catTotal=0;
+    cat.items.forEach(item=>{
+      const st=PB.addons[item.id]||{on:false,qty:1,price:item.price};
+      const price=st.price??item.price;
+      const qty=item.type==='monthly'?1:(st.qty||1);
+      const line=st.on?(price*qty):0;
+      // Update line display
+      const lineEl=document.getElementById('pbline_'+item.id);
+      if(lineEl){lineEl.textContent='£'+line;lineEl.classList.toggle('active',st.on&&line>0);}
+      if(st.on){addonTotal+=line;addonHours+=(item.hours||0)*qty;catTotal+=line;enabledAddons.push({name:item.name,line,type:item.type});}
     });
-    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'API error '+res.status);}
-    const data=await res.json();
-    let raw=data.content[0].text.trim().replace(/```json|```/g,'').trim();
-    renderGeneratedPosts(JSON.parse(raw),scheduled,bizName);
-  }catch(e){
-    out.innerHTML=`<div class="pkg-empty-posts"><div class="pkg-empty-icon">⚠</div><div>Error: ${esc(e.message)}</div></div>`;
-    if(e.message.includes('401')||e.message.includes('invalid')){localStorage.removeItem('las_ai_key');document.getElementById('pkgAiKeyRow').style.display='block';}
-  }finally{btn.disabled=false;btn.textContent='✦ Generate AI Posts';}
-}
-function renderGeneratedPosts(posts,scheduled,bizName){
-  const out=document.getElementById('pkgPostsOutput');
-  if(!posts?.length){out.innerHTML='<div class="pkg-empty-posts">No posts returned. Try again.</div>';return;}
-  out.innerHTML=`<div style="font-size:.68rem;color:var(--dim);margin-bottom:.85rem;">${posts.length} posts for <strong style="color:var(--muted)">${esc(bizName)}</strong></div>
-  <div class="pkg-posts-grid">${posts.map((p,i)=>{
-    const pk=p.platform?.toLowerCase().includes('instagram')?'instagram':p.platform?.toLowerCase().includes('tiktok')?'tiktok':p.platform?.toLowerCase().includes('facebook')?'facebook':'general';
-    const tags=(p.hashtags||[]).map(h=>`<span class="pkg-post-tag">#${esc(String(h).replace('#',''))}</span>`).join('');
-    return `<div class="pkg-post-card">
-      <div class="pkg-post-header">
-        <span class="pkg-post-plat ${pk}">${esc(p.platform||'General')}</span>
-        <span class="pkg-post-num">${i+1} / ${posts.length}</span>
-      </div>
-      <textarea class="pkg-post-caption" id="ppc_${i}">${esc(p.caption||'')}</textarea>
-      <div class="pkg-post-visual"><strong>📸 Visual</strong>${esc(p.visual||'')}</div>
-      <div class="pkg-post-tags">${tags}</div>
-      <div class="pkg-post-actions">
-        <button class="pkg-post-btn" onclick="copyPost(${i})">Copy</button>
-        <button class="pkg-post-btn primary" id="sched_${i}" onclick="schedulePost(${i},'${esc(bizName)}','${esc(p.platform||'')}')">+ Calendar</button>
-      </div>
+    // Cat meta
+    const metaEl=document.getElementById('pbcatmeta_'+cat.id);
+    if(metaEl)metaEl.textContent=catTotal?'£'+catTotal:'';
+  });
+  const subtotal=base.price+addonTotal;
+  const discType=document.getElementById('pbDiscType')?.value||'pct';
+  const discVal=parseFloat(document.getElementById('pbDiscVal')?.value)||0;
+  const discAmt=discType==='pct'?Math.round(subtotal*(discVal/100)*100)/100:discVal;
+  const total=Math.max(0,subtotal-discAmt);
+  const totalHours=base.hours+addonHours;
+  const rate=totalHours>0?Math.round((total/totalHours)*100)/100:0;
+  const label=document.getElementById('pbDiscLabel');
+  if(label)label.textContent=discVal?`= £${discAmt.toFixed(2)} off`:'';
+  // Update proposal
+  const clientName=document.getElementById('pkgClientName')?.value||document.getElementById('pkgClient')?.selectedOptions[0]?.text||'';
+  const pcEl=document.getElementById('pbProposalClient');
+  if(pcEl)pcEl.innerHTML=clientName?`<strong>${esc(clientName)}</strong>`:' <em>No client</em>';
+  const pbEl=document.getElementById('pbProposalBase');
+  if(pbEl)pbEl.innerHTML=`<div class="pkg-proposal-base-name"><span>${base.name}</span><span>£${base.price}/mo</span></div>
+    <div class="pkg-proposal-include">${base.includes.map(i=>`<span>${esc(i)}</span>`).join('')}</div>`;
+  const adEl=document.getElementById('pbProposalAddons');
+  const alEl=document.getElementById('pbAddonLines');
+  if(adEl&&alEl){
+    adEl.style.display=enabledAddons.length?'block':'none';
+    alEl.innerHTML=enabledAddons.map(a=>`<div class="pkg-proposal-line">
+      <span class="pkg-proposal-line-name">${esc(a.name)}${a.type==='monthly'?' <span style="color:var(--dim);font-size:.6rem;">/mo</span>':''}</span>
+      <span class="pkg-proposal-line-val">£${a.line}</span>
+    </div>`).join('');
+  }
+  const totEl=document.getElementById('pbTotals');
+  if(totEl)totEl.innerHTML=`
+    ${addonTotal?`<div class="pkg-total-row"><span class="label">Base</span><span class="val">£${base.price}</span></div>
+    <div class="pkg-total-row"><span class="label">Add-ons</span><span class="val">£${addonTotal}</span></div>`:''}
+    <div class="pkg-total-row"><span class="label">Subtotal</span><span class="val">£${subtotal}/mo</span></div>
+    ${discAmt?`<div class="pkg-total-row"><span class="label">Discount</span><span class="val" style="color:#10b981;">−£${discAmt.toFixed(2)}</span></div>`:''}
+    <div class="pkg-total-row final"><span class="label">Total</span><span class="val">£${total}/mo</span></div>`;
+  const rrEl=document.getElementById('pbRateRow');
+  if(rrEl)rrEl.innerHTML=`
+    <div class="pkg-rate-badge" style="border-color:rgba(255,255,255,0.08);">
+      <div class="pkg-rate-badge-val">${totalHours}h</div>
+      <div class="pkg-rate-badge-label">Est. Hours</div>
+    </div>
+    <div class="pkg-rate-badge" style="border-color:${rate<MIN_RATE?'rgba(245,158,11,0.3)':'rgba(16,185,129,0.3)'};">
+      <div class="pkg-rate-badge-val" style="color:${rate<MIN_RATE?'var(--amber)':'#10b981'};">£${rate}/hr</div>
+      <div class="pkg-rate-badge-label">Effective Rate</div>
     </div>`;
-  }).join('')}</div>`;
-  if(scheduled)posts.forEach((_,i)=>schedulePost(i,bizName,posts[i].platform||''));
+  const warnEl=document.getElementById('pbWarn');
+  if(warnEl)warnEl.classList.toggle('show',rate>0&&rate<MIN_RATE);
+  PB._total=total;PB._subtotal=subtotal;PB._discAmt=discAmt;PB._hours=totalHours;PB._rate=rate;PB._enabledAddons=enabledAddons;PB._base=base;PB._client=clientName;
 }
-function copyPost(i){
-  const el=document.getElementById('ppc_'+i);if(!el)return;
-  navigator.clipboard.writeText(el.value).then(()=>{
-    const card=el.closest('.pkg-post-card');
-    const btn=card.querySelector('.pkg-post-btn');
-    const o=btn.textContent;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent=o,1500);
+
+function pbCopyProposal(){
+  const b=PB._base||BASE_PKGS.starter;
+  const addons=PB._enabledAddons||[];
+  const lines=[
+    `QUOTE — ${PB._client||'Client'} — ${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}`,
+    '═'.repeat(50),'',
+    `BASE PACKAGE: ${b.name} — £${b.price}/month`,
+    ...(b.includes||[]).map(i=>`  ✓ ${i}`),
+  ];
+  if(addons.length){
+    lines.push('','ADD-ONS:');
+    addons.forEach(a=>{
+      const dots='.'.repeat(Math.max(2,38-a.name.length));
+      lines.push(`  ${a.name} ${dots} £${a.line}${a.type==='monthly'?'/mo':''}`);
+    });
+  }
+  lines.push('','─'.repeat(50));
+  if(PB._subtotal!==PB._total)lines.push(`SUBTOTAL${' '.repeat(41-8)}£${PB._subtotal}/mo`);
+  if(PB._discAmt)lines.push(`DISCOUNT${' '.repeat(41-8)}−£${PB._discAmt.toFixed(2)}`);
+  lines.push(`${'TOTAL'.padEnd(41)}£${PB._total}/mo`,'','─'.repeat(50));
+  lines.push(`ESTIMATED HOURS: ${PB._hours}hrs/month`);
+  lines.push(`EFFECTIVE RATE: £${PB._rate}/hr`);
+  if(PB._rate<MIN_RATE)lines.push('⚠ Rate below £25/hr');
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const btn=document.querySelector('.pkg-action-btn.primary');
+    const o=btn.textContent;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent=o,2000);
   });
 }
-function schedulePost(i,bizName,platform){
-  const el=document.getElementById('ppc_'+i);
-  const clientMatch=S.clients.find(c=>c.name===bizName);
-  const entry={id:uid(),date:getNextPostDate(i),time:'10:00',clientId:clientMatch?.id||null,contentType:'Post',platform,notes:(el?.value||'').slice(0,120)};
-  sbUp('calendar',toCal(entry));S.calendar.push(entry);renderCalendar();renderHome();
-  const btn=document.getElementById('sched_'+i);
-  if(btn){btn.textContent='✓ Scheduled';btn.style.color='#10b981';btn.style.borderColor='rgba(16,185,129,0.4)';}
+
+function pbSaveTemplate(){
+  const name=prompt('Template name:');if(!name)return;
+  const templates=JSON.parse(localStorage.getItem('las_pkg_templates')||'[]');
+  templates.push({name,base:PB.base,addons:JSON.parse(JSON.stringify(PB.addons))});
+  localStorage.setItem('las_pkg_templates',JSON.stringify(templates));
+  alert('Template "'+name+'" saved.');
 }
-function getNextPostDate(offset){
-  const d=new Date();d.setDate(d.getDate()+offset+1);
-  while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);
-  return dateStr(d);
-}
-function initPackageBuilder(){
-  const sel=document.getElementById('pkgClient');if(!sel)return;
-  sel.innerHTML='<option value="">— Custom / No client —</option>'+S.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  pkgUpdate();
+
+function pbLoadTemplate(){
+  const templates=JSON.parse(localStorage.getItem('las_pkg_templates')||'[]');
+  if(!templates.length){alert('No saved templates yet.');return;}
+  const names=templates.map((t,i)=>`${i+1}. ${t.name}`).join('\n');
+  const choice=prompt('Choose template:\n'+names+'\n\nEnter number:');
+  const idx=parseInt(choice)-1;
+  if(isNaN(idx)||!templates[idx])return;
+  const t=templates[idx];
+  PB.base=t.base;
+  PB.addons=JSON.parse(JSON.stringify(t.addons));
+  initPackageBuilder();
 }
 
 window.addEventListener('load',async()=>{
