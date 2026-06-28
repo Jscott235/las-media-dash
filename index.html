@@ -1440,5 +1440,58 @@ async function doSaveStats(id){
   const c=S.clients.find(x=>x.id===id);if(!c)return;
   const plats=c.platforms||[];
   if(!c.analytics)c.analytics={};
+  plats.forEach(p=>{
+    c.analytics[p]={
+      views:parseInt(document.getElementById('ms_'+p+'_views')?.value)||0,
+      likes:parseInt(document.getElementById('ms_'+p+'_likes')?.value)||0,
+      followers:parseInt(document.getElementById('ms_'+p+'_followers')?.value)||0,
+    };
+  });
+  c.lastPost=document.getElementById('ms_lastpost')?.value.trim()||c.lastPost;
+  await sbUp('clients',toClient(c));
+  closeModal();renderClients();
+}
+
+// ─────────────────────────────────────────
+// SCANNER (Google Maps API wired at handover)
+// ─────────────────────────────────────────
+function toggleScanner(){
+  const wrap=document.getElementById('scannerWrap');
+  const btn=document.getElementById('scannerToggleBtn');
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  btn.textContent=open?'− Hide Scanner':'+ Show Scanner';
+}
+function runScanner(){
+  const q=document.getElementById('scannerInput').value.trim();if(!q)return;
+  const results=[
+    {name:'The Anchor Pub',meta:'Church Street · No social presence detected'},
+    {name:'Headland Fish & Chips',meta:'The Headland · Facebook only, last post 2 months ago'},
+    {name:'Hartlepool Flowers',meta:'Lynn Street · Instagram 180 followers, weak content'},
+  ];
+  document.getElementById('scannerResults').innerHTML=results.map((r,i)=>`<div class="scan-result">
+    <div><div class="sr-name">${esc(r.name)}</div><div class="sr-meta">${esc(r.meta)}</div></div>
+    <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${esc(r.name)}')">Add to list</button>
+  </div>`).join('');
+}
+async function addScanResult(btn,name){
+  const lead={id:uid(),name,type:'',location:'',stage:'Identified',notes:'',socialCheck:{},followUpDate:null,addedDate:todayStr()};
+  await sbUp('leads',toLead(lead));
+  S.leads.unshift(lead);
+  btn.textContent='Added ✓';btn.classList.add('added');
+  renderLeads();renderPipeline();renderStats();updateNavMeta();
+}
+
+// ─────────────────────────────────────────
+// SESSION RESTORE ON LOAD
+// ─────────────────────────────────────────
+window.addEventListener('load',async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    document.getElementById('loginScreen').style.display='none';
+    await showApp();
+  }
+});
+</script>
 </body>
 </html>
