@@ -260,14 +260,26 @@ body::before{
 .scanner-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(99,102,241,0.35);}
 .scanner-notice{font-size:.75rem;color:var(--dim);padding:1rem;border:1px solid var(--border);border-radius:var(--rs);text-align:center;background:var(--surface);}
 .scan-result{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:.85rem 1rem;border:1px solid var(--border);border-top:none;background:var(--surface);
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:.85rem 1rem;border:1px solid var(--border);border-top:none;background:var(--surface);gap:1rem;
 }
 .scan-result:first-child{border-top:1px solid var(--border);border-radius:var(--rs) var(--rs) 0 0;}
 .scan-result:last-child{border-radius:0 0 var(--rs) var(--rs);}
+.sr-main{flex:1;min-width:0;}
 .sr-name{font-size:.85rem;font-weight:600;}
 .sr-meta{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
-.sr-add{background:none;border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);padding:.35rem .8rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;}
+.sr-details{display:flex;align-items:center;gap:.4rem;margin-top:.55rem;flex-wrap:wrap;}
+.sr-loading{font-size:.62rem;color:var(--dim);font-style:italic;}
+.sr-link{font-size:.62rem;font-weight:600;color:var(--cyan);text-decoration:none;border:1px solid rgba(34,211,238,0.25);border-radius:4px;padding:.18rem .5rem;transition:all .15s;white-space:nowrap;}
+.sr-link:hover{background:rgba(34,211,238,0.1);border-color:var(--cyan);}
+.sr-phone{font-size:.62rem;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:.18rem .5rem;white-space:nowrap;}
+.sr-social-link{font-size:.6rem;font-weight:700;text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:.18rem .5rem;color:var(--dim);transition:all .15s;white-space:nowrap;letter-spacing:.04em;}
+.sr-social-link:hover{color:var(--text);border-color:var(--border-h);}
+.sr-social-link.fb:hover{color:#1877f2;border-color:#1877f2;}
+.sr-social-link.ig:hover{color:#e1306c;border-color:#e1306c;}
+.sr-social-link.tt:hover{color:#ff0050;border-color:#ff0050;}
+.sr-actions{display:flex;flex-direction:column;gap:.35rem;align-items:flex-end;flex-shrink:0;}
+.sr-add{background:none;border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);padding:.35rem .8rem;font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;white-space:nowrap;}
 .sr-add:hover{border-color:var(--accent);color:var(--accent);}
 .sr-add.added{border-color:var(--dim);color:var(--dim);pointer-events:none;}
 
@@ -1463,6 +1475,7 @@ async function doSaveStats(id){
 // SCANNER — Google Maps Places API
 // ─────────────────────────────────────────
 let _mapsApiLoaded=false;
+const SCAN_DATA={};
 
 function getMapsKey(){return localStorage.getItem('las_maps_key')||'';}
 
@@ -1518,23 +1531,47 @@ async function runScanner(){
         resultsEl.innerHTML='<div class="scanner-notice">No results found. Try a broader search.</div>';
         return;
       }
-      resultsEl.innerHTML=results.slice(0,10).map((r,i)=>{
+      const top=results.slice(0,10);
+      // Render basic cards immediately
+      resultsEl.innerHTML=top.map((r,i)=>{
         const rawType=(r.types||[]).filter(t=>!['point_of_interest','establishment','geocode'].includes(t))[0]||'';
         const type=rawType.replace(/_/g,' ');
         const addr=r.formatted_address||r.vicinity||'';
         const rating=r.rating?`${r.rating}★ · ${r.user_ratings_total||0} reviews`:'No reviews';
-        const meta=`${addr} · ${rating}`;
-        const safeName=esc(r.name);
-        const safeType=esc(type);
-        const safeAddr=esc(addr);
-        return `<div class="scan-result">
-          <div>
-            <div class="sr-name">${safeName}</div>
-            <div class="sr-meta">${esc(meta)}</div>
+        SCAN_DATA[i]={name:r.name,type,addr,website:'',phone:'',placeId:r.place_id};
+        return `<div class="scan-result" id="sr_${i}">
+          <div class="sr-main">
+            <div class="sr-name">${esc(r.name)}</div>
+            <div class="sr-meta">${esc(addr)} · ${esc(rating)}</div>
+            <div class="sr-details" id="srd_${i}"><span class="sr-loading">Fetching details...</span></div>
           </div>
-          <button class="sr-add" id="scr${i}" onclick="addScanResult(this,'${safeName}','${safeType}','${safeAddr}')">Add to list</button>
+          <div class="sr-actions">
+            <button class="sr-add" id="scr${i}" onclick="addScanResult(this,${i})">+ Add</button>
+          </div>
         </div>`;
       }).join('');
+      // Fetch Place Details for each result (website + phone)
+      top.forEach((r,i)=>{
+        svc.getDetails({
+          placeId:r.place_id,
+          fields:['website','formatted_phone_number','name']
+        },(det,ds)=>{
+          SCAN_DATA[i].website=det?.website||'';
+          SCAN_DATA[i].phone=det?.formatted_phone_number||'';
+          const el=document.getElementById('srd_'+i);
+          if(!el)return;
+          const nameEnc=encodeURIComponent(r.name);
+          const w=det?.website||'';
+          const p=det?.formatted_phone_number||'';
+          el.innerHTML=`
+            ${w?`<a class="sr-link" href="${esc(w)}" target="_blank">🌐 Website</a>`:''}
+            ${p?`<span class="sr-phone">📞 ${esc(p)}</span>`:''}
+            <a class="sr-social-link fb" href="https://www.facebook.com/search/top?q=${nameEnc}" target="_blank">Facebook</a>
+            <a class="sr-social-link ig" href="https://www.instagram.com/explore/search/keyword/?q=${nameEnc}" target="_blank">Instagram</a>
+            <a class="sr-social-link tt" href="https://www.tiktok.com/search?q=${nameEnc}" target="_blank">TikTok</a>
+          `;
+        });
+      });
     });
   }catch(e){
     resultsEl.innerHTML=`<div class="scanner-notice">Error: ${esc(e.message)}</div>`;
@@ -1543,8 +1580,10 @@ async function runScanner(){
   }
 }
 
-async function addScanResult(btn,name,type,location){
-  const lead={id:uid(),name,type:type||'',location:location||'',stage:'Identified',notes:'',socialCheck:{},followUpDate:null,addedDate:todayStr()};
+async function addScanResult(btn,idx){
+  const d=SCAN_DATA[idx];if(!d)return;
+  const notes=[d.website?`Website: ${d.website}`:'',d.phone?`Phone: ${d.phone}`:''].filter(Boolean).join('\n');
+  const lead={id:uid(),name:d.name,type:d.type||'',location:d.addr||'',stage:'Identified',notes,socialCheck:{},followUpDate:null,addedDate:todayStr()};
   await sbUp('leads',toLead(lead));
   S.leads.unshift(lead);
   btn.textContent='Added ✓';btn.classList.add('added');
