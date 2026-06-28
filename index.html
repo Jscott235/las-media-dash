@@ -2937,17 +2937,14 @@ function pbRecommend(){
   const resultEl=document.getElementById('pbBudgetResult');
   if(!budget||budget<1){resultEl.style.display='none';return;}
 
-  // 1. Find best base package within budget (highest ROI score that fits)
+  // 1. Find best base package within budget (highest ROI that fits)
   const fitBases=Object.values(BASE_PKGS).filter(b=>b.id!=='bespoke'&&b.price>0&&b.price<=budget);
-  if(!fitBases.length){
-    resultEl.innerHTML=`<div class="pbr-none">£${budget}/mo is below our lowest package (Starter at £250/mo). Consider a bespoke arrangement.</div>`;
-    resultEl.style.display='block';
-    return;
-  }
-  const bestBase=fitBases.reduce((a,b)=>(PB_ROI_BASE[b.id]||0)>(PB_ROI_BASE[a.id]||0)?b:a);
+  const bestBase=fitBases.length
+    ?fitBases.reduce((a,b)=>(PB_ROI_BASE[b.id]||0)>(PB_ROI_BASE[a.id]||0)?b:a)
+    :BASE_PKGS.bespoke; // sub-£250: bespoke base, fill entirely with add-ons
   let remaining=budget-bestBase.price;
 
-  // 2. Rank all add-ons by ROI score, exclude zero-price and zero-ROI
+  // 2. Rank all add-ons by ROI, exclude zero-price and zero-ROI (travel etc.)
   const rankedAddons=ADDON_CATS.flatMap(c=>c.items)
     .filter(item=>item.price>0&&(PB_ROI_ADDON[item.id]||0)>0)
     .map(item=>({...item,roi:PB_ROI_ADDON[item.id]||0}))
@@ -2972,10 +2969,12 @@ function pbRecommend(){
   // 5. Show result summary
   const totalSpend=bestBase.price+selected.reduce((s,i)=>s+i.price,0);
   const leftover=Math.round(budget-totalSpend);
+  const baseLabel=bestBase.id==='bespoke'?'Bespoke (add-ons only)':`${bestBase.name} — £${bestBase.price}/mo`;
   resultEl.innerHTML=`
     <div class="pbr-header">✦ Best package for £${budget}/mo</div>
-    <div class="pbr-base">Base: <strong>${bestBase.name} — £${bestBase.price}/mo</strong></div>
-    ${selected.length?`<div class="pbr-chips">${selected.map(i=>`<span class="pbr-chip">${i.name}</span>`).join('')}</div>`:''}
+    <div class="pbr-base">Base: <strong>${baseLabel}</strong></div>
+    ${selected.length?`<div class="pbr-chips">${selected.map(i=>`<span class="pbr-chip">${i.name}</span>`).join('')}</div>`:
+    `<div class="pbr-none" style="font-style:normal;font-size:.7rem;">No individual add-ons fit this budget — consider discussing a custom arrangement.</div>`}
     <div class="pbr-spend">Total: £${totalSpend}/mo${leftover>0?` &nbsp;<span class="pbr-unalloc">· £${leftover} unallocated</span>`:''}</div>
   `;
   resultEl.style.display='block';
