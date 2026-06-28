@@ -1587,15 +1587,16 @@ function buildBrief(){
   const today=todayStr();
   const entries=S.calendar.filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
   const brief=document.getElementById('brief');
+  const burger='<button class="mob-menu-btn" onclick="toggleSidebar()">☰</button>';
   if(entries.length){
-    brief.innerHTML=`<div class="brief-mode">Daily Brief</div><div class="brief-items">${entries.map((e,i)=>{
+    brief.innerHTML=burger+`<div class="brief-mode">Daily Brief</div><div class="brief-items">${entries.map((e,i)=>{
       const c=S.clients.find(c=>c.id===e.clientId);
       return `${i>0?'<span class="brief-sep">·</span>':''}<div class="brief-item"><span class="brief-item-time">${esc(e.time)}</span><span class="brief-item-label">${esc(e.contentType)} — ${esc(c?c.name:e.notes)}</span></div>`;
     }).join('')}</div>`;
   } else {
     const income=S.clients.reduce((s,c)=>s+c.fee,0);
     const open=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length;
-    brief.innerHTML=`<div class="brief-mode">Weekly Summary</div><div class="brief-items">
+    brief.innerHTML=burger+`<div class="brief-mode">Weekly Summary</div><div class="brief-items">
       <div class="brief-item"><span class="brief-item-time">£${income}</span><span class="brief-item-label">monthly retainers</span></div>
       <span class="brief-sep">·</span>
       <div class="brief-item"><span class="brief-item-time">${S.clients.length}</span><span class="brief-item-label">active clients</span></div>
