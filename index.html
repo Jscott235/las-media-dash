@@ -338,6 +338,68 @@ body::before{
 .home-qa-btn:hover{border-color:rgba(99,102,241,0.35);color:#a5b4fc;background:rgba(99,102,241,0.07);}
 .home-greeting{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.25rem;}
 .home-greeting-sub{font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;}
+/* ── PACKAGE BUILDER ── */
+.pkg-layout{display:grid;grid-template-columns:340px 1fr;gap:1.25rem;align-items:start;}
+.pkg-panel{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;backdrop-filter:blur(12px);}
+.pkg-panel-title{font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:-.01em;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;}
+.pkg-panel-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,#6366f1,#8b5cf6);border-radius:2px;}
+.pkg-field{margin-bottom:1.1rem;}
+.pkg-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.45rem;}
+.pkg-select,.pkg-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.65rem .9rem;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;appearance:none;transition:all .18s;}
+.pkg-select:focus,.pkg-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);}
+.pkg-stepper{display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;width:fit-content;}
+.pkg-step-btn{width:36px;height:36px;background:rgba(255,255,255,0.04);border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.pkg-step-btn:hover{background:rgba(99,102,241,0.12);color:#a5b4fc;}
+.pkg-step-val{min-width:48px;text-align:center;font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 .5rem;line-height:36px;}
+.pkg-toggle-row{display:flex;align-items:center;justify-content:space-between;}
+.pkg-toggle{position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0;}
+.pkg-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.pkg-toggle-track{position:absolute;inset:0;background:rgba(255,255,255,0.1);border-radius:99px;border:1px solid var(--border);transition:all .2s;}
+.pkg-toggle input:checked~.pkg-toggle-track{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-color:transparent;}
+.pkg-toggle-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.pkg-toggle input:checked~.pkg-toggle-thumb{transform:translateX(18px);}
+.pkg-toggle-label{font-size:.78rem;color:var(--muted);}
+.pkg-platforms{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.1rem;}
+.pkg-plat-chip{display:flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1px solid var(--border);border-radius:99px;font-size:.65rem;font-weight:600;color:var(--dim);cursor:pointer;transition:all .15s;user-select:none;}
+.pkg-plat-chip:hover{border-color:var(--border-h);color:var(--muted);}
+.pkg-plat-chip.active{border-color:rgba(99,102,241,0.5);color:#a5b4fc;background:rgba(99,102,241,0.1);}
+.pkg-summary{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:var(--rs);padding:.85rem 1rem;margin-bottom:1.1rem;}
+.pkg-summary-row{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;margin-bottom:.3rem;}
+.pkg-summary-row:last-child{margin-bottom:0;padding-top:.4rem;border-top:1px solid rgba(99,102,241,0.15);margin-top:.4rem;}
+.pkg-summary-label{color:var(--muted);}
+.pkg-summary-val{font-weight:600;color:var(--text);}
+.pkg-summary-val.accent{color:#a5b4fc;}
+.pkg-gen-btn{width:100%;padding:.75rem;border:none;border-radius:var(--rs);background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.02em;cursor:pointer;transition:all .2s var(--ease);box-shadow:0 4px 20px rgba(99,102,241,0.35);}
+.pkg-gen-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(99,102,241,0.5);}
+.pkg-gen-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.pkg-key-row{display:flex;gap:.5rem;margin-bottom:1rem;}
+.pkg-key-input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.6rem .85rem;font-size:.78rem;font-family:'Inter',sans-serif;outline:none;transition:all .18s;}
+.pkg-key-input:focus{border-color:#6366f1;}
+.pkg-key-save{padding:0 1rem;border:none;border-radius:var(--rs);background:rgba(99,102,241,0.2);color:#a5b4fc;font-size:.68rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.pkg-key-save:hover{background:rgba(99,102,241,0.35);}
+.pkg-posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.85rem;}
+.pkg-post-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;transition:all .2s;}
+.pkg-post-card:hover{border-color:rgba(99,102,241,0.2);}
+.pkg-post-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem;}
+.pkg-post-plat{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .65rem;border-radius:99px;border:1px solid;}
+.pkg-post-plat.instagram{color:#e1306c;border-color:rgba(225,48,108,0.35);background:rgba(225,48,108,0.08);}
+.pkg-post-plat.tiktok{color:#ff0050;border-color:rgba(255,0,80,0.35);background:rgba(255,0,80,0.08);}
+.pkg-post-plat.facebook{color:#1877f2;border-color:rgba(24,119,242,0.35);background:rgba(24,119,242,0.08);}
+.pkg-post-plat.general{color:#a5b4fc;border-color:rgba(165,180,252,0.35);background:rgba(165,180,252,0.08);}
+.pkg-post-num{font-size:.6rem;font-weight:700;color:var(--dim);}
+.pkg-post-caption{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.65rem .8rem;font-size:.78rem;font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:90px;line-height:1.5;transition:all .18s;margin-bottom:.75rem;}
+.pkg-post-caption:focus{border-color:rgba(99,102,241,0.4);}
+.pkg-post-visual{font-size:.68rem;color:var(--muted);background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--rs);padding:.5rem .75rem;margin-bottom:.65rem;line-height:1.4;}
+.pkg-post-visual strong{color:var(--dim);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.2rem;}
+.pkg-post-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.75rem;}
+.pkg-post-tag{font-size:.6rem;color:#a5b4fc;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:4px;padding:.12rem .45rem;}
+.pkg-post-actions{display:flex;gap:.4rem;}
+.pkg-post-btn{flex:1;padding:.38rem;border:1px solid var(--border);border-radius:var(--rs);background:none;color:var(--muted);font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
+.pkg-post-btn:hover{border-color:var(--border-h);color:var(--text);}
+.pkg-post-btn.primary{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.3);color:#a5b4fc;}
+.pkg-post-btn.primary:hover{background:rgba(99,102,241,0.2);}
+.pkg-empty-posts{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:.75rem;font-size:.78rem;color:var(--dim);border:1px dashed rgba(255,255,255,0.08);border-radius:var(--r);}
+.pkg-empty-icon{font-size:2rem;opacity:.3;}
 .voice-btn{
   display:flex;align-items:center;gap:.45rem;
   padding:.5rem 1rem;border:1px solid rgba(99,102,241,0.35);border-radius:var(--rs);
@@ -797,6 +859,14 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
+      <div class="nav-card" id="nc_pkgSection" onclick="showSection('pkgSection')">
+        <div class="nc-icon">⬡</div>
+        <div class="nc-content">
+          <div class="nc-title">Package Builder</div>
+          <div class="nc-meta">Build & generate content</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
     </nav>
 
     <div class="sidebar-stats">
@@ -940,6 +1010,100 @@ body::before{
       </div>
     </div>
 
+    <!-- PACKAGE BUILDER -->
+    <div class="section" id="pkgSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Package Builder</div>
+          <div class="section-sub">Configure client packages · AI-generate static post content</div>
+        </div>
+      </div>
+      <div class="pkg-layout">
+        <!-- CONFIG PANEL -->
+        <div class="pkg-panel">
+          <div class="pkg-panel-title">Package Configuration</div>
+          <div class="pkg-field">
+            <label>Client</label>
+            <select class="pkg-select" id="pkgClient" onchange="pkgUpdate()">
+              <option value="">— Custom / No client —</option>
+            </select>
+          </div>
+          <div class="pkg-field">
+            <label>Business Name</label>
+            <input class="pkg-input" id="pkgBizName" placeholder="e.g. Wallis & Co" oninput="pkgUpdate()">
+          </div>
+          <div class="pkg-field">
+            <label>Business Type / Niche</label>
+            <input class="pkg-input" id="pkgBizType" placeholder="e.g. Restaurant, Marina" oninput="pkgUpdate()">
+          </div>
+          <div class="pkg-field">
+            <label>Content Tone</label>
+            <select class="pkg-select" id="pkgTone" onchange="pkgUpdate()">
+              <option value="professional">Professional</option>
+              <option value="friendly and casual">Friendly & Casual</option>
+              <option value="fun and energetic">Fun & Energetic</option>
+              <option value="luxury and premium">Luxury & Premium</option>
+              <option value="local and community-focused">Local & Community</option>
+            </select>
+          </div>
+          <div class="pkg-field">
+            <label>Platforms</label>
+            <div class="pkg-platforms" id="pkgPlatforms">
+              <div class="pkg-plat-chip active" data-plat="Instagram" onclick="pkgTogglePlat(this)">Instagram</div>
+              <div class="pkg-plat-chip active" data-plat="TikTok" onclick="pkgTogglePlat(this)">TikTok</div>
+              <div class="pkg-plat-chip" data-plat="Facebook" onclick="pkgTogglePlat(this)">Facebook</div>
+              <div class="pkg-plat-chip" data-plat="Twitter" onclick="pkgTogglePlat(this)">Twitter/X</div>
+            </div>
+          </div>
+          <div class="pkg-field">
+            <label>Videos per month</label>
+            <div class="pkg-stepper">
+              <button class="pkg-step-btn" onclick="pkgStep('videos',-1)">−</button>
+              <div class="pkg-step-val" id="pkgVideosVal">4</div>
+              <button class="pkg-step-btn" onclick="pkgStep('videos',1)">+</button>
+            </div>
+          </div>
+          <div class="pkg-field">
+            <label>Static posts per month</label>
+            <div class="pkg-stepper">
+              <button class="pkg-step-btn" onclick="pkgStep('posts',-1)">−</button>
+              <div class="pkg-step-val" id="pkgPostsVal">8</div>
+              <button class="pkg-step-btn" onclick="pkgStep('posts',1)">+</button>
+            </div>
+          </div>
+          <div class="pkg-field">
+            <div class="pkg-toggle-row">
+              <span class="pkg-toggle-label">Auto-schedule to calendar</span>
+              <label class="pkg-toggle">
+                <input type="checkbox" id="pkgSchedule" onchange="pkgUpdate()">
+                <div class="pkg-toggle-track"></div>
+                <div class="pkg-toggle-thumb"></div>
+              </label>
+            </div>
+          </div>
+          <div class="pkg-summary" id="pkgSummary"></div>
+          <button class="pkg-gen-btn" id="pkgGenBtn" onclick="generatePosts()">✦ Generate AI Posts</button>
+        </div>
+        <!-- POSTS PANEL -->
+        <div class="pkg-panel">
+          <div class="pkg-panel-title">Generated Posts</div>
+          <div id="pkgAiKeyRow" style="display:none;">
+            <div style="font-size:.7rem;color:var(--muted);margin-bottom:.5rem;">Enter your Anthropic API key to enable AI generation.</div>
+            <div class="pkg-key-row">
+              <input class="pkg-key-input" id="pkgAiKey" placeholder="sk-ant-api03-...">
+              <button class="pkg-key-save" onclick="savePkgAiKey()">Save</button>
+            </div>
+          </div>
+          <div id="pkgPostsOutput">
+            <div class="pkg-empty-posts">
+              <div class="pkg-empty-icon">✦</div>
+              <div>Configure your package and click<br><strong style="color:var(--muted);">Generate AI Posts</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 </div><!-- /app -->
@@ -1047,7 +1211,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection'];
+const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection'];
 let activeSection=null;
 function showSection(id){
   if(activeSection===id){
@@ -1072,7 +1236,7 @@ async function initApp(){
   await loadAll();
   buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
-  renderHome(); showSection('homeSection');
+  renderHome(); initPackageBuilder(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
@@ -1952,6 +2116,125 @@ function processVoiceLead(text){
   openModal('Add Lead — Voice',leadFormHTML(null,{name,type,location,stage,notes}));
 }
 
+// ─────────────────────────────────────────
+// PACKAGE BUILDER
+// ─────────────────────────────────────────
+const PKG={videos:4,posts:8};
+
+function pkgStep(field,dir){
+  PKG[field]=Math.max(0,(PKG[field]||0)+dir);
+  document.getElementById(field==='videos'?'pkgVideosVal':'pkgPostsVal').textContent=PKG[field];
+  pkgUpdate();
+}
+function pkgTogglePlat(el){el.classList.toggle('active');pkgUpdate();}
+function pkgUpdate(){
+  const clientId=document.getElementById('pkgClient')?.value;
+  if(clientId){const c=S.clients.find(x=>x.id===clientId);if(c){document.getElementById('pkgBizName').value=c.name;document.getElementById('pkgBizType').value=c.type||'';}}
+  const plats=[...document.querySelectorAll('.pkg-plat-chip.active')].map(el=>el.dataset.plat);
+  const videos=PKG.videos,posts=PKG.posts;
+  const scheduled=document.getElementById('pkgSchedule')?.checked;
+  document.getElementById('pkgSummary').innerHTML=`
+    <div class="pkg-summary-row"><span class="pkg-summary-label">Videos / month</span><span class="pkg-summary-val">${videos}</span></div>
+    <div class="pkg-summary-row"><span class="pkg-summary-label">Static posts / month</span><span class="pkg-summary-val">${posts}</span></div>
+    <div class="pkg-summary-row"><span class="pkg-summary-label">Platforms</span><span class="pkg-summary-val">${plats.length?plats.join(', '):'None'}</span></div>
+    <div class="pkg-summary-row"><span class="pkg-summary-label">Scheduled</span><span class="pkg-summary-val">${scheduled?'Yes':'No'}</span></div>
+    <div class="pkg-summary-row"><span class="pkg-summary-label">Total pieces</span><span class="pkg-summary-val accent">${videos+posts}</span></div>`;
+}
+function getPkgAiKey(){return localStorage.getItem('las_ai_key')||'';}
+function savePkgAiKey(){
+  const k=document.getElementById('pkgAiKey').value.trim();if(!k)return;
+  localStorage.setItem('las_ai_key',k);
+  document.getElementById('pkgAiKeyRow').style.display='none';
+  generatePosts();
+}
+async function generatePosts(){
+  const key=getPkgAiKey();
+  if(!key){document.getElementById('pkgAiKeyRow').style.display='block';document.getElementById('pkgPostsOutput').innerHTML='<div class="pkg-empty-posts"><div class="pkg-empty-icon">🔑</div><div>Enter your Anthropic API key above.</div></div>';return;}
+  const bizName=document.getElementById('pkgBizName').value.trim()||'this business';
+  const bizType=document.getElementById('pkgBizType').value.trim()||'local business';
+  const tone=document.getElementById('pkgTone').value;
+  const plats=[...document.querySelectorAll('.pkg-plat-chip.active')].map(el=>el.dataset.plat);
+  const postCount=Math.max(1,PKG.posts);
+  const scheduled=document.getElementById('pkgSchedule')?.checked;
+  const btn=document.getElementById('pkgGenBtn');
+  const out=document.getElementById('pkgPostsOutput');
+  btn.disabled=true;btn.textContent='✦ Generating...';
+  out.innerHTML='<div class="pkg-empty-posts"><div class="pkg-empty-icon" style="animation:pulse 1.2s infinite">✦</div><div>Writing your posts...</div></div>';
+  const prompt=`You are a social media content creator for a UK social media agency. Generate ${postCount} static social media post captions.
+Business: ${bizName}
+Type: ${bizType}
+Platforms: ${plats.length?plats.join(', '):'Instagram, Facebook'}
+Tone: ${tone}
+Location: UK
+
+Return ONLY a JSON array of exactly ${postCount} objects. Each object:
+{"platform":"Instagram","caption":"caption text with emojis, 80-150 words, UK English","visual":"ideal image description 1-2 sentences","hashtags":["tag1","tag2","tag3","tag4","tag5","tag6"]}
+
+Vary post types: promotional, behind-the-scenes, educational, community, showcase. No markdown, no explanation.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'API error '+res.status);}
+    const data=await res.json();
+    let raw=data.content[0].text.trim().replace(/```json|```/g,'').trim();
+    renderGeneratedPosts(JSON.parse(raw),scheduled,bizName);
+  }catch(e){
+    out.innerHTML=`<div class="pkg-empty-posts"><div class="pkg-empty-icon">⚠</div><div>Error: ${esc(e.message)}</div></div>`;
+    if(e.message.includes('401')||e.message.includes('invalid')){localStorage.removeItem('las_ai_key');document.getElementById('pkgAiKeyRow').style.display='block';}
+  }finally{btn.disabled=false;btn.textContent='✦ Generate AI Posts';}
+}
+function renderGeneratedPosts(posts,scheduled,bizName){
+  const out=document.getElementById('pkgPostsOutput');
+  if(!posts?.length){out.innerHTML='<div class="pkg-empty-posts">No posts returned. Try again.</div>';return;}
+  out.innerHTML=`<div style="font-size:.68rem;color:var(--dim);margin-bottom:.85rem;">${posts.length} posts for <strong style="color:var(--muted)">${esc(bizName)}</strong></div>
+  <div class="pkg-posts-grid">${posts.map((p,i)=>{
+    const pk=p.platform?.toLowerCase().includes('instagram')?'instagram':p.platform?.toLowerCase().includes('tiktok')?'tiktok':p.platform?.toLowerCase().includes('facebook')?'facebook':'general';
+    const tags=(p.hashtags||[]).map(h=>`<span class="pkg-post-tag">#${esc(String(h).replace('#',''))}</span>`).join('');
+    return `<div class="pkg-post-card">
+      <div class="pkg-post-header">
+        <span class="pkg-post-plat ${pk}">${esc(p.platform||'General')}</span>
+        <span class="pkg-post-num">${i+1} / ${posts.length}</span>
+      </div>
+      <textarea class="pkg-post-caption" id="ppc_${i}">${esc(p.caption||'')}</textarea>
+      <div class="pkg-post-visual"><strong>📸 Visual</strong>${esc(p.visual||'')}</div>
+      <div class="pkg-post-tags">${tags}</div>
+      <div class="pkg-post-actions">
+        <button class="pkg-post-btn" onclick="copyPost(${i})">Copy</button>
+        <button class="pkg-post-btn primary" id="sched_${i}" onclick="schedulePost(${i},'${esc(bizName)}','${esc(p.platform||'')}')">+ Calendar</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+  if(scheduled)posts.forEach((_,i)=>schedulePost(i,bizName,posts[i].platform||''));
+}
+function copyPost(i){
+  const el=document.getElementById('ppc_'+i);if(!el)return;
+  navigator.clipboard.writeText(el.value).then(()=>{
+    const card=el.closest('.pkg-post-card');
+    const btn=card.querySelector('.pkg-post-btn');
+    const o=btn.textContent;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent=o,1500);
+  });
+}
+function schedulePost(i,bizName,platform){
+  const el=document.getElementById('ppc_'+i);
+  const clientMatch=S.clients.find(c=>c.name===bizName);
+  const entry={id:uid(),date:getNextPostDate(i),time:'10:00',clientId:clientMatch?.id||null,contentType:'Post',platform,notes:(el?.value||'').slice(0,120)};
+  sbUp('calendar',toCal(entry));S.calendar.push(entry);renderCalendar();renderHome();
+  const btn=document.getElementById('sched_'+i);
+  if(btn){btn.textContent='✓ Scheduled';btn.style.color='#10b981';btn.style.borderColor='rgba(16,185,129,0.4)';}
+}
+function getNextPostDate(offset){
+  const d=new Date();d.setDate(d.getDate()+offset+1);
+  while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);
+  return dateStr(d);
+}
+function initPackageBuilder(){
+  const sel=document.getElementById('pkgClient');if(!sel)return;
+  sel.innerHTML='<option value="">— Custom / No client —</option>'+S.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  pkgUpdate();
+}
 
 window.addEventListener('load',async()=>{
   const {data:{session}}=await sb.auth.getSession();
