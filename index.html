@@ -283,6 +283,57 @@ body::before{
 .sr-add:hover{border-color:var(--accent);color:var(--accent);}
 .sr-add.added{border-color:var(--dim);color:var(--dim);pointer-events:none;}
 
+/* ── VOICE INPUT ── */
+.voice-btn{
+  display:flex;align-items:center;gap:.45rem;
+  padding:.5rem 1rem;border:1px solid rgba(99,102,241,0.35);border-radius:var(--rs);
+  background:rgba(99,102,241,0.08);color:#a5b4fc;
+  font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  font-family:'Inter',sans-serif;cursor:pointer;
+  transition:all .2s var(--ease);white-space:nowrap;
+}
+.voice-btn:hover{background:rgba(99,102,241,0.18);border-color:rgba(99,102,241,0.6);}
+.voice-btn.recording{
+  background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.5);color:#fca5a5;
+  animation:voicePulse 1s ease infinite;
+}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.3);}50%{box-shadow:0 0 0 6px rgba(239,68,68,0);}}
+.mic-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.voice-btn.recording .mic-dot{background:#ef4444;animation:blink .6s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.voice-overlay{
+  position:fixed;inset:0;z-index:500;display:none;
+  align-items:center;justify-content:center;
+  background:rgba(4,4,14,0.85);backdrop-filter:blur(12px);
+}
+.voice-overlay.active{display:flex;}
+.voice-card{
+  background:rgba(11,11,30,0.98);border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--rl);padding:2.5rem;text-align:center;
+  max-width:420px;width:100%;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6),0 0 80px rgba(99,102,241,0.1);
+}
+.voice-ring{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 1.5rem;
+  border:2px solid rgba(239,68,68,0.2);border-top-color:#ef4444;
+  animation:spin 1s linear infinite;
+  display:flex;align-items:center;justify-content:center;
+}
+.voice-ring-inner{width:44px;height:44px;border-radius:50%;background:rgba(239,68,68,0.12);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.voice-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem;}
+.voice-hint{font-size:.72rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.5;}
+.voice-transcript{
+  min-height:48px;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:var(--rs);padding:.75rem 1rem;font-size:.85rem;color:var(--text);
+  margin-bottom:1.25rem;text-align:left;line-height:1.5;
+}
+.voice-cancel{
+  padding:.5rem 1.5rem;border:1px solid var(--border);border-radius:var(--rs);
+  background:none;color:var(--muted);font-size:.72rem;font-weight:600;
+  font-family:'Inter',sans-serif;cursor:pointer;transition:all .18s;
+}
+.voice-cancel:hover{border-color:var(--border-h);color:var(--text);}
+
 /* ── CALL LIST ── */
 .call-list-label{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem;}
 .call-list-label::before{content:'';width:12px;height:2px;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:1px;}
@@ -619,6 +670,17 @@ body::before{
   </div>
 </div>
 
+<!-- ── VOICE OVERLAY ── -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-card">
+    <div class="voice-ring"><div class="voice-ring-inner">🎙</div></div>
+    <div class="voice-title" id="voiceTitle">Listening...</div>
+    <div class="voice-hint">Say the business name, type and location.<br>e.g. <em>"Wallis and Co, restaurant, Navigation Point"</em></div>
+    <div class="voice-transcript" id="voiceTranscript">Speak now...</div>
+    <button class="voice-cancel" onclick="cancelVoice()">Cancel</button>
+  </div>
+</div>
+
 <!-- ── MODAL ── -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal-box" id="modalBox">
@@ -699,7 +761,10 @@ body::before{
           <div class="section-title">Leads & Pipeline</div>
           <div class="section-sub">Scan for prospects · Build call list · Track progress</div>
         </div>
-        <button class="section-add-btn" onclick="openAddLead()">+ Add Lead</button>
+        <div style="display:flex;gap:.5rem;align-items:center;">
+          <button class="voice-btn" id="voiceBtn" onclick="startVoiceLead()"><div class="mic-dot"></div>Voice Add</button>
+          <button class="section-add-btn" onclick="openAddLead()">+ Add Lead</button>
+        </div>
       </div>
       <div class="label" style="margin-bottom:.6rem;display:flex;align-items:center;justify-content:space-between;">
         Business Scanner
@@ -1274,13 +1339,15 @@ function handleOverlayClick(e){if(e.target===document.getElementById('modalOverl
 // ── LEAD MODALS ──
 function openAddLead(){modalState={type:'lead',id:null};openModal('Add Lead',leadFormHTML(null));}
 function openEditLead(id){const l=S.leads.find(x=>x.id===id);if(!l)return;modalState={type:'lead',id};openModal('Edit Lead',leadFormHTML(l));}
-function leadFormHTML(l){
-  return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${esc(l?.name||'')}"></div>
-  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Café" value="${esc(l?.type||'')}"></div>
-  <div class="m-field"><label>Location</label><input class="m-input" id="m_location" placeholder="e.g. Hartlepool" value="${esc(l?.location||'')}"></div>
-  <div class="m-field"><label>Stage</label><select class="m-select" id="m_stage">${STAGES.map(s=>`<option value="${s}"${l?.stage===s?' selected':''}>${s}</option>`).join('')}</select></div>
-  <div class="m-field"><label>Follow-up Date</label><input class="m-input" id="m_followup" type="date" value="${esc(l?.followUpDate||'')}"></div>
-  <div class="m-field"><label>Notes</label><textarea class="m-textarea" id="m_notes">${esc(l?.notes||'')}</textarea></div>
+function leadFormHTML(l,pre={}){
+  const v=(f,d='')=>esc(l?.[f]??pre[f]??d);
+  const stg=l?.stage||pre.stage||'Identified';
+  return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${v('name')}"></div>
+  <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Café" value="${v('type')}"></div>
+  <div class="m-field"><label>Location</label><input class="m-input" id="m_location" placeholder="e.g. Hartlepool" value="${v('location')}"></div>
+  <div class="m-field"><label>Stage</label><select class="m-select" id="m_stage">${STAGES.map(s=>`<option value="${s}"${stg===s?' selected':''}>${s}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Follow-up Date</label><input class="m-input" id="m_followup" type="date" value="${v('followUpDate')}"></div>
+  <div class="m-field"><label>Notes</label><textarea class="m-textarea" id="m_notes">${v('notes')}</textarea></div>
   <div class="m-actions">
     <button class="m-btn m-btn-primary" onclick="doSaveLead()">Save</button>
     <button class="m-btn" onclick="closeModal()">Cancel</button>
@@ -1600,8 +1667,90 @@ function toggleScanner(){
 }
 
 // ─────────────────────────────────────────
-// SESSION RESTORE ON LOAD
+// VOICE LEAD INPUT
 // ─────────────────────────────────────────
+let _voiceRec=null;
+
+function startVoiceLead(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    alert('Voice input requires Chrome. Please use Chrome to use this feature.');
+    return;
+  }
+  const overlay=document.getElementById('voiceOverlay');
+  const transcript=document.getElementById('voiceTranscript');
+  const title=document.getElementById('voiceTitle');
+  const btn=document.getElementById('voiceBtn');
+  transcript.textContent='Speak now...';
+  title.textContent='Listening...';
+  overlay.classList.add('active');
+  btn.classList.add('recording');
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  _voiceRec=new SR();
+  _voiceRec.lang='en-GB';
+  _voiceRec.continuous=false;
+  _voiceRec.interimResults=true;
+  _voiceRec.onresult=(e)=>{
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    transcript.textContent=(final||interim)||'Speak now...';
+    if(final){
+      title.textContent='Got it — opening form...';
+      setTimeout(()=>processVoiceLead(final.trim()),500);
+    }
+  };
+  _voiceRec.onerror=(e)=>{
+    title.textContent='Mic error: '+e.error;
+    setTimeout(cancelVoice,1500);
+  };
+  _voiceRec.onend=()=>{
+    btn.classList.remove('recording');
+  };
+  _voiceRec.start();
+}
+
+function cancelVoice(){
+  if(_voiceRec){try{_voiceRec.stop();}catch(e){}}
+  document.getElementById('voiceOverlay').classList.remove('active');
+  document.getElementById('voiceBtn').classList.remove('recording');
+}
+
+function processVoiceLead(text){
+  cancelVoice();
+  // Parse: try comma-separated first, then keyword extraction
+  const parts=text.split(/,|;/).map(s=>s.trim()).filter(Boolean);
+  let name='',type='',location='',stage='Identified',notes='';
+  const STAGE_WORDS={identified:'Identified',researched:'Researched',called:'Called',interested:'Interested',won:'Won',lost:'Lost'};
+  const TYPE_WORDS=['restaurant','pub','bar','cafe','coffee','shop','salon','barber','gym','hotel','takeaway','chippy','garage','plumber','electrician','decorator','roofer','builder','landscaper','cleaner','dentist','solicitor','accountant','estate agent','letting','tattoo','beauty','nail','spa','yoga','pilates'];
+  // Detect stage anywhere in text
+  const lc=text.toLowerCase();
+  for(const[k,v] of Object.entries(STAGE_WORDS)){if(lc.includes(k)){stage=v;break;}}
+  if(parts.length>=3){
+    name=parts[0];type=parts[1];location=parts[2];
+    if(parts[3])notes=parts.slice(3).join(', ');
+  } else if(parts.length===2){
+    name=parts[0];
+    // Second part: is it a type or location?
+    const maybeType=TYPE_WORDS.find(t=>parts[1].toLowerCase().includes(t));
+    if(maybeType){type=parts[1];}else{location=parts[1];}
+  } else {
+    // Single string — try to extract type keyword
+    const foundType=TYPE_WORDS.find(t=>lc.includes(t));
+    if(foundType){
+      type=foundType.charAt(0).toUpperCase()+foundType.slice(1);
+      name=text.replace(new RegExp(foundType,'i'),'').trim().replace(/^,|,$/g,'').trim();
+    } else {
+      name=text;
+    }
+  }
+  // Open pre-filled lead modal
+  modalState={type:'lead',id:null};
+  openModal('Add Lead — Voice',leadFormHTML(null,{name,type,location,stage,notes}));
+}
+
+
 window.addEventListener('load',async()=>{
   const {data:{session}}=await sb.auth.getSession();
   if(session){
