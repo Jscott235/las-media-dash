@@ -102,11 +102,24 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .call-card-body{display:none;border-top:1px solid var(--border);padding:1rem;}
 .call-card.open .call-card-body{display:block;}
 .q-title{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.75rem;}
-.q-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.55rem;}
-.q-check{width:14px;height:14px;border:1px solid var(--border2);background:var(--bg);cursor:pointer;flex-shrink:0;margin-top:1px;appearance:none;-webkit-appearance:none;position:relative;}
-.q-check:checked{background:#fff;}
-.q-check:checked::after{content:'';position:absolute;inset:2px;background:#000;}
-.q-label{font-size:.78rem;color:var(--muted);}
+.rag-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;flex-wrap:wrap;}
+.rag-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--dim);}
+.rag-dot.green{background:#22c55e;}
+.rag-dot.amber{background:#f59e0b;}
+.rag-dot.red{background:#ef4444;}
+.rag-dot.none{background:var(--dim);}
+.rag-plat{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:72px;}
+.rag-open-btn{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-decoration:none;border:1px solid var(--border);padding:.2rem .5rem;transition:all .15s;flex-shrink:0;}
+.rag-open-btn:hover{border-color:#fff;color:#fff;}
+.rag-url-input{background:var(--bg);border:1px solid var(--border);color:#fff;padding:.3rem .55rem;font-size:.72rem;font-family:'Inter',sans-serif;outline:none;flex:1;min-width:100px;transition:border-color .15s;}
+.rag-url-input:focus{border-color:var(--border2);}
+.rag-date-input{background:var(--bg);border:1px solid var(--border);color:var(--muted);padding:.3rem .55rem;font-size:.7rem;font-family:'Inter',sans-serif;outline:none;width:130px;flex-shrink:0;cursor:pointer;transition:border-color .15s;}
+.rag-date-input:focus{border-color:#fff;color:#fff;}
+.rag-age{font-size:.65rem;font-weight:700;letter-spacing:.06em;min-width:48px;text-align:right;flex-shrink:0;}
+.rag-age.green{color:#22c55e;}
+.rag-age.amber{color:#f59e0b;}
+.rag-age.red{color:#ef4444;}
+.rag-age.none{color:var(--dim);}
 .q-notes{width:100%;background:var(--bg);border:1px solid var(--border);color:#fff;padding:.6rem .8rem;font-size:.78rem;font-family:'Inter',sans-serif;outline:none;resize:vertical;min-height:60px;margin-top:.75rem;}
 .q-notes:focus{border-color:#fff;}
 .q-action-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;}
@@ -310,7 +323,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
       </div>
     </div>
     <hr class="divider">
-    <div class="call-list-label">Call List — complete questionnaire before calling</div>
+    <div class="call-list-label">Call List — check social health before calling</div>
     <div id="callList" style="margin-bottom:2rem;"></div>
     <div class="label" style="margin-bottom:.6rem;">Pipeline</div>
     <div class="pipeline-strip" id="pipelineStrip"></div>
@@ -384,8 +397,8 @@ const S = { leads:[], clients:[], calendar:[], income:[], goals:[] };
 // ─────────────────────────────────────────
 // FIELD MAPPERS  JS camelCase <-> DB snake_case
 // ─────────────────────────────────────────
-const fromLead   = r => ({...r, followUpDate:r.follow_up_date, addedDate:r.added_date});
-const toLead     = ({followUpDate,addedDate,...r}) => ({...r, follow_up_date:followUpDate||null, added_date:addedDate||null});
+const fromLead   = r => ({...r, followUpDate:r.follow_up_date, addedDate:r.added_date, socialCheck:r.questionnaire||{}});
+const toLead     = ({followUpDate,addedDate,socialCheck,...r}) => ({...r, follow_up_date:followUpDate||null, added_date:addedDate||null, questionnaire:socialCheck||{}});
 const fromClient = r => ({...r, startDate:r.start_date, lastPost:r.last_post});
 const toClient   = ({startDate,lastPost,...r}) => ({...r, start_date:startDate||null, last_post:lastPost||null});
 const fromCal    = r => ({...r, clientId:r.client_id, contentType:r.content_type});
@@ -552,14 +565,20 @@ function buildBrief(){
 // ─────────────────────────────────────────
 // LEADS
 // ─────────────────────────────────────────
-const STAGES=['Identified','Questionnaire Done','Called','Interested','Won','Lost'];
-const QUESTIONS=[
-  'Business type and services confirmed',
-  'Current social platforms checked and noted',
-  'Competitor social presence reviewed',
-  'Identified specific content opportunity',
-  'Decision maker identified',
-];
+const STAGES=['Identified','Researched','Called','Interested','Won','Lost'];
+const LEAD_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
+
+function ragStatus(dateStr){
+  if(!dateStr)return 'none';
+  const days=Math.floor((Date.now()-new Date(dateStr).getTime())/86400000);
+  if(days<=7)return 'green';
+  if(days<=30)return 'amber';
+  return 'red';
+}
+function daysSince(dateStr){
+  if(!dateStr)return null;
+  return Math.floor((Date.now()-new Date(dateStr).getTime())/86400000);
+}
 
 function renderLeads(){
   const active=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
@@ -569,8 +588,11 @@ function renderLeads(){
 }
 
 function leadCardHTML(l){
-  const done=QUESTIONS.filter((_,i)=>l.questionnaire&&l.questionnaire['q'+i]).length;
+  const sc=l.socialCheck||{};
+  const found=LEAD_PLATS.filter(p=>sc[p]?.url).length;
+  const checked=LEAD_PLATS.filter(p=>sc[p]?.lastPost).length;
   const hot=l.stage==='Interested';
+  const headerDots=LEAD_PLATS.filter(p=>sc[p]?.url).map(p=>`<span class="rag-dot ${ragStatus(sc[p]?.lastPost)}" style="margin:0;"></span>`).join('');
   return `<div class="call-card" id="lc_${l.id}">
   <div class="call-card-top" onclick="toggleCard('lc_${l.id}')">
     <div>
@@ -578,16 +600,26 @@ function leadCardHTML(l){
       <div class="call-card-meta">${esc(l.type)} · ${esc(l.location)}</div>
     </div>
     <div class="call-card-right">
+      ${found?`<span style="display:flex;gap:4px;align-items:center;">${headerDots}</span>`:''}
       <span class="call-stage${hot?' hot':''}">${esc(l.stage)}</span>
       <span class="call-toggle">▾</span>
     </div>
   </div>
   <div class="call-card-body">
-    <div class="q-title">Pre-Call Research — ${done}/${QUESTIONS.length} complete</div>
-    ${QUESTIONS.map((q,i)=>`<div class="q-item">
-      <input class="q-check" type="checkbox" ${l.questionnaire&&l.questionnaire['q'+i]?'checked':''} onchange="saveQCheck('${l.id}',${i},this.checked)">
-      <label class="q-label">${esc(q)}</label>
-    </div>`).join('')}
+    <div class="q-title">Social Health — ${found} platform${found!==1?'s':''} found · ${checked} checked</div>
+    ${LEAD_PLATS.map(p=>{
+      const d=sc[p]||{};
+      const status=ragStatus(d.lastPost);
+      const ds=daysSince(d.lastPost);
+      return `<div class="rag-row" data-plat="${p}">
+        <div class="rag-dot ${status}"></div>
+        <span class="rag-plat">${esc(PLAT_LABELS[p]||p)}</span>
+        ${d.url?`<a class="rag-open-btn" href="${esc(d.url)}" target="_blank">↗ Open</a>`:''}
+        <input class="rag-url-input" placeholder="Profile URL" value="${esc(d.url||'')}" onblur="saveSocial('${l.id}','${p}','url',this.value)">
+        <input class="rag-date-input" type="date" title="Last post date" value="${esc(d.lastPost||'')}" onchange="saveSocial('${l.id}','${p}','lastPost',this.value)">
+        <span class="rag-age ${status}">${ds!==null?ds+'d ago':'—'}</span>
+      </div>`;
+    }).join('')}
     <textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${l.id}',this.value)">${esc(l.notes||'')}</textarea>
     ${l.followUpDate?`<div class="followup-tag">Follow-up: ${l.followUpDate}</div>`:''}
     <div class="q-action-row">
@@ -601,11 +633,35 @@ function leadCardHTML(l){
 
 function toggleCard(id){document.getElementById(id).classList.toggle('open');}
 
-async function saveQCheck(id,i,val){
+async function saveSocial(id,plat,field,val){
   const l=S.leads.find(x=>x.id===id);if(!l)return;
-  if(!l.questionnaire)l.questionnaire={};
-  l.questionnaire['q'+i]=val;
+  if(!l.socialCheck)l.socialCheck={};
+  if(!l.socialCheck[plat])l.socialCheck[plat]={};
+  l.socialCheck[plat][field]=val;
   await sbUp('leads',toLead(l));
+  const row=document.querySelector(`#lc_${id} [data-plat="${plat}"]`);
+  if(!row)return;
+  if(field==='lastPost'){
+    const status=ragStatus(val);
+    const ds=daysSince(val);
+    const dot=row.querySelector('.rag-dot');if(dot){dot.className='rag-dot '+status;}
+    const age=row.querySelector('.rag-age');if(age){age.textContent=ds!==null?ds+'d ago':'—';age.className='rag-age '+status;}
+    const sc2=l.socialCheck;
+    const hdrWrap=document.querySelector(`#lc_${id} .call-card-right span[style]`);
+    const foundPlats=LEAD_PLATS.filter(p=>sc2[p]?.url);
+    if(hdrWrap){hdrWrap.innerHTML=foundPlats.map(p=>`<span class="rag-dot ${ragStatus(sc2[p]?.lastPost)}" style="margin:0;"></span>`).join('');}
+    const title=document.querySelector(`#lc_${id} .q-title`);
+    if(title){const f=LEAD_PLATS.filter(p=>sc2[p]?.url).length;const c=LEAD_PLATS.filter(p=>sc2[p]?.lastPost).length;title.textContent=`Social Health — ${f} platform${f!==1?'s':''} found · ${c} checked`;}
+  }
+  if(field==='url'){
+    let link=row.querySelector('.rag-open-btn');
+    if(val&&link){link.href=val;}
+    else if(val&&!link){const a=document.createElement('a');a.className='rag-open-btn';a.href=val;a.target='_blank';a.textContent='↗ Open';row.querySelector('.rag-plat').after(a);}
+    else if(!val&&link){link.remove();}
+    const sc2=l.socialCheck;
+    const title=document.querySelector(`#lc_${id} .q-title`);
+    if(title){const f=LEAD_PLATS.filter(p=>sc2[p]?.url).length;const c=LEAD_PLATS.filter(p=>sc2[p]?.lastPost).length;title.textContent=`Social Health — ${f} platform${f!==1?'s':''} found · ${c} checked`;}
+  }
 }
 
 async function saveLeadNotes(id,val){
@@ -841,7 +897,7 @@ async function doSaveLead(){
     location:document.getElementById('m_location').value.trim(),
     stage:document.getElementById('m_stage').value,
     notes:document.getElementById('m_notes').value.trim(),
-    questionnaire:existing?.questionnaire||{},
+    socialCheck:existing?.socialCheck||{},
     followUpDate:document.getElementById('m_followup').value||null,
     addedDate:existing?.addedDate||todayStr(),
   };
@@ -1036,7 +1092,7 @@ function runScanner(){
   </div>`).join('');
 }
 async function addScanResult(btn,name){
-  const lead={id:uid(),name,type:'',location:'',stage:'Identified',notes:'',questionnaire:{},followUpDate:null,addedDate:todayStr()};
+  const lead={id:uid(),name,type:'',location:'',stage:'Identified',notes:'',socialCheck:{},followUpDate:null,addedDate:todayStr()};
   await sbUp('leads',toLead(lead));
   S.leads.unshift(lead);
   btn.textContent='Added ✓';btn.classList.add('added');
@@ -1056,3 +1112,4 @@ window.addEventListener('load',async()=>{
 </script>
 </body>
 </html>
+
