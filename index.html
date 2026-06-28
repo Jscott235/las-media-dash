@@ -338,6 +338,49 @@ body::before{
 .home-qa-btn:hover{border-color:rgba(99,102,241,0.35);color:#a5b4fc;background:rgba(99,102,241,0.07);}
 .home-greeting{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.25rem;}
 .home-greeting-sub{font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;}
+/* ── PIPELINE WORKFLOW ── */
+.wf-progress{display:flex;align-items:center;gap:0;margin-bottom:.6rem;}
+.wf-prog-step{display:flex;align-items:center;gap:0;flex:1;}
+.wf-prog-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--dim);background:transparent;flex-shrink:0;transition:all .2s;}
+.wf-prog-dot.done{background:#6366f1;border-color:#6366f1;}
+.wf-prog-dot.current{background:#fff;border-color:#fff;box-shadow:0 0 8px rgba(255,255,255,0.35);}
+.wf-prog-line{flex:1;height:1.5px;background:var(--border);margin:0 3px;}
+.wf-prog-line.done{background:#6366f1;}
+.wf-prog-labels{display:flex;justify-content:space-between;margin-bottom:.85rem;}
+.wf-prog-label{font-size:.5rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:center;flex:1;}
+.wf-prog-label.current{color:var(--text);}
+.wf-prog-label.done{color:rgba(99,102,241,0.6);}
+.wf-prog-label.future{color:var(--dim);}
+.wf-stage-header{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:.8rem;display:flex;align-items:center;gap:.4rem;}
+.wf-stage-header::before{content:'';display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.wf-field{margin-bottom:.7rem;}
+.wf-field label{display:block;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.35rem;}
+.wf-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);padding:.55rem .8rem;font-size:.8rem;font-family:'Inter',sans-serif;outline:none;transition:all .18s;}
+.wf-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);}
+.wf-toggle-group{display:flex;gap:.4rem;}
+.wf-opt{padding:.35rem 1rem;border:1px solid var(--border);border-radius:99px;background:none;color:var(--muted);font-size:.68rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.wf-opt:hover{border-color:var(--border-h);color:var(--text);}
+.wf-opt.active-yes{border-color:rgba(16,185,129,0.5);color:#10b981;background:rgba(16,185,129,0.08);}
+.wf-opt.active-no{border-color:rgba(239,68,68,0.5);color:#ef4444;background:rgba(239,68,68,0.08);}
+.wf-cta{padding:.85rem 1rem;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:var(--rs);margin-bottom:.85rem;}
+.wf-cta-title{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.5rem;}
+.wf-cta-btn{width:100%;padding:.6rem;border:none;border-radius:var(--rs);background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .18s;box-shadow:0 3px 12px rgba(99,102,241,0.3);}
+.wf-cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,0.45);}
+.wf-decision-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem;}
+.wf-decision-yes{padding:.6rem;border:1px solid rgba(16,185,129,0.3);border-radius:var(--rs);background:rgba(16,185,129,0.07);color:#10b981;font-size:.7rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .18s;text-align:center;}
+.wf-decision-yes:hover{background:rgba(16,185,129,0.15);}
+.wf-decision-no{padding:.6rem;border:1px solid rgba(239,68,68,0.2);border-radius:var(--rs);background:rgba(239,68,68,0.05);color:#ef4444;font-size:.7rem;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .18s;text-align:center;}
+.wf-decision-no:hover{background:rgba(239,68,68,0.12);}
+.wf-won-banner{background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.06));border:1px solid rgba(16,185,129,0.25);border-radius:var(--rs);padding:.75rem 1rem;margin-bottom:.85rem;display:flex;align-items:center;gap:.65rem;}
+.wf-won-icon{font-size:1.2rem;}
+.wf-won-text{font-size:.82rem;font-weight:700;color:#10b981;}
+.wf-won-sub{font-size:.65rem;color:rgba(16,185,129,0.65);margin-top:.1rem;}
+.call-stage.discover{color:#a5b4fc;border-color:rgba(165,180,252,0.3);background:rgba(165,180,252,0.08);}
+.call-stage.research{color:#22d3ee;border-color:rgba(34,211,238,0.3);background:rgba(34,211,238,0.08);}
+.call-stage.freebie{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);}
+.call-stage.shoot{color:#f472b6;border-color:rgba(244,114,182,0.3);background:rgba(244,114,182,0.08);}
+.call-stage.proposal{color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.08);}
+.call-stage.won-stage{color:#10b981;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.08);}
 /* ── PACKAGE BUILDER ── */
 .pkg-layout{display:grid;grid-template-columns:340px 1fr;gap:1.25rem;align-items:start;}
 .pkg-panel{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;backdrop-filter:blur(12px);}
@@ -1035,7 +1078,7 @@ body::before{
         </div>
       </div>
       <hr class="divider">
-      <div class="call-list-label">Call List — check social health before calling</div>
+      <div class="call-list-label">Call List — work each lead through the pipeline</div>
       <div id="callList" style="margin-bottom:2rem;"></div>
       <div class="label" style="margin-bottom:.75rem;">Pipeline</div>
       <div class="pipeline-strip" id="pipelineStrip"></div>
@@ -1434,8 +1477,10 @@ function buildBrief(){
 // ─────────────────────────────────────────
 // LEADS
 // ─────────────────────────────────────────
-const STAGES=['Identified','Researched','Called','Interested','Won','Lost'];
+const STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won','Lost'];
+const ACTIVE_STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won'];
 const LEAD_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
+const STAGE_COLORS={Discover:'discover',Research:'research','Freebie Offered':'freebie','Shoot Booked':'shoot',Proposal:'proposal',Won:'won-stage',Lost:''};
 
 function ragStatus(dateStr){
   if(!dateStr)return 'none';
@@ -1450,57 +1495,173 @@ function daysSince(dateStr){
 }
 
 function renderLeads(){
-  const active=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
+  const active=S.leads.filter(l=>l.stage!=='Lost');
   const el=document.getElementById('callList');
   if(!active.length){el.innerHTML='<div class="empty-state">No active leads. Add manually or use the scanner above.</div>';return;}
   el.innerHTML=active.map(leadCardHTML).join('');
 }
 
-function leadCardHTML(l){
+function wfProgress(currentStage){
+  const flow=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won'];
+  const ci=flow.indexOf(currentStage);
+  return `<div class="wf-progress">${flow.map((s,i)=>{
+    const cls=i<ci?'done':i===ci?'current':'';
+    const line=i<flow.length-1?`<div class="wf-prog-line${i<ci?' done':''}"></div>`:'';
+    return `<div class="wf-prog-step"><div class="wf-prog-dot ${cls}"></div>${line}</div>`;
+  }).join('')}</div>
+  <div style="display:flex;justify-content:space-between;margin-bottom:.85rem;">${flow.map((s,i)=>{
+    const cls=i<ci?'done':i===ci?'current':'future';
+    return `<div class="wf-prog-label ${cls}" style="flex:1;text-align:${i===0?'left':i===flow.length-1?'right':'center'}">${s.replace(' ','\u00a0')}</div>`;
+  }).join('')}</div>`;
+}
+
+function ragPanelHTML(l){
   const sc=l.socialCheck||{};
   const found=LEAD_PLATS.filter(p=>sc[p]?.url).length;
   const checked=LEAD_PLATS.filter(p=>sc[p]?.lastPost).length;
-  const hot=l.stage==='Interested';
-  const headerDots=LEAD_PLATS.filter(p=>sc[p]?.url).map(p=>`<span class="rag-dot ${ragStatus(sc[p]?.lastPost)}" style="margin:0;"></span>`).join('');
+  return `<div class="wf-stage-header">Social Health — ${found} found · ${checked} checked</div>
+  ${LEAD_PLATS.map(p=>{
+    const d=sc[p]||{};
+    const status=ragStatus(d.lastPost);
+    const ds=daysSince(d.lastPost);
+    return `<div class="rag-row" data-plat="${p}">
+      <div class="rag-dot ${status}"></div>
+      <span class="rag-plat">${esc(PLAT_LABELS[p]||p)}</span>
+      ${d.url?`<a class="rag-open-btn" href="${esc(d.url)}" target="_blank">↗ Open</a>`:''}
+      <input class="rag-url-input" placeholder="Profile URL" value="${esc(d.url||'')}" onblur="saveSocial('${l.id}','${p}','url',this.value)">
+      <input class="rag-date-input" type="date" title="Last post date" value="${esc(d.lastPost||'')}" onchange="saveSocial('${l.id}','${p}','lastPost',this.value)">
+      <span class="rag-age ${status}">${ds!==null?ds+'d ago':'—'}</span>
+    </div>`;
+  }).join('')}`;
+}
+
+function stageBodyHTML(l){
+  const wf=(l.socialCheck||{}).workflow||{};
+  const id=l.id;
+  switch(l.stage){
+    case 'Discover':
+      return `${ragPanelHTML(l)}
+      <textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Research')">→ Start Research</button>
+        <button class="q-btn" onclick="openEditLead('${id}')">Edit</button>
+        <button class="q-btn" onclick="doDeleteLead('${id}')">Remove</button>
+      </div>`;
+    case 'Research':
+      return `${ragPanelHTML(l)}
+      <textarea class="q-notes" placeholder="Research notes — website, competitors, decision maker..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Freebie Offered')">→ Ready to Offer Freebie</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Discover')">← Back</button>
+        <button class="q-btn" onclick="doDeleteLead('${id}')">Remove</button>
+      </div>`;
+    case 'Freebie Offered':
+      return `<div class="wf-field">
+        <label>Free video offered?</label>
+        <div class="wf-toggle-group">
+          <button class="wf-opt${wf.freebieOffered===true?' active-yes':''}" onclick="saveWorkflow('${id}','freebieOffered',true)">✓ Yes — offered</button>
+          <button class="wf-opt${wf.freebieOffered===false&&wf.freebieOffered!==undefined?' active-no':''}" onclick="saveWorkflow('${id}','freebieOffered',false)">Not yet</button>
+        </div>
+      </div>
+      ${wf.freebieOffered===true?`<div class="wf-field">
+        <label>Date offered</label>
+        <input type="date" class="wf-input" value="${esc(wf.freebieDate||'')}" onchange="saveWorkflow('${id}','freebieDate',this.value)">
+      </div>`:''}
+      <textarea class="q-notes" placeholder="How was it offered? WhatsApp, in person, phone call..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        ${wf.freebieOffered===true?`<button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Shoot Booked')">→ Book the Shoot</button>`:'<span style="font-size:.7rem;color:var(--dim);">Offer the freebie first to proceed</span>'}
+        <button class="q-btn" onclick="setLeadStage('${id}','Research')">← Back</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Lost')">Not interested</button>
+      </div>`;
+    case 'Shoot Booked':
+      return `<div class="wf-cta">
+        <div class="wf-cta-title">📅 Schedule Free Shoot</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.6rem;">
+          <div class="wf-field" style="margin:0;">
+            <label>Date</label>
+            <input type="date" class="wf-input" id="wf_shoot_date_${id}" value="${esc(wf.shootDate||'')}" onchange="saveWorkflow('${id}','shootDate',this.value)">
+          </div>
+          <div class="wf-field" style="margin:0;">
+            <label>Time</label>
+            <input type="time" class="wf-input" id="wf_shoot_time_${id}" value="${esc(wf.shootTime||'10:00')}" onchange="saveWorkflow('${id}','shootTime',this.value)">
+          </div>
+        </div>
+        <button class="wf-cta-btn" onclick="addShootToCalendar('${id}')">${wf.calEntryId?'✓ In Calendar — Update':'+ Add Shoot to Calendar'}</button>
+      </div>
+      <textarea class="q-notes" placeholder="Shoot location, what to capture, access notes..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:.75rem 0 .5rem;">After the shoot — did they love it?</div>
+      <div class="wf-decision-row">
+        <button class="wf-decision-yes" onclick="setLeadStage('${id}','Proposal')">👍 Yes — Build Package</button>
+        <button class="wf-decision-no" onclick="setLeadStage('${id}','Lost')">👎 Not interested</button>
+      </div>
+      <div class="q-action-row" style="margin-top:.6rem;">
+        <button class="q-btn" onclick="setLeadStage('${id}','Freebie Offered')">← Back</button>
+        <button class="q-btn" onclick="openEditLead('${id}')">Edit</button>
+      </div>`;
+    case 'Proposal':
+      return `<div class="wf-cta">
+        <div class="wf-cta-title">✦ Build Their Package</div>
+        <button class="wf-cta-btn" onclick="openPkgForLead('${id}')">Open Package Builder →</button>
+      </div>
+      <textarea class="q-notes" placeholder="Package notes, what they're interested in..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Won')">✓ Won — They're in!</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Shoot Booked')">← Back</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Lost')">Mark Lost</button>
+      </div>`;
+    case 'Won':
+      return `<div class="wf-won-banner">
+        <div class="wf-won-icon">🎉</div>
+        <div><div class="wf-won-text">Client Won!</div><div class="wf-won-sub">${esc(l.name)} is on board</div></div>
+      </div>
+      <div class="wf-cta">
+        <div class="wf-cta-title">📅 Schedule This Month's Content</div>
+        <button class="wf-cta-btn" onclick="openScheduleMonth('${id}')">Schedule Content →</button>
+      </div>
+      <textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="convertToClient('${id}')">→ Add to Clients</button>
+        <button class="q-btn" onclick="openPkgForLead('${id}')">✦ Package Builder</button>
+        <button class="q-btn" onclick="doDeleteLead('${id}')">Remove</button>
+      </div>`;
+    default:
+      return `<textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn" onclick="openEditLead('${id}')">Edit</button>
+        <button class="q-btn" onclick="doDeleteLead('${id}')">Remove</button>
+      </div>`;
+  }
+}
+
+function leadCardHTML(l){
+  const stageColor=STAGE_COLORS[l.stage]||'';
   return `<div class="call-card" id="lc_${l.id}">
   <div class="call-card-top" onclick="toggleCard('lc_${l.id}')">
     <div>
       <div class="call-card-name">${esc(l.name)}</div>
-      <div class="call-card-meta">${esc(l.type)} · ${esc(l.location)}</div>
+      <div class="call-card-meta">${esc(l.type||'—')} · ${esc(l.location||'—')}</div>
     </div>
     <div class="call-card-right">
-      ${found?`<span style="display:flex;gap:4px;align-items:center;">${headerDots}</span>`:''}
-      <span class="call-stage${hot?' hot':''}">${esc(l.stage)}</span>
+      <span class="call-stage ${stageColor}">${esc(l.stage)}</span>
       <span class="call-toggle">▾</span>
     </div>
   </div>
   <div class="call-card-body">
-    <div class="q-title">Social Health — ${found} platform${found!==1?'s':''} found · ${checked} checked</div>
-    ${LEAD_PLATS.map(p=>{
-      const d=sc[p]||{};
-      const status=ragStatus(d.lastPost);
-      const ds=daysSince(d.lastPost);
-      return `<div class="rag-row" data-plat="${p}">
-        <div class="rag-dot ${status}"></div>
-        <span class="rag-plat">${esc(PLAT_LABELS[p]||p)}</span>
-        ${d.url?`<a class="rag-open-btn" href="${esc(d.url)}" target="_blank">↗ Open</a>`:''}
-        <input class="rag-url-input" placeholder="Profile URL" value="${esc(d.url||'')}" onblur="saveSocial('${l.id}','${p}','url',this.value)">
-        <input class="rag-date-input" type="date" title="Last post date" value="${esc(d.lastPost||'')}" onchange="saveSocial('${l.id}','${p}','lastPost',this.value)">
-        <span class="rag-age ${status}">${ds!==null?ds+'d ago':'—'}</span>
-      </div>`;
-    }).join('')}
-    <textarea class="q-notes" placeholder="Notes..." onblur="saveLeadNotes('${l.id}',this.value)">${esc(l.notes||'')}</textarea>
-    ${l.followUpDate?`<div class="followup-tag">Follow-up: ${l.followUpDate}</div>`:''}
-    <div class="q-action-row">
-      <button class="q-btn q-btn-primary" onclick="advanceStage('${l.id}')">→ Advance Stage</button>
-      <button class="q-btn" onclick="openEditLead('${l.id}')">Edit</button>
-      <button class="q-btn" onclick="doDeleteLead('${l.id}')">Remove</button>
-    </div>
+    ${wfProgress(l.stage)}
+    ${stageBodyHTML(l)}
   </div>
 </div>`;
 }
 
 function toggleCard(id){document.getElementById(id).classList.toggle('open');}
+function refreshLeadCard(id){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  const card=document.getElementById('lc_'+id);if(!card)return;
+  const body=card.querySelector('.call-card-body');
+  if(body) body.innerHTML=wfProgress(l.stage)+stageBodyHTML(l);
+  const stageEl=card.querySelector('.call-stage');
+  if(stageEl){stageEl.textContent=l.stage;stageEl.className='call-stage '+(STAGE_COLORS[l.stage]||'');}
+}
 
 async function saveSocial(id,plat,field,val){
   const l=S.leads.find(x=>x.id===id);if(!l)return;
@@ -1539,12 +1700,121 @@ async function saveLeadNotes(id,val){
   await sbUp('leads',toLead(l));
 }
 
+async function setLeadStage(id,stage){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  l.stage=stage;
+  await sbUp('leads',toLead(l));
+  refreshLeadCard(id);
+  renderPipeline();renderStats();updateNavMeta();renderHome();
+}
+
 async function advanceStage(id){
   const l=S.leads.find(x=>x.id===id);if(!l)return;
   const idx=STAGES.indexOf(l.stage);
-  if(idx<STAGES.length-1)l.stage=STAGES[idx+1];
+  if(idx<STAGES.length-1) await setLeadStage(id,STAGES[idx+1]);
+}
+
+async function saveWorkflow(id,field,val){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  if(!l.socialCheck)l.socialCheck={};
+  if(!l.socialCheck.workflow)l.socialCheck.workflow={};
+  l.socialCheck.workflow[field]=val;
   await sbUp('leads',toLead(l));
-  renderLeads();renderPipeline();renderStats();updateNavMeta();
+  refreshLeadCard(id);
+}
+
+async function addShootToCalendar(id){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  const wf=(l.socialCheck||{}).workflow||{};
+  const date=document.getElementById('wf_shoot_date_'+id)?.value||wf.shootDate||todayStr();
+  const time=document.getElementById('wf_shoot_time_'+id)?.value||wf.shootTime||'10:00';
+  if(!date){alert('Pick a shoot date first');return;}
+  // Remove old entry if exists
+  if(wf.calEntryId){await sbDel('calendar',wf.calEntryId);S.calendar=S.calendar.filter(e=>e.id!==wf.calEntryId);}
+  const entryId=uid();
+  const entry={id:entryId,date,time,clientId:null,contentType:'Shoot',platform:'',notes:`Free shoot — ${l.name}`};
+  await sbUp('calendar',toCal(entry));
+  S.calendar.push(entry);
+  // Save cal entry id to workflow
+  if(!l.socialCheck)l.socialCheck={};
+  if(!l.socialCheck.workflow)l.socialCheck.workflow={};
+  l.socialCheck.workflow.calEntryId=entryId;
+  l.socialCheck.workflow.shootDate=date;
+  l.socialCheck.workflow.shootTime=time;
+  await sbUp('leads',toLead(l));
+  renderCalendar();renderHome();
+  refreshLeadCard(id);
+  alert('Shoot added to calendar for '+date+' at '+time);
+}
+
+function openPkgForLead(id){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  showSection('pkgSection');
+  setTimeout(()=>{
+    const nameEl=document.getElementById('pkgClientName');
+    if(nameEl){nameEl.value=l.name;pbCalc();}
+  },100);
+}
+
+function openScheduleMonth(id){
+  const l=S.leads.find(x=>x.id===id);if(!l)return;
+  const today=todayStr();
+  openModal('📅 Schedule Content — '+esc(l.name),
+  `<div class="m-field"><label>Start From</label><input class="m-input" type="date" id="sched_from" value="${today}"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+    <div class="m-field"><label>Reels / month</label><input class="m-input" type="number" id="sched_reels" value="8" min="0"></div>
+    <div class="m-field"><label>Static posts / month</label><input class="m-input" type="number" id="sched_statics" value="8" min="0"></div>
+  </div>
+  <div class="m-field"><label>Post time</label><input class="m-input" type="time" id="sched_time" value="10:00"></div>
+  <div style="font-size:.7rem;color:var(--dim);margin-bottom:1rem;padding:.65rem;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:var(--rs);">Entries will be spread evenly across weekdays from your start date. Reels and static posts alternate.</div>
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="doScheduleMonth('${id}')">Create Calendar Entries</button>
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`);
+}
+
+async function doScheduleMonth(leadId){
+  const l=S.leads.find(x=>x.id===leadId);if(!l)return;
+  const fromDate=document.getElementById('sched_from')?.value||todayStr();
+  const reels=parseInt(document.getElementById('sched_reels')?.value)||0;
+  const statics=parseInt(document.getElementById('sched_statics')?.value)||0;
+  const time=document.getElementById('sched_time')?.value||'10:00';
+  const total=reels+statics;
+  if(!total){alert('Enter at least 1 reel or post');return;}
+  const clientMatch=S.clients.find(c=>c.name===l.name);
+  // Generate weekdays
+  const weekdays=[];
+  const d=new Date(fromDate+'T12:00:00');
+  while(weekdays.length<total){
+    const day=d.getDay();
+    if(day!==0&&day!==6)weekdays.push(new Date(d));
+    d.setDate(d.getDate()+1);
+  }
+  const entries=[];
+  for(let i=0;i<total;i++){
+    const type=i%2===0&&reels>0?'Reel':'Post';
+    const entry={id:uid(),date:dateStr(weekdays[i]),time,clientId:clientMatch?.id||null,contentType:type,platform:'Instagram',notes:''};
+    await sbUp('calendar',toCal(entry));
+    S.calendar.push(entry);
+    entries.push(entry);
+  }
+  renderCalendar();renderHome();closeModal();
+  alert(`✓ Created ${entries.length} calendar entries for ${l.name}`);
+}
+
+async function convertToClient(leadId){
+  const l=S.leads.find(x=>x.id===leadId);if(!l)return;
+  // Pre-fill the add client modal with lead info
+  showSection('clientsSection');
+  setTimeout(()=>{
+    openAddClient();
+    setTimeout(()=>{
+      const nameEl=document.getElementById('m_name');
+      const typeEl=document.getElementById('m_type');
+      if(nameEl)nameEl.value=l.name;
+      if(typeEl)typeEl.value=l.type||'';
+    },100);
+  },150);
 }
 
 async function doDeleteLead(id){
