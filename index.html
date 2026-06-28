@@ -524,6 +524,16 @@ body::before{
 .pkg-action-btn:hover{border-color:var(--border-h);color:var(--text);}
 .pkg-action-btn.primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(99,102,241,0.3);}
 .pkg-action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,0.4);}
+.pkg-save-lead-btn{background:rgba(245,158,11,0.15)!important;border-color:rgba(245,158,11,0.4)!important;color:var(--amber)!important;font-weight:700!important;}
+.pkg-save-lead-btn:hover{background:rgba(245,158,11,0.28)!important;border-color:var(--amber)!important;}
+.pkg-lead-ctx{display:flex;align-items:center;gap:.5rem;padding:.55rem .8rem;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:var(--rs);margin-bottom:.85rem;flex-wrap:wrap;}
+.pkg-lead-ctx-label{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);opacity:.7;}
+.pkg-lead-ctx-name{font-size:.75rem;font-weight:700;color:var(--amber);flex:1;}
+.pkg-lead-ctx-saved{font-size:.6rem;color:#10b981;font-weight:600;}
+.pkg-snap-preview{display:flex;align-items:center;gap:.5rem;padding:.45rem .65rem;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.2);border-radius:var(--rs);margin-bottom:.5rem;flex-wrap:wrap;}
+.pkg-snap-badge{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#10b981;}
+.pkg-snap-detail{font-size:.7rem;color:var(--muted);flex:1;}
+.pkg-snap-date{font-size:.6rem;color:var(--dim);}
 /* ── BUDGET RECOMMENDER ── */
 .pkg-budget-section{background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.18);border-radius:var(--r);padding:1rem 1.15rem;margin-bottom:1.25rem;}
 .pkg-budget-header{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem;}
@@ -1193,6 +1203,7 @@ body::before{
         <!-- RIGHT: LIVE PROPOSAL -->
         <div class="pkg-proposal-panel">
           <div class="pkg-proposal-title">Live Quote</div>
+          <div id="pbLeadCtx" style="display:none;"></div>
           <div class="pkg-proposal-client" id="pbProposalClient">No client selected</div>
           <div class="pkg-proposal-base" id="pbProposalBase"></div>
           <div class="pkg-addons-list" id="pbProposalAddons" style="display:none;">
@@ -1215,6 +1226,7 @@ body::before{
           <div class="pkg-warn" id="pbWarn">⚠ Rate below £25/hr — consider pricing up</div>
           <div class="pkg-action-row">
             <button class="pkg-action-btn primary" onclick="pbCopyProposal()">Copy Proposal</button>
+            <button class="pkg-action-btn pkg-save-lead-btn" id="pbSaveLeadBtn" onclick="pbSaveToLead()" style="display:none;">Save to Lead</button>
             <button class="pkg-action-btn" onclick="pbSaveTemplate()">Save Template</button>
             <button class="pkg-action-btn" onclick="pbLoadTemplate()">Load Template</button>
           </div>
@@ -1634,10 +1646,16 @@ function stageBodyHTML(l){
         <button class="q-btn" onclick="setLeadStage('${id}','Freebie Offered')">← Back</button>
         <button class="q-btn" onclick="openEditLead('${id}')">Edit</button>
       </div>`;
-    case 'Proposal':
+    case 'Proposal':{
+      const snap=wf.pkgSnapshot;
       return `<div class="wf-cta">
         <div class="wf-cta-title">✦ Build Their Package</div>
-        <button class="wf-cta-btn" onclick="openPkgForLead('${id}')">Open Package Builder →</button>
+        ${snap?`<div class="pkg-snap-preview">
+          <span class="pkg-snap-badge">✓ Package saved</span>
+          <span class="pkg-snap-detail">${esc(snap.baseName||'Package')} · £${snap.total}/mo</span>
+          <span class="pkg-snap-date">${new Date(snap.savedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+        </div>`:''}
+        <button class="wf-cta-btn" onclick="openPkgForLead('${id}')">${snap?'Edit Package →':'Open Package Builder →'}</button>
       </div>
       <textarea class="q-notes" placeholder="Package notes, what they're interested in..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
       <div class="q-action-row" style="margin-top:.75rem;">
@@ -1645,6 +1663,7 @@ function stageBodyHTML(l){
         <button class="q-btn" onclick="setLeadStage('${id}','Shoot Booked')">← Back</button>
         <button class="q-btn" onclick="setLeadStage('${id}','Lost')">Mark Lost</button>
       </div>`;
+    }
     case 'Won':
       return `<div class="wf-won-banner">
         <div class="wf-won-icon">🎉</div>
@@ -1785,11 +1804,66 @@ async function addShootToCalendar(id){
 
 function openPkgForLead(id){
   const l=S.leads.find(x=>x.id===id);if(!l)return;
+  PB._leadId=id;
   showSection('pkgSection');
   setTimeout(()=>{
+    const snap=(l.socialCheck?.workflow?.pkgSnapshot);
+    if(snap){
+      PB.base=snap.base||'starter';
+      PB.addons=snap.addons?JSON.parse(JSON.stringify(snap.addons)):{};
+    } else {
+      PB.base='starter';
+      PB.addons={};
+    }
     const nameEl=document.getElementById('pkgClientName');
-    if(nameEl){nameEl.value=l.name;pbCalc();}
+    if(nameEl)nameEl.value=l.name;
+    initPackageBuilder();
+    pbUpdateLeadContext();
   },100);
+}
+
+function pbUpdateLeadContext(){
+  const ctxEl=document.getElementById('pbLeadCtx');
+  const saveBtn=document.getElementById('pbSaveLeadBtn');
+  if(!PB._leadId){
+    if(ctxEl)ctxEl.style.display='none';
+    if(saveBtn)saveBtn.style.display='none';
+    return;
+  }
+  const l=S.leads.find(x=>x.id===PB._leadId);
+  if(!l){if(ctxEl)ctxEl.style.display='none';if(saveBtn)saveBtn.style.display='none';return;}
+  const snap=l.socialCheck?.workflow?.pkgSnapshot;
+  if(ctxEl){
+    ctxEl.innerHTML=`<div class="pkg-lead-ctx">
+      <span class="pkg-lead-ctx-label">Pipeline lead</span>
+      <span class="pkg-lead-ctx-name">${esc(l.name)}</span>
+      ${snap?`<span class="pkg-lead-ctx-saved">✓ Saved ${new Date(snap.savedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>`:''}
+    </div>`;
+    ctxEl.style.display='block';
+  }
+  if(saveBtn){
+    saveBtn.style.display='block';
+    saveBtn.textContent=snap?'↑ Update Package':'Save to Lead';
+  }
+}
+
+async function pbSaveToLead(){
+  if(!PB._leadId)return;
+  const l=S.leads.find(x=>x.id===PB._leadId);if(!l)return;
+  if(!l.socialCheck)l.socialCheck={};
+  if(!l.socialCheck.workflow)l.socialCheck.workflow={};
+  l.socialCheck.workflow.pkgSnapshot={
+    base:PB.base,
+    addons:JSON.parse(JSON.stringify(PB.addons)),
+    total:PB._total||0,
+    baseName:(BASE_PKGS[PB.base]||{}).name||'',
+    savedAt:new Date().toISOString()
+  };
+  await sbUp('leads',toLead(l));
+  pbUpdateLeadContext();
+  refreshLeadCard(PB._leadId);
+  const btn=document.getElementById('pbSaveLeadBtn');
+  if(btn){btn.textContent='Saved ✓';setTimeout(()=>{btn.textContent='↑ Update Package';},2000);}
 }
 
 function openScheduleMonth(id){
@@ -2747,6 +2821,8 @@ function initPackageBuilder(){
 }
 
 function pbClientChange(){
+  PB._leadId=null;
+  pbUpdateLeadContext();
   const id=document.getElementById('pkgClient')?.value;
   if(id){const c=S.clients.find(x=>x.id===id);if(c)document.getElementById('pkgClientName').value=c.name;}
   pbCalc();
