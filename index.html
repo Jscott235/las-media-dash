@@ -1082,22 +1082,19 @@ body::before{
             </div>
           </div>
           <div class="pkg-summary" id="pkgSummary"></div>
-          <button class="pkg-gen-btn" id="pkgGenBtn" onclick="generatePosts()">✦ Generate AI Posts</button>
-        </div>
-        <!-- POSTS PANEL -->
-        <div class="pkg-panel">
-          <div class="pkg-panel-title">Generated Posts</div>
-          <div id="pkgAiKeyRow" style="display:none;">
-            <div style="font-size:.7rem;color:var(--muted);margin-bottom:.5rem;">Enter your Anthropic API key to enable AI generation.</div>
-            <div class="pkg-key-row">
-              <input class="pkg-key-input" id="pkgAiKey" placeholder="sk-ant-api03-...">
-              <button class="pkg-key-save" onclick="savePkgAiKey()">Save</button>
-            </div>
+          <div style="font-size:.72rem;color:var(--dim);padding:.75rem;border:1px dashed rgba(255,255,255,0.08);border-radius:var(--rs);text-align:center;line-height:1.6;">
+            ✦ To generate AI posts, open a <strong style="color:var(--muted);">Client card</strong> and click <strong style="color:var(--muted);">Generate Posts</strong>
           </div>
-          <div id="pkgPostsOutput">
-            <div class="pkg-empty-posts">
-              <div class="pkg-empty-icon">✦</div>
-              <div>Configure your package and click<br><strong style="color:var(--muted);">Generate AI Posts</strong></div>
+        </div>
+        <!-- PACKAGE NOTES -->
+        <div class="pkg-panel">
+          <div class="pkg-panel-title">How it works</div>
+          <div style="font-size:.78rem;color:var(--muted);line-height:1.8;">
+            <div style="margin-bottom:.85rem;">Use this panel to plan the package for each client — set how many videos and static posts per month, which platforms, and whether to auto-schedule.</div>
+            <div style="margin-bottom:.85rem;"><strong style="color:var(--text);">To generate AI captions:</strong><br>Go to <strong>Clients</strong>, open any client card, and click <strong>✦ Generate Posts</strong>. You'll be able to give context on what each post is about before generating.</div>
+            <div style="padding:.85rem;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);border-radius:var(--rs);font-size:.72rem;">
+              <strong style="color:#a5b4fc;">AI generation uses your Anthropic API key.</strong><br>
+              You'll be prompted for it the first time you generate in a client card. It's saved in your browser — you won't need to enter it again.
             </div>
           </div>
         </div>
@@ -1570,6 +1567,7 @@ function clientCardHTML(c){
     </div>`).join('')}
     <div class="client-meta-foot">Last post: ${esc(c.lastPost||'—')} · Since: ${esc(c.startDate||'—')}</div>
     <div class="q-action-row">
+      <button class="q-btn q-btn-primary" onclick="openGeneratePosts('${c.id}')">✦ Generate Posts</button>
       <button class="q-btn" onclick="openUpdateStats('${c.id}')">Update Stats</button>
       <button class="q-btn" onclick="openEditClient('${c.id}')">Edit</button>
       <button class="q-btn" onclick="doDeleteClient('${c.id}')">Remove</button>
@@ -1863,6 +1861,156 @@ async function doSaveGoal(){
 }
 
 // ── ANALYTICS UPDATE ──
+// ── GENERATE POSTS MODAL ──
+let _genPostCount=4;
+function openGeneratePosts(id){
+  const c=S.clients.find(x=>x.id===id);if(!c)return;
+  _genPostCount=4;
+  const plats=c.platforms?.length?c.platforms:['instagram','tiktok','facebook'];
+  const platOpts=plats.map(p=>`<option value="${p}">${esc(PLAT_LABELS[p]||p)}</option>`).join('');
+  const hasKey=!!getPkgAiKey();
+  const keyHtml=hasKey?'':`<div class="m-field" id="genKeyField">
+    <label>Anthropic API Key</label>
+    <div style="display:flex;gap:.5rem;">
+      <input class="m-input" id="genAiKey" placeholder="sk-ant-api03-..." style="font-size:.75rem;">
+      <button class="m-btn" style="flex:0 0 auto;white-space:nowrap;" onclick="saveGenKey()">Save</button>
+    </div>
+  </div>`;
+  openModal(`✦ Generate Posts — ${esc(c.name)}`,`
+    ${keyHtml}
+    <div class="m-field">
+      <label>What's this post about?</label>
+      <textarea class="m-textarea" id="genBrief" placeholder="e.g. New summer menu launching next week&#10;Behind the scenes of our kitchen prep&#10;Customer review we received this week&#10;Weekend special offer — 20% off" style="min-height:90px;"></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+      <div class="m-field" style="margin:0;">
+        <label>Platform</label>
+        <select class="m-select" id="genPlatform">${platOpts}</select>
+      </div>
+      <div class="m-field" style="margin:0;">
+        <label>Tone</label>
+        <select class="m-select" id="genTone">
+          <option value="professional">Professional</option>
+          <option value="friendly and casual" selected>Friendly & Casual</option>
+          <option value="fun and energetic">Fun & Energetic</option>
+          <option value="luxury and premium">Luxury & Premium</option>
+          <option value="local and community-focused">Local & Community</option>
+        </select>
+      </div>
+    </div>
+    <div class="m-field" style="margin-top:.75rem;">
+      <label>Number of posts</label>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <div class="pkg-stepper">
+          <button class="pkg-step-btn" onclick="adjGenCount(-1)">−</button>
+          <div class="pkg-step-val" id="genCountVal">4</div>
+          <button class="pkg-step-btn" onclick="adjGenCount(1)">+</button>
+        </div>
+        <span style="font-size:.7rem;color:var(--dim);">posts to generate</span>
+      </div>
+    </div>
+    <div id="genOutput"></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" id="genBtn" onclick="runGeneratePosts('${id}')">✦ Generate</button>
+      <button class="m-btn" onclick="closeModal()">Close</button>
+    </div>`);
+}
+
+function saveGenKey(){
+  const k=document.getElementById('genAiKey')?.value.trim();if(!k)return;
+  localStorage.setItem('las_ai_key',k);
+  const row=document.getElementById('genKeyField');
+  if(row)row.remove();
+}
+
+function adjGenCount(dir){
+  _genPostCount=Math.max(1,Math.min(12,_genPostCount+dir));
+  const el=document.getElementById('genCountVal');
+  if(el)el.textContent=_genPostCount;
+}
+
+async function runGeneratePosts(clientId){
+  const key=getPkgAiKey();
+  if(!key){
+    const kf=document.getElementById('genKeyField');
+    if(kf)kf.style.border='1px solid #ef4444';
+    else{const out=document.getElementById('genOutput');if(out)out.innerHTML='<div style="font-size:.75rem;color:#ef4444;margin-top:.75rem;">API key required — paste it above.</div>';}
+    return;
+  }
+  const c=S.clients.find(x=>x.id===clientId);if(!c)return;
+  const brief=document.getElementById('genBrief')?.value.trim();
+  if(!brief){document.getElementById('genBrief').style.borderColor='#ef4444';document.getElementById('genBrief').placeholder='Please describe what this post is about first';return;}
+  const platform=document.getElementById('genPlatform')?.value||'instagram';
+  const tone=document.getElementById('genTone')?.value||'friendly and casual';
+  const count=_genPostCount;
+  const btn=document.getElementById('genBtn');
+  const out=document.getElementById('genOutput');
+  btn.disabled=true;btn.textContent='Generating...';
+  out.innerHTML='<div style="font-size:.72rem;color:var(--dim);margin-top:1rem;text-align:center;animation:pulse 1.2s infinite">Writing your posts...</div>';
+  const prompt=`You are a social media content creator for a UK social media agency. Write ${count} ${PLAT_LABELS[platform]||platform} post caption${count>1?'s':''}.
+
+Client: ${c.name}
+Business type: ${c.type||'local business'}
+Post brief: ${brief}
+Tone: ${tone}
+Platform: ${PLAT_LABELS[platform]||platform}
+Location: UK
+
+Return ONLY a JSON array of exactly ${count} objects:
+{"caption":"full caption with emojis, 80-150 words, UK English, ends with a call to action","visual":"ideal photo or graphic description in 1-2 sentences","hashtags":["tag1","tag2","tag3","tag4","tag5","tag6"]}
+
+Make each caption distinct. No markdown, no explanation outside the JSON array.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,messages:[{role:'user',content:prompt}]})
+    });
+    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'API error '+res.status);}
+    const data=await res.json();
+    let raw=data.content[0].text.trim().replace(/```json|```/g,'').trim();
+    const posts=JSON.parse(raw);
+    const platKey=platform;
+    out.innerHTML=`<div style="font-size:.65rem;color:var(--dim);margin:.85rem 0 .5rem;">${posts.length} post${posts.length!==1?'s':''} generated</div>`+
+    posts.map((p,i)=>{
+      const tags=(p.hashtags||[]).map(h=>`<span class="pkg-post-tag">#${esc(String(h).replace('#',''))}</span>`).join('');
+      return `<div class="pkg-post-card" style="margin-bottom:.6rem;">
+        <div class="pkg-post-header">
+          <span class="pkg-post-plat ${platKey}">${esc(PLAT_LABELS[platform]||platform)}</span>
+          <span class="pkg-post-num">${i+1} / ${posts.length}</span>
+        </div>
+        <textarea class="pkg-post-caption" id="gpc_${i}">${esc(p.caption||'')}</textarea>
+        <div class="pkg-post-visual"><strong>📸 Visual</strong>${esc(p.visual||'')}</div>
+        <div class="pkg-post-tags">${tags}</div>
+        <div class="pkg-post-actions">
+          <button class="pkg-post-btn" onclick="copyGenPost(${i})">Copy</button>
+          <button class="pkg-post-btn primary" id="gsch_${i}" onclick="scheduleGenPost(${i},'${clientId}','${esc(PLAT_LABELS[platform]||platform)}')">+ Calendar</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    out.innerHTML=`<div style="font-size:.75rem;color:#ef4444;margin-top:.85rem;">Error: ${esc(e.message)}</div>`;
+    if(e.message.includes('401')){localStorage.removeItem('las_ai_key');}
+  }finally{btn.disabled=false;btn.textContent='✦ Generate';}
+}
+
+function copyGenPost(i){
+  const el=document.getElementById('gpc_'+i);if(!el)return;
+  navigator.clipboard.writeText(el.value).then(()=>{
+    const card=el.closest('.pkg-post-card');
+    const btn=card.querySelector('.pkg-post-btn');
+    const o=btn.textContent;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent=o,1500);
+  });
+}
+
+function scheduleGenPost(i,clientId,platform){
+  const el=document.getElementById('gpc_'+i);
+  const entry={id:uid(),date:getNextPostDate(i),time:'10:00',clientId:clientId||null,contentType:'Post',platform,notes:(el?.value||'').slice(0,120)};
+  sbUp('calendar',toCal(entry));S.calendar.push(entry);renderCalendar();renderHome();
+  const btn=document.getElementById('gsch_'+i);
+  if(btn){btn.textContent='✓ Scheduled';btn.style.color='#10b981';btn.style.borderColor='rgba(16,185,129,0.4)';}
+}
+
 function openUpdateStats(id){
   const c=S.clients.find(x=>x.id===id);if(!c)return;
   modalState={type:'stats',id};
