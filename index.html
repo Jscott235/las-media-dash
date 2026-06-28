@@ -1068,6 +1068,8 @@ body::before{
 </div>
 
 <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+<button class="suggest-fab" id="suggestFab" onclick="openSuggestion()" title="Suggest a feature" style="display:none;">💡</button>
+<button class="bug-fab" id="bugFab" onclick="openBugReport()" title="Report a bug" style="display:none;">🐛</button>
 
 <!-- ── APP ── -->
 <div id="app">
@@ -1343,8 +1345,6 @@ body::before{
 
   </main>
 </div>
-<button class="suggest-fab" onclick="openSuggestion()" title="Suggest a feature">💡</button>
-<button class="bug-fab" onclick="openBugReport()" title="Report a bug">🐛</button>
 </div><!-- /app -->
 
 
@@ -1435,6 +1435,8 @@ async function showApp(){
   await initApp();
   document.getElementById('loadingScreen').style.display='none';
   document.getElementById('app').style.display='block';
+  document.getElementById('bugFab').style.display='flex';
+  document.getElementById('suggestFab').style.display='flex';
 }
 
 // ─────────────────────────────────────────
