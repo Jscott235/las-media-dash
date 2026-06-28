@@ -524,6 +524,29 @@ body::before{
 .pkg-action-btn:hover{border-color:var(--border-h);color:var(--text);}
 .pkg-action-btn.primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 3px 12px rgba(99,102,241,0.3);}
 .pkg-action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,0.4);}
+/* ── BUDGET RECOMMENDER ── */
+.pkg-budget-section{background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.18);border-radius:var(--r);padding:1rem 1.15rem;margin-bottom:1.25rem;}
+.pkg-budget-header{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem;}
+.pkg-budget-header::before{content:'';width:3px;height:11px;background:var(--amber);border-radius:2px;}
+.pkg-budget-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+.pkg-budget-input-wrap{display:flex;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(245,158,11,0.25);border-radius:var(--rs);padding:0 .75rem;transition:border-color .15s;}
+.pkg-budget-input-wrap:focus-within{border-color:var(--amber);}
+.pkg-budget-prefix{color:var(--amber);font-size:.82rem;font-weight:700;margin-right:.2rem;}
+.pkg-budget-input{background:none;border:none;color:var(--text);font-size:.9rem;font-family:'Space Grotesk',sans-serif;font-weight:700;padding:.5rem 0;width:110px;outline:none;}
+.pkg-budget-input::placeholder{color:var(--dim);font-weight:400;font-size:.78rem;}
+.pkg-budget-btn{background:var(--amber);color:#000;border:none;border-radius:var(--rs);padding:.5rem 1rem;font-size:.68rem;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;}
+.pkg-budget-btn:hover{background:#fbbf24;transform:translateY(-1px);}
+.pkg-budget-btn.secondary{background:rgba(255,255,255,0.07);color:var(--muted);border:1px solid var(--border);}
+.pkg-budget-btn.secondary:hover{background:rgba(255,255,255,0.12);color:var(--text);transform:none;}
+.pkg-budget-result{margin-top:.85rem;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:var(--rs);padding:.75rem 1rem;}
+.pbr-header{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:.45rem;}
+.pbr-base{font-size:.75rem;color:var(--muted);margin-bottom:.2rem;}
+.pbr-addons{font-size:.68rem;color:var(--dim);margin-bottom:.35rem;line-height:1.5;}
+.pbr-spend{font-size:.72rem;font-weight:700;color:#10b981;}
+.pbr-unalloc{color:var(--dim);font-weight:400;}
+.pbr-none{font-size:.75rem;color:var(--amber);font-style:italic;}
+.pbr-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.35rem;}
+.pbr-chip{font-size:.6rem;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:var(--amber);border-radius:4px;padding:.12rem .45rem;}
 .voice-btn{
   display:flex;align-items:center;gap:.45rem;
   padding:.5rem 1rem;border:1px solid rgba(99,102,241,0.35);border-radius:var(--rs);
@@ -1145,6 +1168,19 @@ body::before{
       <div class="pkg-builder-layout">
         <!-- LEFT: CLIENT + ADD-ONS -->
         <div>
+          <!-- BUDGET RECOMMENDER -->
+          <div class="pkg-budget-section">
+            <div class="pkg-budget-header">💡 Budget Recommender</div>
+            <div class="pkg-budget-row">
+              <div class="pkg-budget-input-wrap">
+                <span class="pkg-budget-prefix">£</span>
+                <input class="pkg-budget-input" id="pbBudgetInput" type="number" min="0" placeholder="Monthly budget">
+              </div>
+              <button class="pkg-budget-btn" onclick="pbRecommend()">Find Best Package →</button>
+              <button class="pkg-budget-btn secondary" onclick="pbClearRecommend()">Clear</button>
+            </div>
+            <div class="pkg-budget-result" id="pbBudgetResult" style="display:none;"></div>
+          </div>
           <div class="pkg-client-row">
             <select class="pkg-select" id="pkgClient" onchange="pbClientChange()" style="max-width:220px;">
               <option value="">— No client / Custom —</option>
@@ -2868,6 +2904,90 @@ function pbLoadTemplate(){
   const t=templates[idx];
   PB.base=t.base;
   PB.addons=JSON.parse(JSON.stringify(t.addons));
+  initPackageBuilder();
+}
+
+// ─────────────────────────────────────────
+// BUDGET RECOMMENDER
+// ROI scores — higher = more client value per pound
+// Reels/reach-driving content rated highest; travel/custom items excluded
+// ─────────────────────────────────────────
+const PB_ROI_BASE={starter:3.2,growth:4.5,premium:3.8,bespoke:0};
+const PB_ROI_ADDON={
+  // Content
+  xreel:4.8,shortpromo:4.2,longpromo:3.8,carousel:3.5,storyset:2.8,photography:3.2,xstatic:2.5,ximage:2.0,
+  // Social management
+  tt_mgmt:4.5,scheduling:4.5,captionwriting:4.0,strategy_call:3.8,fb_mgmt:4.2,ig_mgmt:4.2,analytics_rep:3.5,li_mgmt:3.2,community_mgmt:3.0,xplatform:3.0,hashtags:2.5,
+  // Filming
+  drone:4.0,halfday:3.5,event:3.5,metaglasses:3.5,xshoot:3.2,sunrise:2.8,fullday:3.0,
+  // Advertising
+  fb_ads:4.2,ig_ads:4.2,ad_mgmt:3.8,
+  // Website
+  landing:4.5,googlebiz:4.0,webaudit:3.2,
+  // Branding
+  logo:3.5,menudesign:3.0,bizcard:2.8,giftvoucher:2.8,flyer:2.5,poster:2.5,pricelist:2.5,
+  // Hospitality
+  guestreel:3.8,roomtour:3.5,restaurant_show:3.5,lifestyle:3.5,pool_show:3.0,spa_show:3.0,dining_feat:2.8,
+  // Travel — excluded from recommendations (not value add-ons)
+  travel20:0,travel50:0,travel100:0,travel100plus:0,abroad:0
+};
+
+function pbRecommend(){
+  const budget=parseFloat(document.getElementById('pbBudgetInput')?.value)||0;
+  const resultEl=document.getElementById('pbBudgetResult');
+  if(!budget||budget<1){resultEl.style.display='none';return;}
+
+  // 1. Find best base package within budget (highest ROI score that fits)
+  const fitBases=Object.values(BASE_PKGS).filter(b=>b.id!=='bespoke'&&b.price>0&&b.price<=budget);
+  if(!fitBases.length){
+    resultEl.innerHTML=`<div class="pbr-none">£${budget}/mo is below our lowest package (Starter at £250/mo). Consider a bespoke arrangement.</div>`;
+    resultEl.style.display='block';
+    return;
+  }
+  const bestBase=fitBases.reduce((a,b)=>(PB_ROI_BASE[b.id]||0)>(PB_ROI_BASE[a.id]||0)?b:a);
+  let remaining=budget-bestBase.price;
+
+  // 2. Rank all add-ons by ROI score, exclude zero-price and zero-ROI
+  const rankedAddons=ADDON_CATS.flatMap(c=>c.items)
+    .filter(item=>item.price>0&&(PB_ROI_ADDON[item.id]||0)>0)
+    .map(item=>({...item,roi:PB_ROI_ADDON[item.id]||0}))
+    .sort((a,b)=>b.roi-a.roi);
+
+  // 3. Greedy fill with remaining budget
+  const selected=[];
+  for(const item of rankedAddons){
+    if(item.price<=remaining){
+      selected.push(item);
+      remaining-=item.price;
+    }
+    if(remaining<=0)break;
+  }
+
+  // 4. Apply to builder state
+  PB.base=bestBase.id;
+  PB.addons={};
+  selected.forEach(item=>{PB.addons[item.id]={on:true,qty:1,price:item.price};});
+  initPackageBuilder();
+
+  // 5. Show result summary
+  const totalSpend=bestBase.price+selected.reduce((s,i)=>s+i.price,0);
+  const leftover=Math.round(budget-totalSpend);
+  resultEl.innerHTML=`
+    <div class="pbr-header">✦ Best package for £${budget}/mo</div>
+    <div class="pbr-base">Base: <strong>${bestBase.name} — £${bestBase.price}/mo</strong></div>
+    ${selected.length?`<div class="pbr-chips">${selected.map(i=>`<span class="pbr-chip">${i.name}</span>`).join('')}</div>`:''}
+    <div class="pbr-spend">Total: £${totalSpend}/mo${leftover>0?` &nbsp;<span class="pbr-unalloc">· £${leftover} unallocated</span>`:''}</div>
+  `;
+  resultEl.style.display='block';
+}
+
+function pbClearRecommend(){
+  const inp=document.getElementById('pbBudgetInput');
+  if(inp)inp.value='';
+  const resultEl=document.getElementById('pbBudgetResult');
+  if(resultEl)resultEl.style.display='none';
+  PB.base='starter';
+  PB.addons={};
   initPackageBuilder();
 }
 
