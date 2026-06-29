@@ -1275,6 +1275,95 @@ body::before{
 .sr-score-chip.mid{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:#fbbf24;}
 .sr-score-chip.low{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:#f87171;}
 .sr-niche-tag{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.2rem .55rem;border-radius:99px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:#a5b4fc;}
+
+/* ── COLD CALL MODE ── */
+.cc-wrap{display:flex;flex-direction:column;gap:1.25rem;}
+.cc-topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.cc-stats{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.cc-stat{display:flex;flex-direction:column;gap:.15rem;}
+.cc-stat-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.cc-stat-val{font-size:1.1rem;font-weight:700;color:var(--text);}
+.cc-end-btn{padding:.5rem 1rem;border-radius:var(--rs);background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#f87171;font-weight:600;font-size:.8rem;cursor:pointer;}
+.cc-end-btn:hover{background:rgba(239,68,68,0.2);}
+.cc-grid{display:grid;grid-template-columns:280px 1fr 300px;gap:1.25rem;align-items:start;}
+@media(max-width:1100px){.cc-grid{grid-template-columns:1fr;}}
+
+.cc-queue{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;flex-direction:column;gap:.75rem;max-height:80vh;}
+.cc-queue-filters{display:flex;gap:.4rem;flex-wrap:wrap;}
+.cc-filter-chip{padding:.3rem .65rem;border-radius:99px;font-size:.7rem;font-weight:600;background:var(--surface-h);border:1px solid var(--border);color:var(--muted);cursor:pointer;white-space:nowrap;}
+.cc-filter-chip.active{background:var(--surface-active);border-color:var(--border-accent);color:var(--text);}
+.cc-queue-list{overflow-y:auto;display:flex;flex-direction:column;gap:.4rem;flex:1;}
+.cc-queue-item{padding:.6rem .7rem;border-radius:var(--rs);background:var(--surface);border:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.cc-queue-item:hover{background:var(--surface-h);}
+.cc-queue-item.active{background:var(--surface-active);border-color:var(--border-accent);}
+.cc-qi-name{font-weight:600;font-size:.82rem;color:var(--text);}
+.cc-qi-meta{font-size:.68rem;color:var(--muted);}
+.cc-qi-rating{font-size:1rem;flex-shrink:0;}
+.cc-empty-queue{text-align:center;color:var(--dim);font-size:.8rem;padding:2rem 1rem;}
+
+.cc-active{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;}
+.cc-lead-head{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;}
+.cc-lead-avatar{width:48px;height:48px;border-radius:50%;background:var(--surface-h);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:var(--accent2);flex-shrink:0;}
+.cc-lead-name{font-size:1.1rem;font-weight:700;}
+.cc-lead-sub{font-size:.78rem;color:var(--muted);}
+.cc-lead-tags{display:flex;gap:.6rem;margin-left:auto;align-items:center;flex-wrap:wrap;}
+.cc-tag{font-size:.72rem;font-weight:600;padding:.3rem .6rem;border-radius:99px;white-space:nowrap;}
+.cc-tag.poor{background:rgba(239,68,68,0.12);color:#f87171;}
+.cc-tag.average{background:rgba(245,158,11,0.12);color:#fbbf24;}
+.cc-tag.good{background:rgba(16,185,129,0.12);color:#34d399;}
+.cc-tag.neutral{background:var(--surface-h);color:var(--muted);}
+
+.cc-block-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent2);margin-bottom:.6rem;}
+.cc-notes-input{width:100%;background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.6rem;color:var(--text);font-family:inherit;font-size:.85rem;resize:vertical;min-height:46px;}
+.cc-notes-input:focus{outline:none;border-color:var(--border-accent);}
+
+.cc-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+.cc-form-grid.full{grid-template-columns:1fr;}
+.cc-field label{display:block;font-size:.7rem;color:var(--muted);margin-bottom:.3rem;}
+.cc-field input,.cc-field select{width:100%;background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.55rem .65rem;color:var(--text);font-family:inherit;font-size:.85rem;}
+.cc-field input:focus,.cc-field select:focus{outline:none;border-color:var(--border-accent);}
+.cc-rating-btns{display:flex;gap:.5rem;}
+.cc-rating-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.55rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);cursor:pointer;font-size:.7rem;color:var(--muted);}
+.cc-rating-btn.active{border-color:var(--border-accent);background:var(--surface-active);color:var(--text);}
+.cc-rating-btn .emoji{font-size:1.1rem;}
+
+.cc-flow{display:flex;align-items:flex-start;justify-content:space-between;gap:.4rem;}
+.cc-flow-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem;text-align:center;}
+.cc-flow-icon{width:38px;height:38px;border-radius:50%;background:var(--surface-active);border:1px solid var(--border-accent);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.cc-flow-title{font-size:.75rem;font-weight:700;}
+.cc-flow-desc{font-size:.65rem;color:var(--dim);}
+.cc-flow-arrow{color:var(--dim);font-size:1rem;padding-top:.6rem;}
+
+.cc-outcome-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
+@media(max-width:700px){.cc-outcome-grid{grid-template-columns:repeat(2,1fr);}}
+.cc-outcome-btn{padding:.7rem .5rem;border-radius:var(--rs);border:1px solid var(--border);background:var(--surface-h);cursor:pointer;text-align:center;font-size:.78rem;font-weight:600;color:var(--text);display:flex;flex-direction:column;gap:.2rem;align-items:center;}
+.cc-outcome-btn small{font-weight:400;color:var(--dim);font-size:.64rem;}
+.cc-outcome-btn.interested{border-color:rgba(16,185,129,0.4);}
+.cc-outcome-btn.interested:hover{background:rgba(16,185,129,0.12);}
+.cc-outcome-btn.maybe{border-color:rgba(245,158,11,0.4);}
+.cc-outcome-btn.maybe:hover{background:rgba(245,158,11,0.12);}
+.cc-outcome-btn.notinterested{border-color:rgba(239,68,68,0.4);}
+.cc-outcome-btn.notinterested:hover{background:rgba(239,68,68,0.12);}
+.cc-outcome-btn.noanswer:hover{background:var(--surface-active);}
+
+.cc-bottom-btns{display:flex;gap:.6rem;}
+.cc-btn-primary{flex:1;padding:.8rem;border-radius:var(--rs);background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-weight:700;cursor:pointer;font-size:.85rem;}
+.cc-btn-secondary{flex:1;padding:.8rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);color:var(--text);font-weight:600;cursor:pointer;font-size:.85rem;}
+
+.cc-side-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;display:flex;flex-direction:column;gap:.5rem;}
+.cc-side-panel + .cc-side-panel{margin-top:1.25rem;}
+.cc-script-item{padding:.6rem .7rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.cc-script-item:hover{border-color:var(--border-accent);}
+.cc-script-item.active{background:var(--surface-active);border-color:var(--border-accent);}
+.cc-script-name{font-size:.8rem;font-weight:600;}
+.cc-script-desc{font-size:.66rem;color:var(--dim);}
+.cc-rec-badge{font-size:.6rem;font-weight:700;background:rgba(99,102,241,0.18);color:#a5b4fc;padding:.15rem .5rem;border-radius:99px;flex-shrink:0;}
+.cc-script-output{background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.7rem;font-size:.8rem;line-height:1.5;white-space:pre-wrap;color:var(--text);}
+.cc-script-output.empty{color:var(--dim);}
+.cc-copy-btn{padding:.5rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);color:var(--muted);font-size:.75rem;font-weight:600;cursor:pointer;text-align:center;}
+.cc-copy-btn:hover{color:var(--text);border-color:var(--border-accent);}
+.cc-reject-select{width:100%;background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.55rem;color:var(--text);font-size:.82rem;}
+
 </style>
 </head>
 <body>
@@ -1397,6 +1486,14 @@ body::before{
         <div class="nc-content">
           <div class="nc-title">Contracts</div>
           <div class="nc-meta" id="navContractsMeta">—</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_callSection" onclick="showSection('callSection')">
+        <div class="nc-icon">📞</div>
+        <div class="nc-content">
+          <div class="nc-title">Cold Call Mode</div>
+          <div class="nc-meta">Queue · Scripts · Outcomes</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
@@ -1651,6 +1748,73 @@ body::before{
       </div>
     </div>
 
+
+    <!-- COLD CALL MODE -->
+    <div class="section" id="callSection">
+      <div class="cc-wrap">
+        <div class="cc-topbar">
+          <div class="section-header" style="margin-bottom:0;">
+            <div>
+              <div class="section-title">📞 Cold Call Mode</div>
+              <div class="section-sub">Keep it short, be confident, book a call or leave a door open.</div>
+            </div>
+          </div>
+          <div class="cc-stats">
+            <div class="cc-stat"><div class="cc-stat-label">Calls Today</div><div class="cc-stat-val" id="ccCallsToday">0 / 25</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Conversations</div><div class="cc-stat-val" id="ccConversations">0</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Free Videos Offered</div><div class="cc-stat-val" id="ccFreeVideos">0</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Appointments Set</div><div class="cc-stat-val" id="ccAppointments">0</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Session Time</div><div class="cc-stat-val" id="ccSessionTime">0m</div></div>
+            <button class="cc-end-btn" onclick="ccEndSession()">⏻ End Session</button>
+          </div>
+        </div>
+
+        <div class="cc-grid">
+          <!-- QUEUE -->
+          <div class="cc-queue">
+            <div class="cc-queue-filters" id="ccFilters"></div>
+            <div class="cc-queue-list" id="ccQueueList"></div>
+            <button class="cc-btn-secondary" onclick="openAddLead()">+ Add Business</button>
+          </div>
+
+          <!-- ACTIVE CALL -->
+          <div class="cc-active" id="ccActivePanel">
+            <!-- populated by renderActiveCall() -->
+          </div>
+
+          <!-- SCRIPTS / OBJECTIONS / REJECTION -->
+          <div>
+            <div class="cc-side-panel">
+              <div class="cc-block-title">Cold Call Scripts</div>
+              <div id="ccScriptList"></div>
+              <div class="cc-script-output empty" id="ccScriptOutput">Select a script to view it.</div>
+              <button class="cc-copy-btn" onclick="copyScript('ccScriptOutput')">Copy Script</button>
+            </div>
+            <div class="cc-side-panel">
+              <div class="cc-block-title">Quick Responses / Objections</div>
+              <div id="ccObjectionList"></div>
+              <div class="cc-script-output empty" id="ccObjectionOutput">Tap an objection above for your response.</div>
+              <button class="cc-copy-btn" onclick="copyScript('ccObjectionOutput')">Copy Response</button>
+            </div>
+            <div class="cc-side-panel">
+              <div class="cc-block-title">Rejection Tracking</div>
+              <label style="font-size:.7rem;color:var(--muted);">Not interested, why?</label>
+              <select class="cc-reject-select" id="ccRejectReason" onchange="ccSaveField('rejection_reason', this.value)">
+                <option value="">Select reason...</option>
+                <option value="Too busy right now">Too busy right now</option>
+                <option value="Already have someone">Already have someone</option>
+                <option value="Not interested">Not interested</option>
+                <option value="Too expensive">Too expensive</option>
+                <option value="No budget">No budget</option>
+                <option value="Bad timing">Bad timing</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- CONTRACTS -->
     <div class="section" id="contractsSection">
       <div class="section-header">
@@ -1793,7 +1957,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection'];
+const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection','callSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
@@ -1819,7 +1983,7 @@ async function initApp(){
   await loadAll();
   buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
-  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); showSection('homeSection');
+  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); renderCallQueue(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
@@ -4162,6 +4326,289 @@ async function submitSuggestion(){
 // ─────────────────────────────────────────
 // SIDEBAR TOGGLE
 // ─────────────────────────────────────────
+
+// ─────────────────────────────────────────
+// COLD CALL MODE
+// ─────────────────────────────────────────
+const CC_SCRIPTS={
+  'Free Video Offer Script':{rec:true,desc:'Best for most local businesses.',
+    text:`Hi, is that [BUSINESS NAME]?\n\nGreat — my name's Lewis, I'm a social media videographer based locally. I've actually already put together a free short video for your business — no charge, no catch — I just thought it was worth showing you.\n\nWould you have 30 seconds for me to send it over / tell you what I noticed?`},
+  'Short & Simple Script':{rec:false,desc:'Quick and straight to the point.',
+    text:`Hi, quick one — I'm Lewis, I make short videos for local businesses' social media. I think yours could use one. Got 20 seconds?`},
+  'Value Focused Script':{rec:false,desc:'Focus on results and ROI.',
+    text:`Hi, is that [BUSINESS NAME]?\n\nI'm Lewis — I create short-form video content for local businesses like yours. Most of my clients see a real jump in enquiries once they're posting proper video instead of phone snaps. I'd like to show you exactly what that could look like for you, free of charge.\n\nCan I grab two minutes?`},
+  'Appointment Setter Script':{rec:false,desc:'Get them on a call.',
+    text:`Hi, is that [BUSINESS NAME]?\n\nI'm Lewis, a local social media videographer. Rather than explain everything now, would it be easier if I booked 10 minutes with you this week to show you what I've put together? What's generally a good time for you — mornings or afternoons?`},
+  'Reactivation Script':{rec:false,desc:'Perfect for past leads or old contacts.',
+    text:`Hi [NAME], it's Lewis again — we spoke a little while back about video content for [BUSINESS NAME].\n\nI know timing wasn't right before, but I've actually put together a fresh video for you since then. Worth a quick look?`},
+  'Follow Up Script':{rec:false,desc:'Use after no answer or no reply.',
+    text:`Hi [NAME], it's Lewis — I left you a message / sent something over the other day about a free video for [BUSINESS NAME]. Just wanted to check you got it and see if it's worth a quick chat.`},
+};
+
+let ccQueue=[];
+let ccFilter='all';
+let ccActiveId=null;
+let ccSession={conversations:0,freeVideos:0,appointments:0,startTime:null};
+let ccTimerInt=null;
+
+function ccPreCallStages(){return ['Discover','Research'];}
+
+function ccStartSessionIfNeeded(){
+  if(ccSession.startTime)return;
+  ccSession.startTime=Date.now();
+  ccTimerInt=setInterval(ccTickTimer,1000);
+  ccTickTimer();
+}
+function ccTickTimer(){
+  if(!ccSession.startTime)return;
+  const mins=Math.floor((Date.now()-ccSession.startTime)/60000);
+  const h=Math.floor(mins/60),m=mins%60;
+  const el=document.getElementById('ccSessionTime');
+  if(el)el.textContent=h>0?`${h}h ${m}m`:`${m}m`;
+}
+function ccEndSession(){
+  if(!confirm('End this call session? Your stats will reset for next time.'))return;
+  if(ccTimerInt)clearInterval(ccTimerInt);
+  ccSession={conversations:0,freeVideos:0,appointments:0,startTime:null};
+  ccUpdateStatsBar();
+  document.getElementById('ccSessionTime').textContent='0m';
+}
+function ccUpdateStatsBar(){
+  const c=getDailyCounters();
+  document.getElementById('ccCallsToday').textContent=`${c.calls||0} / 25`;
+  document.getElementById('ccConversations').textContent=ccSession.conversations;
+  document.getElementById('ccFreeVideos').textContent=ccSession.freeVideos;
+  document.getElementById('ccAppointments').textContent=ccSession.appointments;
+}
+
+function ccFilterCounts(){
+  const pool=S.leads.filter(l=>ccPreCallStages().includes(l.stage));
+  return {
+    all:pool.length,
+    Poor:pool.filter(l=>l.socials_rating==='Poor').length,
+    Average:pool.filter(l=>l.socials_rating==='Average').length,
+    Good:pool.filter(l=>l.socials_rating==='Good').length,
+  };
+}
+
+function renderCallQueue(){
+  ccStartSessionIfNeeded();
+  const counts=ccFilterCounts();
+  const filtEl=document.getElementById('ccFilters');
+  if(filtEl){
+    const chips=[['all','All',counts.all],['Poor','Poor',counts.Poor],['Average','Avg',counts.Average],['Good','Good',counts.Good]];
+    filtEl.innerHTML=chips.map(([key,label,n])=>
+      `<div class="cc-filter-chip ${ccFilter===key?'active':''}" onclick="ccSetFilter('${key}')">${label} ${n}</div>`
+    ).join('');
+  }
+  let pool=S.leads.filter(l=>ccPreCallStages().includes(l.stage));
+  if(ccFilter!=='all')pool=pool.filter(l=>l.socials_rating===ccFilter);
+  ccQueue=pool.map(l=>l.id);
+
+  const listEl=document.getElementById('ccQueueList');
+  if(!listEl)return;
+  if(!pool.length){
+    listEl.innerHTML='<div class="cc-empty-queue">No leads in this filter.<br>Add a business or switch filters.</div>';
+  } else {
+    listEl.innerHTML=pool.map(l=>{
+      const emoji=l.socials_rating==='Poor'?'😟':l.socials_rating==='Average'?'😐':l.socials_rating==='Good'?'🙂':'❔';
+      return `<div class="cc-queue-item ${ccActiveId===l.id?'active':''}" onclick="selectCallLead('${l.id}')">
+        <div><div class="cc-qi-name">${esc(l.name)}</div><div class="cc-qi-meta">${esc(l.subNiche||l.niche||l.type||'')}</div></div>
+        <div class="cc-qi-rating">${emoji}</div>
+      </div>`;
+    }).join('');
+  }
+
+  if(!ccActiveId || !ccQueue.includes(ccActiveId)){
+    selectCallLead(ccQueue[0]||null);
+  }
+  ccUpdateStatsBar();
+}
+
+function ccSetFilter(f){ccFilter=f;renderCallQueue();}
+
+function selectCallLead(id){
+  ccActiveId=id;
+  renderActiveCall();
+  renderCallQueue();
+}
+
+function renderActiveCall(){
+  const panel=document.getElementById('ccActivePanel');
+  if(!panel)return;
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l){
+    panel.innerHTML='<div class="cc-empty-queue" style="padding:3rem 1rem;">Queue is empty. Add a business to get started.</div>';
+    return;
+  }
+  const initials=(l.name||'?').slice(0,2).toUpperCase();
+  const ratingTag=l.socials_rating?`<span class="cc-tag ${l.socials_rating.toLowerCase()}">${l.socials_rating}</span>`:'';
+  const budgetTag=(l.est_budget_low||l.est_budget_high)?`<span class="cc-tag neutral">£${l.est_budget_low||0} - £${l.est_budget_high||0}/mo</span>`:'';
+  const timeTag=l.best_time?`<span class="cc-tag neutral">${esc(l.best_time)}</span>`:'';
+
+  panel.innerHTML=`
+    <div class="cc-lead-head">
+      <div class="cc-lead-avatar">${initials}</div>
+      <div>
+        <div class="cc-lead-name">${esc(l.name)}</div>
+        <div class="cc-lead-sub">${esc(l.subNiche||l.niche||l.type||'—')} · ${esc(l.location||'')}</div>
+      </div>
+      <div class="cc-lead-tags">${ratingTag}${budgetTag}${timeTag}</div>
+    </div>
+
+    <div>
+      <div class="cc-block-title">Quick Notes (Optional)</div>
+      <textarea class="cc-notes-input" id="ccNotes" placeholder="e.g. quiet socials, not posting regularly, low engagement..." onblur="ccSaveField('notes', this.value)">${esc(l.notes||'')}</textarea>
+    </div>
+
+    <div>
+      <div class="cc-block-title">Call Information</div>
+      <div class="cc-form-grid">
+        <div class="cc-field"><label>Contact Name</label><input id="ccContactName" value="${esc(l.contact_name||'')}" placeholder="e.g. Manager / Owner" onblur="ccSaveField('contact_name', this.value)"></div>
+        <div class="cc-field"><label>Phone Number</label><input id="ccPhone" value="${esc(l.phone||'')}" placeholder="07123 456789" onblur="ccSaveField('phone', this.value)"></div>
+        <div class="cc-field"><label>Best Time to Call</label><input id="ccBestTime" value="${esc(l.best_time||'')}" placeholder="2pm - 4pm" onblur="ccSaveField('best_time', this.value)"></div>
+        <div class="cc-field"><label>Niche</label>${ccNicheSelect(l)}</div>
+        <div class="cc-field"><label>Business Type</label><input id="ccType" value="${esc(l.type||'')}" placeholder="Local Business" onblur="ccSaveField('type', this.value)"></div>
+        <div class="cc-field">
+          <label>Socials Rating</label>
+          <div class="cc-rating-btns">
+            <div class="cc-rating-btn ${l.socials_rating==='Poor'?'active':''}" onclick="ccSetRating('Poor')"><span class="emoji">😟</span>Poor</div>
+            <div class="cc-rating-btn ${l.socials_rating==='Average'?'active':''}" onclick="ccSetRating('Average')"><span class="emoji">😐</span>Average</div>
+            <div class="cc-rating-btn ${l.socials_rating==='Good'?'active':''}" onclick="ccSetRating('Good')"><span class="emoji">🙂</span>Good</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="cc-block-title">Quick Call Flow</div>
+      <div class="cc-flow">
+        <div class="cc-flow-step"><div class="cc-flow-icon">📞</div><div class="cc-flow-title">1. Introduction</div><div class="cc-flow-desc">Introduce yourself & ask if now is a good time.</div></div>
+        <div class="cc-flow-arrow">→</div>
+        <div class="cc-flow-step"><div class="cc-flow-icon">🎁</div><div class="cc-flow-title">2. Offer</div><div class="cc-flow-desc">Offer them a FREE video to help their business.</div></div>
+        <div class="cc-flow-arrow">→</div>
+        <div class="cc-flow-step"><div class="cc-flow-icon">💬</div><div class="cc-flow-title">3. Qualify</div><div class="cc-flow-desc">See if they're interested in improving their socials.</div></div>
+        <div class="cc-flow-arrow">→</div>
+        <div class="cc-flow-step"><div class="cc-flow-icon">📅</div><div class="cc-flow-title">4. Next Step</div><div class="cc-flow-desc">Book a time or leave the door open.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="cc-block-title">Outcome — How did this call go?</div>
+      <div class="cc-outcome-grid">
+        <div class="cc-outcome-btn interested" onclick="ccOutcome('interested')">✅ Interested<small>Move to pipeline</small></div>
+        <div class="cc-outcome-btn maybe" onclick="ccOutcome('maybe')">🟠 Maybe<small>Follow up later</small></div>
+        <div class="cc-outcome-btn notinterested" onclick="ccOutcome('notinterested')">⛔ Not Interested<small>Add rejection reason</small></div>
+        <div class="cc-outcome-btn noanswer" onclick="ccOutcome('noanswer')">🕓 No Answer<small>Call again later</small></div>
+      </div>
+    </div>
+
+    <div class="cc-bottom-btns">
+      <button class="cc-btn-primary" onclick="ccMarkCalled()">✓ Mark as Called</button>
+      <button class="cc-btn-secondary" onclick="ccSkipNext()">Skip & Next »</button>
+    </div>
+  `;
+  ccRenderScripts();
+  ccRenderObjections();
+  const rs=document.getElementById('ccRejectReason');
+  if(rs)rs.value=l.rejection_reason||'';
+}
+
+function ccNicheSelect(l){
+  const opts=Object.keys(NICHES).map(k=>`<option value="${k}" ${l.niche===k?'selected':''}>${k}</option>`).join('');
+  return `<select id="ccNiche" onchange="ccSaveField('niche', this.value)"><option value="">— Select —</option>${opts}</select>`;
+}
+
+async function ccSaveField(field,val){
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l)return;
+  l[field]=val;
+  await sbUp('leads',toLead(l));
+}
+
+async function ccSetRating(rating){
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l)return;
+  l.socials_rating=rating;
+  await sbUp('leads',toLead(l));
+  renderActiveCall();
+  renderCallQueue();
+}
+
+async function ccOutcome(type){
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l)return;
+  incCounter('calls');
+  if(type==='interested'){
+    await setLeadStage(l.id,'Freebie Offered');
+    ccSession.conversations++; ccSession.freeVideos++;
+  } else if(type==='maybe'){
+    const d=prompt('Follow-up date (YYYY-MM-DD)?', l.followUpDate||'');
+    if(d){l.followUpDate=d; await sbUp('leads',toLead(l));}
+    ccSession.conversations++;
+  } else if(type==='notinterested'){
+    const reason=document.getElementById('ccRejectReason')?.value||'Not interested';
+    l.rejection_reason=reason;
+    await setLeadStage(l.id,'Lost');
+    ccSession.conversations++;
+  } else if(type==='noanswer'){
+    // no conversation counted
+  }
+  ccUpdateStatsBar();
+  ccAdvanceNext();
+}
+
+function ccMarkCalled(){
+  incCounter('calls');
+  ccUpdateStatsBar();
+  ccAdvanceNext();
+}
+function ccSkipNext(){
+  ccAdvanceNext();
+}
+function ccAdvanceNext(){
+  renderCallQueue();
+  const idx=ccQueue.indexOf(ccActiveId);
+  const next=ccQueue[idx+1]||ccQueue[0]||null;
+  selectCallLead(next!==ccActiveId?next:null);
+}
+
+function ccRenderScripts(){
+  const el=document.getElementById('ccScriptList');
+  if(!el)return;
+  el.innerHTML=Object.keys(CC_SCRIPTS).map(name=>{
+    const s=CC_SCRIPTS[name];
+    return `<div class="cc-script-item" id="ccscript_${name.replace(/\s/g,'')}" onclick="ccShowScript('${name.replace(/'/g,"\\'")}')">
+      <div><div class="cc-script-name">${name}</div><div class="cc-script-desc">${s.desc}</div></div>
+      ${s.rec?'<span class="cc-rec-badge">Recommended</span>':''}
+    </div>`;
+  }).join('');
+}
+function ccShowScript(name){
+  document.querySelectorAll('.cc-script-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('ccscript_'+name.replace(/\s/g,''))?.classList.add('active');
+  const out=document.getElementById('ccScriptOutput');
+  if(!out)return;
+  out.textContent=CC_SCRIPTS[name]?.text||'';
+  out.classList.remove('empty');
+}
+
+function ccRenderObjections(){
+  const el=document.getElementById('ccObjectionList');
+  if(!el)return;
+  el.innerHTML=Object.keys(OBJECTIONS).map(k=>
+    `<div class="cc-script-item" onclick="ccShowObjection(this,'${k.replace(/'/g,"\\'")}')"><div class="cc-script-name">${k}</div></div>`
+  ).join('');
+}
+function ccShowObjection(btn,key){
+  document.querySelectorAll('#ccObjectionList .cc-script-item').forEach(e=>e.classList.remove('active'));
+  btn.classList.add('active');
+  const out=document.getElementById('ccObjectionOutput');
+  if(!out)return;
+  out.textContent=OBJECTIONS[key]||'';
+  out.classList.remove('empty');
+}
+
 function isMobile(){return window.innerWidth<=768;}
 function toggleSidebar(){
   const s=document.getElementById('appSidebar');
