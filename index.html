@@ -1028,6 +1028,127 @@ body::before{
 /* ── NICHE BADGE ── */
 .niche-badge{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:99px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;margin-left:.4rem;}
 
+/* ── HOME REDESIGN ── */
+.home-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem;}
+.home-date-badge{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:.5rem .9rem;font-size:.72rem;color:var(--muted);}
+.home-date-badge::before{content:'📅';font-size:.8rem;}
+.home-sub-text{font-size:.85rem;color:var(--muted);margin-top:.2rem;}
+
+.home-main-grid{display:grid;grid-template-columns:1fr 320px;gap:1.25rem;margin-bottom:1.25rem;}
+@media(max-width:900px){.home-main-grid{grid-template-columns:1fr;}}
+
+/* Checklist visual redesign */
+.cl-item{display:flex;align-items:center;gap:.7rem;padding:.55rem .4rem;border-radius:var(--rs);transition:background .15s;cursor:pointer;}
+.cl-item:hover{background:rgba(255,255,255,0.03);}
+.cl-cb{width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .18s;cursor:pointer;}
+.cl-cb.checked{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-color:transparent;}
+.cl-cb.checked::after{content:'✓';font-size:.6rem;color:#fff;font-weight:800;}
+.cl-icon-circle{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+.cl-icon-circle.sales{background:rgba(16,185,129,0.15);}
+.cl-icon-circle.content{background:rgba(139,92,246,0.15);}
+.cl-icon-circle.planning{background:rgba(245,158,11,0.15);}
+.cl-icon-circle.finance{background:rgba(239,130,50,0.15);}
+.cl-icon-circle.clients{background:rgba(34,211,238,0.15);}
+.cl-icon-circle.personal{background:rgba(99,102,241,0.15);}
+.cl-text-col{flex:1;min-width:0;}
+.cl-text{font-size:.8rem;color:var(--text);display:block;transition:color .2s;}
+.cl-text.done{color:var(--dim);text-decoration:line-through;}
+.cl-time{font-size:.6rem;color:var(--dim);display:block;margin-top:.1rem;}
+.cl-tag{font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.14rem .45rem;border-radius:99px;white-space:nowrap;flex-shrink:0;}
+.cl-tag.sales,.cl-tag.business{background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
+.cl-tag.content{background:rgba(139,92,246,0.12);color:#c4b5fd;border:1px solid rgba(139,92,246,0.2);}
+.cl-tag.planning{background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);}
+.cl-tag.finance{background:rgba(239,100,50,0.1);color:#fb923c;border:1px solid rgba(239,100,50,0.2);}
+.cl-tag.clients{background:rgba(34,211,238,0.1);color:#22d3ee;border:1px solid rgba(34,211,238,0.2);}
+.cl-tag.personal{background:rgba(99,102,241,0.1);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);}
+.cl-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.65rem;padding:.1rem .25rem;opacity:0;transition:opacity .15s;flex-shrink:0;}
+.cl-item:hover .cl-del{opacity:1;}
+.cl-del:hover{color:var(--red);}
+.cl-add-row{display:flex;gap:.5rem;margin-top:.9rem;padding-top:.85rem;border-top:1px solid var(--border);}
+.cl-add-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);padding:.5rem .75rem;color:var(--text);font-size:.78rem;font-family:'Inter',sans-serif;}
+.cl-add-input:focus{outline:none;border-color:var(--accent);}
+.cl-add-select{background:#0f0f28;border:1px solid var(--border);border-radius:var(--rs);padding:.5rem .5rem;color:var(--muted);font-size:.7rem;font-family:'Inter',sans-serif;cursor:pointer;}
+.cl-add-btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:var(--rs);padding:.5rem .85rem;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+.cl-section-divider{font-size:.52rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:.55rem 0 .3rem;margin-top:.3rem;}
+.checklist-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;}
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;}
+.checklist-title{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+.checklist-progress{font-size:.65rem;color:var(--muted);}
+.checklist-bar-bg{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-bottom:.9rem;}
+.checklist-bar-fill{height:100%;background:linear-gradient(90deg,#6366f1,#22d3ee);border-radius:99px;transition:width .4s var(--ease);}
+
+/* Right column */
+.home-right-col{display:flex;flex-direction:column;gap:1rem;}
+
+/* Today's Focus card */
+.home-focus-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;text-align:center;}
+.hfc-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;}
+.hfc-icon{font-size:2rem;margin-bottom:.6rem;opacity:.85;}
+.hfc-task-label{font-size:.62rem;color:var(--muted);margin-bottom:.3rem;}
+.hfc-task-name{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.2;}
+.hfc-task-sub{font-size:.7rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;}
+.hfc-btn{display:block;width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:var(--rs);padding:.7rem;color:#fff;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.hfc-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,0.4);}
+
+/* Quick Actions card */
+.home-qa-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;}
+.hqac-title{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;}
+.hqac-item{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:all .15s;}
+.hqac-item:last-child{border-bottom:none;padding-bottom:0;}
+.hqac-item:hover .hqac-label{color:var(--text);}
+.hqac-icon{width:28px;height:28px;border-radius:8px;background:rgba(99,102,241,0.1);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.hqac-label{flex:1;font-size:.78rem;color:var(--muted);}
+.hqac-arrow{font-size:.7rem;color:var(--dim);}
+
+/* Pipeline card */
+.home-pipe-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;}
+.hpc-title{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.85rem;}
+
+/* At a Glance + Up Next */
+.home-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+@media(max-width:700px){.home-bottom-grid{grid-template-columns:1fr;}}
+.home-bottom-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.25rem;}
+.hbc-title{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;}
+
+/* At a Glance metrics */
+.aag-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.aag-item{background:rgba(255,255,255,0.02);border-radius:var(--rs);padding:.65rem .75rem;}
+.aag-label{font-size:.58rem;color:var(--dim);margin-bottom:.35rem;}
+.aag-val{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:var(--text);}
+.aag-val span{font-size:.8rem;color:var(--muted);}
+.aag-sub{font-size:.58rem;color:var(--dim);margin-top:.1rem;}
+.aag-bar-bg{height:2px;background:rgba(255,255,255,0.06);border-radius:99px;margin-top:.5rem;}
+.aag-bar-fill{height:100%;border-radius:99px;transition:width .4s var(--ease);}
+.aag-counter-row{display:flex;align-items:center;gap:.35rem;margin-top:.4rem;}
+.aag-counter-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:4px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.7rem;color:var(--muted);transition:all .15s;flex-shrink:0;}
+.aag-counter-btn:hover{background:rgba(99,102,241,0.15);color:var(--text);}
+
+/* Up Next */
+.upnext-item{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.upnext-item:last-child{border-bottom:none;}
+.upnext-time{font-size:.65rem;color:var(--dim);min-width:38px;padding-top:.1rem;}
+.upnext-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:.28rem;}
+.upnext-dot.shoot{background:#6366f1;}
+.upnext-dot.post{background:#8b5cf6;}
+.upnext-dot.call{background:#10b981;}
+.upnext-dot.meeting{background:#22d3ee;}
+.upnext-dot.other{background:#f59e0b;}
+.upnext-label{font-size:.78rem;color:var(--text);font-weight:500;}
+.upnext-sub{font-size:.65rem;color:var(--muted);}
+.upnext-empty{font-size:.75rem;color:var(--dim);padding:.75rem 0;}
+
+/* Progress Banner */
+.home-progress-banner{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.4rem;gap:1.25rem;flex-wrap:wrap;}
+.hpb-left{display:flex;align-items:center;gap:.85rem;}
+.hpb-icon{font-size:1.5rem;width:40px;height:40px;background:rgba(99,102,241,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hpb-quote{font-size:.82rem;font-weight:600;color:var(--text);}
+.hpb-sub{font-size:.68rem;color:var(--muted);margin-top:.15rem;}
+.hpb-right{text-align:right;min-width:120px;}
+.hpb-progress-label{font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.2rem;}
+.hpb-progress-val{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text);}
+.hpb-bar-bg{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;margin-top:.4rem;}
+.hpb-bar-fill{height:100%;background:linear-gradient(90deg,#6366f1,#22d3ee);border-radius:99px;transition:width .5s var(--ease);}
+
 /* ── DAILY CHECKLIST ── */
 .checklist-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;}
 .checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
@@ -1260,62 +1381,124 @@ body::before{
 
     <!-- HOME -->
     <div class="section" id="homeSection">
-      <div class="home-greeting" id="homeGreeting">Good morning, Lewis.</div>
-      <div class="home-greeting-sub" id="homeGreetingSub">Here's where things stand today.</div>
 
-      <div class="home-quick-actions">
-        <button class="home-qa-btn" onclick="startVoiceLead()">🎙 Voice Add Lead</button>
-        <button class="home-qa-btn" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)">+ Add Lead</button>
-        <button class="home-qa-btn" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)">+ Calendar Entry</button>
-        <button class="home-qa-btn" onclick="showSection('clientsSection');setTimeout(()=>openAddClient(),100)">+ Add Client</button>
-        <button class="home-qa-btn" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)">£ Log Income</button>
+      <!-- HEADER -->
+      <div class="home-header-row">
+        <div>
+          <div class="home-greeting" id="homeGreeting">Good evening, Lewis.</div>
+          <div class="home-sub-text">Let's crush your goals today.</div>
+        </div>
+        <div class="home-date-badge" id="homeDateBadge"></div>
       </div>
 
+      <!-- 4 STAT CARDS -->
       <div class="home-grid-4" id="homeStats"></div>
 
-      <!-- DAILY GOALS -->
-      <div class="daily-goal-row" id="dailyGoalRow"></div>
+      <!-- MAIN 2-COL: CHECKLIST + RIGHT PANEL -->
+      <div class="home-main-grid">
 
-      <!-- DAILY CHECKLIST -->
-      <div class="checklist-wrap">
-        <div class="checklist-header">
-          <div class="checklist-title">Today's Checklist</div>
-          <div class="checklist-progress" id="clProgress">0 / 0 completed</div>
+        <!-- LEFT: CHECKLIST -->
+        <div class="checklist-wrap">
+          <div class="checklist-header">
+            <div class="checklist-title">Today's Checklist</div>
+            <div class="checklist-progress" id="clProgress">0 / 0 completed</div>
+          </div>
+          <div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div>
+          <div id="clItems"></div>
+          <div class="cl-add-row">
+            <input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()">
+            <select class="cl-add-select" id="clNewTag">
+              <option value="sales">Sales</option>
+              <option value="content">Content</option>
+              <option value="planning">Planning</option>
+              <option value="finance">Finance</option>
+              <option value="clients">Clients</option>
+              <option value="personal">Personal</option>
+            </select>
+            <button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button>
+          </div>
         </div>
-        <div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div>
-        <div id="clItems"></div>
-        <div class="cl-add-row">
-          <input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()">
-          <select class="cl-add-select" id="clNewTag">
-            <option value="business">Business</option>
-            <option value="content">Content</option>
-            <option value="personal">Personal</option>
-          </select>
-          <button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button>
+
+        <!-- RIGHT: FOCUS + QUICK ACTIONS + PIPELINE -->
+        <div class="home-right-col">
+
+          <!-- TODAY'S FOCUS -->
+          <div class="home-focus-card" id="homeFocusCard">
+            <div class="hfc-label">Today's Focus</div>
+            <div class="hfc-icon">🎯</div>
+            <div class="hfc-task-label">High Impact Task</div>
+            <div class="hfc-task-name" id="hfcTaskName">Make 25 Outreach Calls</div>
+            <div class="hfc-task-sub" id="hfcTaskSub">More calls. More conversations. More clients.</div>
+            <button class="hfc-btn" id="hfcBtn" onclick="hfcAction()">Start Now →</button>
+          </div>
+
+          <!-- QUICK ACTIONS -->
+          <div class="home-qa-card">
+            <div class="hqac-title">Quick Actions</div>
+            <div class="hqac-item" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)">
+              <div class="hqac-icon">👤</div>
+              <div class="hqac-label">Add New Lead</div>
+              <div class="hqac-arrow">›</div>
+            </div>
+            <div class="hqac-item" onclick="showSection('scriptsSection')">
+              <div class="hqac-icon">📞</div>
+              <div class="hqac-label">Start Cold Call</div>
+              <div class="hqac-arrow">›</div>
+            </div>
+            <div class="hqac-item" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)">
+              <div class="hqac-icon">📅</div>
+              <div class="hqac-label">Schedule Content</div>
+              <div class="hqac-arrow">›</div>
+            </div>
+            <div class="hqac-item" onclick="showSection('contractsSection');setTimeout(()=>openAddContract(),100)">
+              <div class="hqac-icon">📄</div>
+              <div class="hqac-label">New Contract</div>
+              <div class="hqac-arrow">›</div>
+            </div>
+            <div class="hqac-item" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)">
+              <div class="hqac-icon">£</div>
+              <div class="hqac-label">Log Income</div>
+              <div class="hqac-arrow">›</div>
+            </div>
+          </div>
+
+          <!-- PIPELINE OVERVIEW -->
+          <div class="home-pipe-card">
+            <div class="hpc-title">Pipeline Overview</div>
+            <div id="homePipeline"></div>
+          </div>
+
         </div>
       </div>
 
-      <div class="home-grid">
-        <div class="home-card">
-          <div class="home-section-title">Today's Schedule</div>
-          <div id="homeTodayCal"></div>
+      <!-- BOTTOM: AT A GLANCE + UP NEXT -->
+      <div class="home-bottom-grid">
+        <div class="home-bottom-card">
+          <div class="hbc-title">At a Glance</div>
+          <div class="aag-grid" id="homeAtAGlance"></div>
         </div>
-        <div class="home-card">
-          <div class="home-section-title">Pipeline</div>
-          <div id="homePipeline"></div>
+        <div class="home-bottom-card">
+          <div class="hbc-title">Up Next</div>
+          <div id="homeUpNext"></div>
         </div>
       </div>
 
-      <div class="home-grid">
-        <div class="home-card">
-          <div class="home-section-title">Recent Leads</div>
-          <div id="homeRecentLeads"></div>
+      <!-- PROGRESS BANNER -->
+      <div class="home-progress-banner">
+        <div class="hpb-left">
+          <div class="hpb-icon">📈</div>
+          <div>
+            <div class="hpb-quote">Progress is built daily, not overnight.</div>
+            <div class="hpb-sub">Stay consistent and the results will follow.</div>
+          </div>
         </div>
-        <div class="home-card">
-          <div class="home-section-title">Goals</div>
-          <div id="homeGoals"></div>
+        <div class="hpb-right">
+          <div class="hpb-progress-label">Daily Progress</div>
+          <div class="hpb-progress-val" id="hpbVal">0%</div>
+          <div class="hpb-bar-bg"><div class="hpb-bar-fill" id="hpbBar" style="width:0%"></div></div>
         </div>
       </div>
+
     </div>
 
     <!-- LEADS -->
@@ -1702,18 +1885,17 @@ function renderHome(){
   const now=new Date();
   const hour=now.getHours();
   const greeting=hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';
-  document.getElementById('homeGreeting').textContent=`${greeting}, Lewis.`;
+  const greetEl=document.getElementById('homeGreeting');
+  if(greetEl)greetEl.textContent=`${greeting}, Lewis.`;
+  // Date badge
+  const dateBadge=document.getElementById('homeDateBadge');
+  if(dateBadge)dateBadge.textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const today=todayStr();
-  const todayEntries=S.calendar.filter(e=>e.date===today).sort((a,b)=>a.time.localeCompare(b.time));
-  const upcoming=S.calendar.filter(e=>e.date>today).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).slice(0,3);
-  const sub=todayEntries.length?`${todayEntries.length} thing${todayEntries.length!==1?'s':''} scheduled today.`:'Nothing scheduled today — clear run.';
-  document.getElementById('homeGreetingSub').textContent=sub;
+  const curMonth=today.slice(0,7);
   // Stat cards
   const mrr=S.clients.reduce((s,c)=>s+c.fee,0);
-  const curMonth=today.slice(0,7);
   const monthIncome=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
   const openLeads=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
-  const hotLeads=openLeads.filter(l=>l.stage==='Interested').length;
   document.getElementById('homeStats').innerHTML=`
     <div class="home-card home-card-accent">
       <div class="home-card-label">Monthly Retainers</div>
@@ -1721,82 +1903,59 @@ function renderHome(){
       <div class="home-card-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div>
     </div>
     <div class="home-card">
-      <div class="home-card-label">Income This Month</div>
-      <div class="home-card-value">£${monthIncome}</div>
-      <div class="home-card-sub">${curMonth.replace('-',' / ')}</div>
+      <div class="home-card-label">Active Clients</div>
+      <div class="home-card-value">${S.clients.length}</div>
+      <div class="home-card-sub">Onboarded</div>
     </div>
     <div class="home-card">
       <div class="home-card-label">Open Leads</div>
       <div class="home-card-value">${openLeads.length}</div>
-      <div class="home-card-sub">${hotLeads} interested</div>
+      <div class="home-card-sub">Need attention</div>
     </div>
     <div class="home-card">
-      <div class="home-card-label">Today</div>
-      <div class="home-card-value">${todayEntries.length}</div>
-      <div class="home-card-sub">${todayEntries.length?'entries scheduled':'clear schedule'}</div>
+      <div class="home-card-label">Income This Month</div>
+      <div class="home-card-value">£${monthIncome}</div>
+      <div class="home-card-sub">Goal: £5,000</div>
     </div>`;
-  // Today's calendar
-  const calEl=document.getElementById('homeTodayCal');
-  const showEntries=[...todayEntries,...(todayEntries.length<3?upcoming.slice(0,3-todayEntries.length):[])];
-  if(!showEntries.length){
-    calEl.innerHTML='<div class="home-empty">Nothing coming up — add something to the calendar.</div>';
-  } else {
-    calEl.innerHTML=showEntries.map(e=>{
-      const c=S.clients.find(x=>x.id===e.clientId);
-      const isToday=e.date===today;
-      const dateLabel=isToday?'Today':`${new Date(e.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}`;
-      return `<div class="home-cal-item">
-        <div class="home-cal-time">${isToday?esc(e.time):dateLabel}</div>
-        <div>
-          <div class="home-cal-label">${esc(e.contentType)}${e.platform?' · '+esc(e.platform):''}</div>
-          <div class="home-cal-sub">${esc(c?c.name:e.notes||'—')}</div>
-        </div>
-      </div>`;
-    }).join('');
+  // Today's Focus — first uncompleted task
+  const tasks=getChecklist();
+  const nextTask=tasks.find(t=>!t.done);
+  const focusName=document.getElementById('hfcTaskName');
+  const focusSub=document.getElementById('hfcTaskSub');
+  if(nextTask&&focusName){
+    const meta=TAG_META[nextTask.tag]||{};
+    focusName.textContent=nextTask.text;
+    if(focusSub)focusSub.textContent=nextTask.time?`Estimated time: ${nextTask.time} min`:'Tap Start Now to get going.';
+  } else if(focusName){
+    focusName.textContent='All tasks complete! 🎉';
+    if(focusSub)focusSub.textContent='Great work today — you crushed it.';
   }
   // Pipeline bars
   const pipeEl=document.getElementById('homePipeline');
-  const activeStages=STAGES.filter(s=>!['Won','Lost'].includes(s));
-  const maxCount=Math.max(1,...activeStages.map(s=>S.leads.filter(l=>l.stage===s).length));
-  pipeEl.innerHTML=STAGES.map(s=>{
-    const count=S.leads.filter(l=>l.stage===s).length;
-    const pct=Math.round((count/maxCount)*100);
-    const isWon=s==='Won';
-    return `<div class="home-pipe-row">
-      <div class="home-pipe-label">${s}</div>
-      <div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${count?pct:0}%;${isWon?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div>
-      <div class="home-pipe-count">${count}</div>
-    </div>`;
-  }).join('');
-  // Recent leads
-  const leadsEl=document.getElementById('homeRecentLeads');
-  const recent=S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).slice(0,5);
-  if(!recent.length){
-    leadsEl.innerHTML='<div class="home-empty">No active leads yet.</div>';
-  } else {
-    leadsEl.innerHTML=recent.map(l=>`
-      <div class="home-lead-row" onclick="showSection('leadsSection')">
-        <div>
-          <div class="home-lead-name">${esc(l.name)}</div>
-          <div class="home-lead-meta">${esc(l.type||'—')} · ${esc(l.location||'—')}</div>
-        </div>
-        <span class="home-stage-pill${l.stage==='Interested'?' hot':''}">${esc(l.stage)}</span>
-      </div>`).join('');
-  }
-  // Goals
-  const goalsEl=document.getElementById('homeGoals');
-  if(!S.goals.length){
-    goalsEl.innerHTML='<div class="home-empty">No goals set yet.</div>';
-  } else {
-    goalsEl.innerHTML=S.goals.map(g=>{
-      const pct=Math.min(100,Math.round((g.current/g.target)*100));
-      return `<div class="home-goal-row">
-        <div class="home-goal-label">${esc(g.label)}<span class="home-goal-nums">${g.current} / ${g.target}</span></div>
-        <div class="home-bar-bg"><div class="home-bar-fill" style="width:${pct}%"></div></div>
+  if(pipeEl){
+    const maxCount=Math.max(1,...STAGES.map(s=>S.leads.filter(l=>l.stage===s).length));
+    pipeEl.innerHTML=STAGES.map(s=>{
+      const count=S.leads.filter(l=>l.stage===s).length;
+      const pct=Math.round((count/maxCount)*100);
+      const isWon=s==='Won';
+      return `<div class="home-pipe-row">
+        <div class="home-pipe-label">${s}</div>
+        <div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${count?pct:0}%;${isWon?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div>
+        <div class="home-pipe-count">${count}</div>
       </div>`;
     }).join('');
   }
+  // At a Glance + Up Next
+  renderAtAGlance();
+  renderUpNext();
+  // Checklist
   renderChecklist();
+}
+function hfcAction(){
+  const tasks=getChecklist();
+  const next=tasks.find(t=>!t.done);
+  if(next){toggleTask(next.id);}
+  else{showSection('leadsSection');}
 }
 
 
@@ -3497,13 +3656,23 @@ function calcOpportunityScore(r,type){
 const CL_KEY='las_checklist';
 const CL_DATE_KEY='las_checklist_date';
 const DEFAULT_TASKS=[
-  {id:'cl1',text:'Make 25 outreach calls',tag:'business',done:false},
-  {id:'cl2',text:'Follow up with leads',tag:'business',done:false},
-  {id:'cl3',text:'Post content for clients',tag:'content',done:false},
-  {id:'cl4',text:'Check & reply to messages',tag:'business',done:false},
-  {id:'cl5',text:'Gym session',tag:'personal',done:false},
-  {id:'cl6',text:'Plan tomorrow',tag:'business',done:false},
+  {id:'cl1',text:'Make 25 outreach calls',tag:'sales',time:60,done:false},
+  {id:'cl2',text:'Follow up with leads',tag:'sales',time:45,done:false},
+  {id:'cl3',text:'Edit client reels',tag:'content',time:120,done:false},
+  {id:'cl4',text:'Upload & schedule posts',tag:'content',time:30,done:false},
+  {id:'cl5',text:'Plan tomorrow\'s content',tag:'planning',time:30,done:false},
+  {id:'cl6',text:'Review & approve content',tag:'clients',time:20,done:false},
+  {id:'cl7',text:'Gym session',tag:'personal',time:60,done:false},
 ];
+const TAG_META={
+  sales:{label:'SALES',icon:'📞',cls:'sales'},
+  business:{label:'SALES',icon:'📞',cls:'sales'},
+  content:{label:'CONTENT',icon:'🎬',cls:'content'},
+  planning:{label:'PLANNING',icon:'📅',cls:'planning'},
+  finance:{label:'FINANCE',icon:'🧾',cls:'finance'},
+  clients:{label:'CLIENTS',icon:'✓',cls:'clients'},
+  personal:{label:'PERSONAL',icon:'🏋',cls:'personal'},
+};
 function getChecklist(){
   const today=todayStr();
   const stored=localStorage.getItem(CL_KEY);
@@ -3527,25 +3696,35 @@ function renderChecklist(){
   if(prog)prog.textContent=`${done} / ${tasks.length} completed`;
   if(bar)bar.style.width=pct+'%';
   if(!el)return;
-  // Group by tag
-  const groups={business:[],content:[],personal:[]};
-  tasks.forEach(t=>{(groups[t.tag]||groups.business).push(t);});
+  // Group by tag category
+  const groupOrder=['sales','business','content','planning','finance','clients','personal'];
+  const groups={};
+  groupOrder.forEach(t=>groups[t]=[]);
+  tasks.forEach(t=>{
+    const key=t.tag||'sales';
+    if(!groups[key])groups[key]=[];
+    groups[key].push(t);
+  });
   let html='';
-  const labels={business:'Business',content:'Content',personal:'Personal'};
-  Object.entries(groups).forEach(([tag,items])=>{
-    if(!items.length)return;
-    html+=`<div class="cl-section-divider">${labels[tag]||tag}</div>`;
+  groupOrder.forEach(tag=>{
+    const items=groups[tag];
+    if(!items||!items.length)return;
+    const meta=TAG_META[tag]||{label:tag.toUpperCase(),icon:'•',cls:tag};
     items.forEach(t=>{
       html+=`<div class="cl-item" onclick="toggleTask('${t.id}')">
         <div class="cl-cb${t.done?' checked':''}"></div>
-        <span class="cl-text${t.done?' done':''}">${esc(t.text)}</span>
-        <span class="cl-tag ${t.tag}">${labels[t.tag]||t.tag}</span>
+        <div class="cl-icon-circle ${meta.cls}">${meta.icon}</div>
+        <div class="cl-text-col">
+          <span class="cl-text${t.done?' done':''}">${esc(t.text)}</span>
+          ${t.time?`<span class="cl-time">⏱ ${t.time} min</span>`:''}
+        </div>
+        <span class="cl-tag ${meta.cls}">${meta.label}</span>
         <button class="cl-del" onclick="event.stopPropagation();deleteTask('${t.id}')">✕</button>
       </div>`;
     });
   });
-  el.innerHTML=html;
-  renderDailyGoals(done,tasks.length);
+  el.innerHTML=html||'<div style="padding:.75rem 0;font-size:.75rem;color:var(--dim);">No tasks yet — add one below.</div>';
+  updateProgressBanner(pct);
 }
 function toggleTask(id){
   const tasks=getChecklist();
@@ -3562,44 +3741,90 @@ function addChecklistItem(){
   const text=input?.value.trim();
   if(!text)return;
   const tasks=getChecklist();
-  tasks.push({id:'cl_'+Date.now(),text,tag:tagSel?.value||'business',done:false});
+  tasks.push({id:'cl_'+Date.now(),text,tag:tagSel?.value||'sales',time:30,done:false});
   saveChecklist(tasks);
   if(input)input.value='';
   renderChecklist();
 }
-function renderDailyGoals(tasksDone,tasksTotal){
-  const el=document.getElementById('dailyGoalRow');if(!el)return;
-  const callsTarget=25;
-  const clientTarget=4;
-  const today=todayStr().slice(0,7);
-  const monthClients=S.leads.filter(l=>l.stage==='Won'&&l.addedDate?.slice(0,7)===today).length;
-  const taskPct=tasksTotal?Math.round((tasksDone/tasksTotal)*100):0;
-  const clientPct=Math.min(100,Math.round((monthClients/clientTarget)*100));
-  el.innerHTML=`
-    <div class="daily-goal-card">
-      <div class="dgc-label">Daily Tasks</div>
-      <div class="dgc-val">${tasksDone}<span style="font-size:.9rem;color:var(--muted)"> / ${tasksTotal}</span></div>
-      <div class="dgc-sub">${taskPct}% complete</div>
-      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${taskPct}%;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div></div>
-    </div>
-    <div class="daily-goal-card">
-      <div class="dgc-label">Monthly Clients</div>
-      <div class="dgc-val">${monthClients}<span style="font-size:.9rem;color:var(--muted)"> / ${clientTarget}</span></div>
-      <div class="dgc-sub">Target: ${clientTarget} new clients</div>
-      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${clientPct}%;background:linear-gradient(90deg,#10b981,#22d3ee);"></div></div>
-    </div>
-    <div class="daily-goal-card">
-      <div class="dgc-label">Active Leads</div>
-      <div class="dgc-val">${S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length}</div>
-      <div class="dgc-sub">In pipeline</div>
-      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${Math.min(100,S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length*4)}%;background:linear-gradient(90deg,#f59e0b,#ef4444);"></div></div>
-    </div>
-    <div class="daily-goal-card">
-      <div class="dgc-label">MRR</div>
-      <div class="dgc-val">£${S.clients.reduce((s,c)=>s+c.fee,0)}</div>
-      <div class="dgc-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div>
-      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${Math.min(100,Math.round((S.clients.reduce((s,c)=>s+c.fee,0)/5000)*100))}%;background:linear-gradient(90deg,#a5b4fc,#6366f1);"></div></div>
+function updateProgressBanner(pct){
+  const val=document.getElementById('hpbVal');
+  const bar=document.getElementById('hpbBar');
+  if(val)val.textContent=pct+'%';
+  if(bar)bar.style.width=pct+'%';
+}
+
+// Daily counters for At a Glance
+const DC_KEY='las_daily_counters';
+const DC_DATE='las_daily_counters_date';
+function getDailyCounters(){
+  const today=todayStr();
+  const stored=localStorage.getItem(DC_KEY);
+  const date=localStorage.getItem(DC_DATE);
+  if(date!==today){
+    const fresh={calls:0,messages:0,content:0};
+    localStorage.setItem(DC_KEY,JSON.stringify(fresh));
+    localStorage.setItem(DC_DATE,today);
+    return fresh;
+  }
+  return stored?JSON.parse(stored):{calls:0,messages:0,content:0};
+}
+function incCounter(key){
+  const c=getDailyCounters();c[key]=Math.min((c[key]||0)+1,99);
+  localStorage.setItem(DC_KEY,JSON.stringify(c));renderAtAGlance();
+}
+function decCounter(key){
+  const c=getDailyCounters();c[key]=Math.max((c[key]||0)-1,0);
+  localStorage.setItem(DC_KEY,JSON.stringify(c));renderAtAGlance();
+}
+function renderAtAGlance(){
+  const el=document.getElementById('homeAtAGlance');if(!el)return;
+  const c=getDailyCounters();
+  const callTarget=25,msgTarget=25,contentTarget=5;
+  const mrr=S.clients.reduce((s,c)=>s+c.fee,0);
+  const mrrTarget=5000;
+  const items=[
+    {label:'Calls Made',val:c.calls,target:callTarget,key:'calls',color:'#10b981'},
+    {label:'Messages Sent',val:c.messages,target:msgTarget,key:'messages',color:'#6366f1'},
+    {label:'Content Created',val:c.content,target:contentTarget,key:'content',color:'#8b5cf6'},
+    {label:'Revenue Goal',val:'£'+mrr,target:'£'+mrrTarget,key:null,color:'#22d3ee',pct:Math.min(100,Math.round((mrr/mrrTarget)*100))},
+  ];
+  el.innerHTML=items.map(it=>{
+    const pct=it.key?Math.min(100,Math.round((it.val/it.target)*100)):(it.pct||0);
+    const counterHTML=it.key?`<div class="aag-counter-row">
+      <button class="aag-counter-btn" onclick="event.stopPropagation();decCounter('${it.key}')">−</button>
+      <span style="font-size:.6rem;color:var(--dim);">${pct}% of daily goal</span>
+      <button class="aag-counter-btn" onclick="event.stopPropagation();incCounter('${it.key}')">+</button>
+    </div>`:
+    `<div class="aag-sub" style="margin-top:.35rem;">${pct}% of goal</div>`;
+    const displayVal=it.key?it.val:it.val;
+    const displayTarget=it.key?it.target:it.target;
+    return `<div class="aag-item">
+      <div class="aag-label">${it.label}</div>
+      <div class="aag-val">${displayVal}<span> / ${displayTarget}</span></div>
+      ${counterHTML}
+      <div class="aag-bar-bg"><div class="aag-bar-fill" style="width:${pct}%;background:${it.color};"></div></div>
     </div>`;
+  }).join('');
+}
+function renderUpNext(){
+  const el=document.getElementById('homeUpNext');if(!el)return;
+  const today=todayStr();
+  const upcoming=S.calendar.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time)).slice(0,5);
+  if(!upcoming.length){el.innerHTML='<div class="upnext-empty">Nothing coming up. Add entries to your calendar.</div>';return;}
+  el.innerHTML=upcoming.map(e=>{
+    const c=S.clients.find(x=>x.id===e.clientId);
+    const isToday=e.date===today;
+    const timeLabel=isToday?e.time:new Date(e.date+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const dotClass=e.contentType?.toLowerCase().includes('shoot')?'shoot':e.contentType?.toLowerCase().includes('post')?'post':e.contentType?.toLowerCase().includes('call')?'call':e.contentType?.toLowerCase().includes('meet')?'meeting':'other';
+    return `<div class="upnext-item">
+      <div class="upnext-time">${esc(timeLabel)}</div>
+      <div class="upnext-dot ${dotClass}"></div>
+      <div>
+        <div class="upnext-label">${esc(e.contentType||'Entry')}</div>
+        <div class="upnext-sub">${esc(c?c.name:e.notes||'—')}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ─────────────────────────────────────────
