@@ -1029,7 +1029,8 @@ body::before{
 .home-tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;position:relative;}
 @media(max-width:900px){.home-tile-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:580px){.home-tile-grid{grid-template-columns:1fr;}}
-.home-tile{position:relative;transition:opacity .18s,transform .18s;touch-action:none;user-select:none;}
+.home-tile{position:relative;transition:opacity .18s,transform .18s;user-select:none;}
+.home-tile-grid.edit-mode .home-tile{touch-action:none;}
 .home-tile[data-size="1"]{grid-column:span 1;}
 .home-tile[data-size="2"]{grid-column:span 2;}
 .home-tile[data-size="4"]{grid-column:span 4;}
@@ -1867,16 +1868,14 @@ function buildTileGrid(){
   syncAddBtn();
 }
 
-let _dt=null,_lpt=null,_editMode=false,_lastDragTarget=null;
+let _dt=null,_editMode=false,_lastDragTarget=null;
 
 function attachTileDrag(tile){
   tile.addEventListener('pointerdown',e=>{
+    if(!_editMode)return;
     if(e.target.closest('[data-nodrag],button,input,select,textarea,a,.cl-item,.hqac-item,.aag-counter-btn,.hfc-btn'))return;
-    _lpt=setTimeout(()=>{if(!_editMode)toggleEditMode(true);beginDrag(tile,e);},420);
+    beginDrag(tile,e);
   });
-  tile.addEventListener('pointermove',e=>{if(_lpt&&(Math.abs(e.movementX||0)>4||Math.abs(e.movementY||0)>4)){clearTimeout(_lpt);_lpt=null;}});
-  tile.addEventListener('pointerup',()=>{clearTimeout(_lpt);_lpt=null;});
-  tile.addEventListener('pointercancel',()=>{clearTimeout(_lpt);_lpt=null;});
 }
 
 function beginDrag(tile,e){
