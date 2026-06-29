@@ -1024,6 +1024,96 @@ body::before{
   border:1px dashed rgba(255,255,255,0.08);border-radius:var(--r);
   background:var(--surface);
 }
+
+/* ── NICHE BADGE ── */
+.niche-badge{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:99px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;margin-left:.4rem;}
+
+/* ── DAILY CHECKLIST ── */
+.checklist-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1.25rem;}
+.checklist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.checklist-title{font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.checklist-progress{font-size:.65rem;color:var(--muted);}
+.checklist-bar-bg{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-bottom:1rem;}
+.checklist-bar-fill{height:100%;background:linear-gradient(90deg,#6366f1,#22d3ee);border-radius:99px;transition:width .4s var(--ease);}
+.cl-item{display:flex;align-items:center;gap:.75rem;padding:.5rem .35rem;border-radius:var(--rs);transition:background .15s;cursor:pointer;}
+.cl-item:hover{background:rgba(255,255,255,0.03);}
+.cl-cb{width:18px;height:18px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;cursor:pointer;}
+.cl-cb.checked{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-color:transparent;}
+.cl-cb.checked::after{content:'✓';font-size:.65rem;color:#fff;font-weight:700;}
+.cl-text{font-size:.82rem;color:var(--text);flex:1;transition:color .2s;}
+.cl-text.done{color:var(--dim);text-decoration:line-through;}
+.cl-tag{font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.12rem .42rem;border-radius:99px;}
+.cl-tag.business{background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.2);}
+.cl-tag.personal{background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
+.cl-tag.content{background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);}
+.cl-del{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.7rem;padding:.1rem .25rem;opacity:0;transition:opacity .15s;}
+.cl-item:hover .cl-del{opacity:1;}
+.cl-del:hover{color:var(--red);}
+.cl-add-row{display:flex;gap:.5rem;margin-top:.85rem;}
+.cl-add-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);padding:.5rem .75rem;color:var(--text);font-size:.78rem;font-family:'Inter',sans-serif;}
+.cl-add-input:focus{outline:none;border-color:var(--accent);}
+.cl-add-select{background:#0f0f28;border:1px solid var(--border);border-radius:var(--rs);padding:.5rem .6rem;color:var(--muted);font-size:.72rem;font-family:'Inter',sans-serif;cursor:pointer;}
+.cl-add-btn{background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:var(--rs);padding:.5rem .85rem;color:#fff;font-size:.72rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+.cl-section-divider{font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding:.5rem 0 .3rem;border-bottom:1px solid var(--border);margin-bottom:.4rem;}
+.daily-goal-row{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;}
+.daily-goal-card{flex:1;min-width:140px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--rs);padding:.75rem 1rem;}
+.dgc-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.35rem;}
+.dgc-val{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text);}
+.dgc-sub{font-size:.62rem;color:var(--muted);margin-top:.15rem;}
+.dgc-bar-bg{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;margin-top:.5rem;}
+.dgc-bar-fill{height:100%;border-radius:99px;transition:width .4s var(--ease);}
+
+/* ── SCRIPTS SECTION ── */
+.scripts-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+@media(max-width:768px){.scripts-layout{grid-template-columns:1fr;}}
+.scripts-card{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;}
+.scripts-card-title{font-family:'Space Grotesk',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;}
+.scripts-select{width:100%;background:#0f0f28;border:1px solid var(--border);border-radius:var(--rs);padding:.6rem .85rem;color:var(--text);font-size:.8rem;font-family:'Inter',sans-serif;margin-bottom:.85rem;}
+.scripts-select:focus{outline:none;border-color:var(--accent);}
+.scripts-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);padding:.6rem .85rem;color:var(--text);font-size:.8rem;font-family:'Inter',sans-serif;margin-bottom:.75rem;}
+.scripts-input:focus{outline:none;border-color:var(--accent);}
+.scripts-output{background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:var(--rs);padding:1rem;font-size:.8rem;color:var(--text);line-height:1.65;min-height:80px;white-space:pre-wrap;word-break:break-word;}
+.scripts-output.empty{color:var(--dim);font-style:italic;}
+.scripts-copy-btn{margin-top:.65rem;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);border-radius:var(--rs);padding:.45rem .85rem;color:#a5b4fc;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.scripts-copy-btn:hover{background:rgba(99,102,241,0.2);}
+.objection-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.85rem;}
+.objection-btn{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--rs);padding:.55rem .75rem;color:var(--muted);font-size:.72rem;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;}
+.objection-btn:hover,.objection-btn.active{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.3);color:var(--text);}
+.wa-generate-btn{width:100%;background:linear-gradient(135deg,#10b981,#22d3ee);border:none;border-radius:var(--rs);padding:.65rem;color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:.75rem;}
+.wa-generate-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(16,185,129,0.3);}
+
+/* ── CONTRACTS SECTION ── */
+.contracts-layout{display:grid;grid-template-columns:280px 1fr;gap:1.25rem;}
+@media(max-width:900px){.contracts-layout{grid-template-columns:1fr;}}
+.contracts-list{display:flex;flex-direction:column;gap:.5rem;}
+.contract-item{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--rs);padding:.85rem 1rem;cursor:pointer;transition:all .15s;}
+.contract-item:hover,.contract-item.active{border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.06);}
+.contract-item-name{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.2rem;}
+.contract-item-meta{font-size:.65rem;color:var(--muted);}
+.contract-status{display:inline-block;font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .45rem;border-radius:99px;float:right;}
+.contract-status.draft{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#fbbf24;}
+.contract-status.signed{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34d399;}
+.contract-status.sent{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;}
+.contract-editor-wrap{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;}
+.contract-editor-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.contract-editor-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;}
+.contract-editor-actions{display:flex;gap:.5rem;flex-wrap:wrap;}
+.contract-action-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--rs);padding:.45rem .85rem;color:var(--muted);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.contract-action-btn:hover{border-color:var(--border-h);color:var(--text);}
+.contract-action-btn.primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-color:transparent;color:#fff;}
+.contract-action-btn.primary:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(99,102,241,0.3);}
+.contract-action-btn.green{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:#34d399;}
+.contract-textarea{width:100%;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:var(--rs);padding:1rem;color:var(--text);font-size:.82rem;font-family:'Inter',sans-serif;line-height:1.7;min-height:380px;resize:vertical;}
+.contract-textarea:focus{outline:none;border-color:var(--accent);}
+.contract-empty{display:flex;align-items:center;justify-content:center;height:200px;color:var(--dim);font-size:.8rem;}
+
+/* ── SCANNER AI SCORE ── */
+.sr-score-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;}
+.sr-score-chip{font-size:.58rem;font-weight:700;letter-spacing:.05em;padding:.2rem .55rem;border-radius:99px;border:1px solid;}
+.sr-score-chip.high{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:#34d399;}
+.sr-score-chip.mid{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25);color:#fbbf24;}
+.sr-score-chip.low{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:#f87171;}
+.sr-niche-tag{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.2rem .55rem;border-radius:99px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:#a5b4fc;}
 </style>
 </head>
 <body>
@@ -1133,6 +1223,22 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
+      <div class="nav-card" id="nc_scriptsSection" onclick="showSection('scriptsSection')">
+        <div class="nc-icon">✎</div>
+        <div class="nc-content">
+          <div class="nc-title">Scripts</div>
+          <div class="nc-meta">Call scripts · Objections · WhatsApp</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_contractsSection" onclick="showSection('contractsSection')">
+        <div class="nc-icon">📄</div>
+        <div class="nc-content">
+          <div class="nc-title">Contracts</div>
+          <div class="nc-meta" id="navContractsMeta">—</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
     </nav>
 
     <div class="sidebar-stats">
@@ -1166,6 +1272,28 @@ body::before{
       </div>
 
       <div class="home-grid-4" id="homeStats"></div>
+
+      <!-- DAILY GOALS -->
+      <div class="daily-goal-row" id="dailyGoalRow"></div>
+
+      <!-- DAILY CHECKLIST -->
+      <div class="checklist-wrap">
+        <div class="checklist-header">
+          <div class="checklist-title">Today's Checklist</div>
+          <div class="checklist-progress" id="clProgress">0 / 0 completed</div>
+        </div>
+        <div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div>
+        <div id="clItems"></div>
+        <div class="cl-add-row">
+          <input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()">
+          <select class="cl-add-select" id="clNewTag">
+            <option value="business">Business</option>
+            <option value="content">Content</option>
+            <option value="personal">Personal</option>
+          </select>
+          <button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button>
+        </div>
+      </div>
 
       <div class="home-grid">
         <div class="home-card">
@@ -1343,6 +1471,92 @@ body::before{
       </div>
     </div>
 
+    <!-- SCRIPTS -->
+    <div class="section" id="scriptsSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Scripts</div>
+          <div class="section-sub">Call scripts by niche · Live objection handler · WhatsApp generator</div>
+        </div>
+      </div>
+      <div class="scripts-layout">
+        <!-- CALL SCRIPT BY NICHE -->
+        <div class="scripts-card">
+          <div class="scripts-card-title">📞 Cold Call Script</div>
+          <select class="scripts-select" id="scriptNicheSelect" onchange="renderCallScript()">
+            <option value="">— Select a niche —</option>
+          </select>
+          <div class="scripts-output empty" id="scriptOutput">Select a niche to see the call script.</div>
+          <button class="scripts-copy-btn" onclick="copyScript('scriptOutput')">Copy Script</button>
+        </div>
+        <!-- OBJECTION HANDLER -->
+        <div class="scripts-card">
+          <div class="scripts-card-title">🛡 Live Objection Handler</div>
+          <div class="objection-grid" id="objectionBtns"></div>
+          <div class="scripts-output empty" id="objectionOutput">Tap an objection above for your response.</div>
+          <button class="scripts-copy-btn" onclick="copyScript('objectionOutput')">Copy Response</button>
+        </div>
+        <!-- WHATSAPP GENERATOR -->
+        <div class="scripts-card">
+          <div class="scripts-card-title">💬 WhatsApp Message Generator</div>
+          <select class="scripts-select" id="waParentSelect" onchange="buildWaSubSelect()">
+            <option value="">— Select parent niche —</option>
+          </select>
+          <select class="scripts-select" id="waSubSelect">
+            <option value="">— Select sub-niche —</option>
+          </select>
+          <input class="scripts-input" id="waBusinessName" placeholder="Business name e.g. Café Mood">
+          <button class="wa-generate-btn" onclick="generateWhatsApp()">Generate Message ✦</button>
+          <div class="scripts-output empty" id="waOutput">Fill in the fields above to generate your message.</div>
+          <button class="scripts-copy-btn" onclick="copyScript('waOutput')">Copy Message</button>
+        </div>
+        <!-- OPENING LINE GENERATOR -->
+        <div class="scripts-card">
+          <div class="scripts-card-title">🎯 Opening Line Generator</div>
+          <select class="scripts-select" id="openingNicheSelect">
+            <option value="">— Select a niche —</option>
+          </select>
+          <input class="scripts-input" id="openingBusinessName" placeholder="Business name">
+          <button class="wa-generate-btn" onclick="generateOpener()">Generate Opener ✦</button>
+          <div class="scripts-output empty" id="openingOutput">Fill in the fields above.</div>
+          <button class="scripts-copy-btn" onclick="copyScript('openingOutput')">Copy Opener</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACTS -->
+    <div class="section" id="contractsSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Contracts</div>
+          <div class="section-sub">Draft · Send · Sign</div>
+        </div>
+        <button class="section-add-btn" onclick="openAddContract()">+ New Contract</button>
+      </div>
+      <div class="contracts-layout">
+        <div>
+          <div class="contracts-list" id="contractsList"></div>
+        </div>
+        <div class="contract-editor-wrap" id="contractEditorWrap">
+          <div class="contract-empty" id="contractEditorEmpty">Select a contract to view or edit it.</div>
+          <div id="contractEditorContent" style="display:none;">
+            <div class="contract-editor-header">
+              <div class="contract-editor-title" id="contractEditorTitle">Contract</div>
+              <div class="contract-editor-actions">
+                <button class="contract-action-btn" onclick="markContract('draft')">Draft</button>
+                <button class="contract-action-btn" onclick="markContract('sent')">Mark Sent</button>
+                <button class="contract-action-btn green" onclick="markContract('signed')">Mark Signed</button>
+                <button class="contract-action-btn primary" onclick="saveContractContent()">Save</button>
+                <button class="contract-action-btn" onclick="copyContractContent()">Copy</button>
+                <button class="contract-action-btn" onclick="deleteContract()" style="color:var(--red);">Delete</button>
+              </div>
+            </div>
+            <textarea class="contract-textarea" id="contractTextarea" placeholder="Paste or type contract content here..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 </div><!-- /app -->
@@ -1452,7 +1666,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection'];
+const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
@@ -1478,7 +1692,7 @@ async function initApp(){
   await loadAll();
   buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
-  renderHome(); initPackageBuilder(); showSection('homeSection');
+  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
@@ -1582,6 +1796,7 @@ function renderHome(){
       </div>`;
     }).join('');
   }
+  renderChecklist();
 }
 
 
@@ -1642,6 +1857,46 @@ const STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal',
 const ACTIVE_STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won'];
 const LEAD_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
 const STAGE_COLORS={Discover:'discover',Research:'research','Freebie Offered':'freebie','Shoot Booked':'shoot',Proposal:'proposal',Won:'won-stage',Lost:''};
+
+// ─────────────────────────────────────────
+// NICHES
+// ─────────────────────────────────────────
+const NICHES={
+  'Hospitality':['Cafés','Coffee Shops','Restaurants','Fine Dining','Bars','Cocktail Bars','Pubs','Sports Bars','Hotels','Boutique Hotels','Spa Hotels','Holiday Resorts','Bed & Breakfasts','Guest Houses','Holiday Parks','Caravan Parks','Log Cabins','Glamping Sites','Holiday Villas','Airbnb Management Companies','Beach Clubs','Nightclubs'],
+  'Food & Drink':['Bakeries','Dessert Shops','Ice Cream Parlours','Farm Shops','Delicatessens','Wineries','Breweries','Distilleries'],
+  'Health & Fitness':['Gyms','CrossFit Gyms','Boxing Clubs','Martial Arts Academies','Personal Trainers','Yoga Studios','Pilates Studios','Dance Schools','Swimming Pools'],
+  'Beauty':['Hairdressers','Barbers','Beauty Salons','Nail Salons','Aesthetics Clinics','Cosmetic Clinics','Tattoo Studios','Tanning Salons'],
+  'Property':['Estate Agents','Letting Agents','Property Developers','Holiday Let Agencies','Interior Designers','Kitchen Showrooms','Bathroom Showrooms'],
+  'Automotive':['Car Dealerships','Used Car Dealers','Prestige Car Dealers','Garages','MOT Centres','Vehicle Wrapping','Valeting','Car Detailing','Wheel Refurbishment'],
+  'Tourism & Experiences':['Boat Trips','Fishing Charters','Jet Ski Hire','Parasailing','Quad Bike Tours','Adventure Parks','Escape Rooms','Theme Parks','Zoos','Aquariums','Museums','Tourist Attractions','Golf Courses','Mini Golf','Water Parks'],
+  'Pets':['Dog Groomers','Dog Daycare','Boarding Kennels','Catteries','Pet Shops','Dog Trainers','Veterinary Clinics'],
+  'Retail':['Boutique Clothing Shops','Jewellers','Florists','Furniture Shops','Garden Centres','Homeware Shops','Gift Shops','Sports Shops'],
+  'Trades':['Roofers','Builders','Landscapers','Electricians','Plumbers','Kitchen Fitters','Bathroom Installers','Window Companies','Driveway Companies','Painters & Decorators'],
+  'Professional Services':['Solicitors','Accountants','Mortgage Brokers','Financial Advisers','Insurance Brokers','Recruitment Agencies'],
+  'Events':['Wedding Venues','Function Rooms','Event Companies','DJs','Photographers','Wedding Planners'],
+  'Personal':['Gym Session','Run / Walk','Meal Prep','Reading','Meditation','Other']
+};
+
+function guessNiche(typeStr){
+  if(!typeStr)return'';
+  const t=typeStr.toLowerCase();
+  const map=[
+    [['café','coffee','restaurant','fine dining','bar','pub','hotel','hostel','resort','b&b','bed and breakfast','guest house','holiday park','caravan','log cabin','glamping','villa','airbnb','nightclub','beach club'],'Hospitality'],
+    [['baker','dessert','ice cream','farm shop','deli','winery','brewery','distillery'],'Food & Drink'],
+    [['gym','crossfit','boxing','martial art','personal trainer','yoga','pilates','dance','swimming pool'],'Health & Fitness'],
+    [['hair','barber','beauty salon','nail','aesthetics','cosmetic','tattoo','tanning'],'Beauty'],
+    [['estate agent','letting agent','property developer','holiday let','interior design','kitchen showroom','bathroom showroom'],'Property'],
+    [['car dealer','prestige car','garage','mot centre','vehicle wrap','valet','car detail','wheel refurb'],'Automotive'],
+    [['boat trip','fishing charter','jet ski','parasail','quad bike','adventure park','escape room','theme park','zoo','aquarium','museum','tourist','golf course','mini golf','water park'],'Tourism & Experiences'],
+    [['dog groom','dog daycare','boarding','cattery','pet shop','dog trainer','vet'],'Pets'],
+    [['boutique','jeweller','florist','furniture shop','garden centre','homeware','gift shop','sports shop'],'Retail'],
+    [['roofer','builder','landscap','electrician','plumber','kitchen fitter','bathroom install','window company','driveway','decorator','painter'],'Trades'],
+    [['solicitor','accountant','mortgage broker','financial adviser','insurance broker','recruitment'],'Professional Services'],
+    [['wedding venue','function room','event company','dj','photographer','wedding planner'],'Events'],
+  ];
+  for(const[keywords,cat]of map){if(keywords.some(k=>t.includes(k)))return cat;}
+  return'';
+}
 
 function ragStatus(dateStr){
   if(!dateStr)return 'none';
@@ -1803,10 +2058,11 @@ function stageBodyHTML(l){
 
 function leadCardHTML(l){
   const stageColor=STAGE_COLORS[l.stage]||'';
+  const nicheBadge=l.niche?`<span class="niche-badge">${esc(l.niche)}</span>`:'';
   return `<div class="call-card" id="lc_${l.id}">
   <div class="call-card-top" onclick="toggleCard('lc_${l.id}')">
     <div>
-      <div class="call-card-name">${esc(l.name)}</div>
+      <div class="call-card-name">${esc(l.name)}${nicheBadge}</div>
       <div class="call-card-meta">${esc(l.type||'—')} · ${esc(l.location||'—')}</div>
     </div>
     <div class="call-card-right">
@@ -2241,8 +2497,14 @@ function openEditLead(id){const l=S.leads.find(x=>x.id===id);if(!l)return;modalS
 function leadFormHTML(l,pre={}){
   const v=(f,d='')=>esc(l?.[f]??pre[f]??d);
   const stg=l?.stage||pre.stage||'Identified';
+  const curNiche=l?.niche||pre.niche||'';
+  const curSub=l?.subNiche||pre.subNiche||'';
+  const nicheOpts=Object.keys(NICHES).map(n=>`<option value="${n}"${curNiche===n?' selected':''}>${n}</option>`).join('');
+  const subOpts=curNiche&&NICHES[curNiche]?NICHES[curNiche].map(s=>`<option value="${s}"${curSub===s?' selected':''}>${s}</option>`).join(''):'';
   return `<div class="m-field"><label>Business Name</label><input class="m-input" id="m_name" value="${v('name')}"></div>
   <div class="m-field"><label>Business Type</label><input class="m-input" id="m_type" placeholder="e.g. Café" value="${v('type')}"></div>
+  <div class="m-field"><label>Parent Niche</label><select class="m-select" id="m_niche" onchange="updateLeadSubNiche()"><option value="">— None —</option>${nicheOpts}</select></div>
+  <div class="m-field" id="m_subniche_wrap" style="${curNiche?'':'display:none;'}"><label>Sub-Niche</label><select class="m-select" id="m_subniche"><option value="">— Select —</option>${subOpts}</select></div>
   <div class="m-field"><label>Location</label><input class="m-input" id="m_location" placeholder="e.g. Hartlepool" value="${v('location')}"></div>
   <div class="m-field"><label>Stage</label><select class="m-select" id="m_stage">${STAGES.map(s=>`<option value="${s}"${stg===s?' selected':''}>${s}</option>`).join('')}</select></div>
   <div class="m-field"><label>Follow-up Date</label><input class="m-input" id="m_followup" type="date" value="${v('followUpDate')}"></div>
@@ -2252,13 +2514,29 @@ function leadFormHTML(l,pre={}){
     <button class="m-btn" onclick="closeModal()">Cancel</button>
   </div>`;
 }
+function updateLeadSubNiche(){
+  const n=document.getElementById('m_niche')?.value;
+  const wrap=document.getElementById('m_subniche_wrap');
+  const sub=document.getElementById('m_subniche');
+  if(!wrap||!sub)return;
+  if(n&&NICHES[n]){
+    wrap.style.display='';
+    sub.innerHTML='<option value="">— Select —</option>'+NICHES[n].map(s=>`<option value="${s}">${s}</option>`).join('');
+  } else {
+    wrap.style.display='none';
+    sub.innerHTML='<option value="">— Select —</option>';
+  }
+}
 async function doSaveLead(){
   const name=document.getElementById('m_name').value.trim();
   if(!name)return alert('Business name required.');
   const id=modalState.id||uid();
   const existing=S.leads.find(x=>x.id===id);
+  const niche=document.getElementById('m_niche')?.value||'';
+  const subNiche=document.getElementById('m_subniche')?.value||'';
   const lead={id,name,
     type:document.getElementById('m_type').value.trim(),
+    niche,subNiche,
     location:document.getElementById('m_location').value.trim(),
     stage:document.getElementById('m_stage').value,
     notes:document.getElementById('m_notes').value.trim(),
@@ -2654,11 +2932,18 @@ async function runScanner(){
         const type=rawType.replace(/_/g,' ');
         const addr=r.formatted_address||r.vicinity||'';
         const rating=r.rating?`${r.rating}★ · ${r.user_ratings_total||0} reviews`:'No reviews';
-        SCAN_DATA[i]={name:r.name,type,addr,website:'',phone:'',placeId:r.place_id};
+        const niche=guessNiche(type);
+        const score=calcOpportunityScore(r,type);
+        const scoreClass=score>=70?'high':score>=45?'mid':'low';
+        SCAN_DATA[i]={name:r.name,type,addr,website:'',phone:'',placeId:r.place_id,niche,score};
         return `<div class="scan-result" id="sr_${i}">
           <div class="sr-main">
             <div class="sr-name">${esc(r.name)}</div>
             <div class="sr-meta">${esc(addr)} · ${esc(rating)}</div>
+            <div class="sr-score-row">
+              ${niche?`<span class="sr-niche-tag">${esc(niche)}</span>`:''}
+              <span class="sr-score-chip ${scoreClass}">Opportunity: ${score}/100</span>
+            </div>
             <div class="sr-details" id="srd_${i}"><span class="sr-loading">Fetching details...</span></div>
           </div>
           <div class="sr-actions">
@@ -2699,7 +2984,8 @@ async function runScanner(){
 async function addScanResult(btn,idx){
   const d=SCAN_DATA[idx];if(!d)return;
   const notes=[d.website?`Website: ${d.website}`:'',d.phone?`Phone: ${d.phone}`:''].filter(Boolean).join('\n');
-  const lead={id:uid(),name:d.name,type:d.type||'',location:d.addr||'',stage:'Identified',notes,socialCheck:{},followUpDate:null,addedDate:todayStr()};
+  const niche=guessNiche(d.type||'');
+  const lead={id:uid(),name:d.name,type:d.type||'',niche,subNiche:'',location:d.addr||'',stage:'Discover',notes,socialCheck:{},followUpDate:null,addedDate:todayStr()};
   await sbUp('leads',toLead(lead));
   S.leads.unshift(lead);
   btn.textContent='Added ✓';btn.classList.add('added');
@@ -3194,12 +3480,336 @@ function pbClearRecommend(){
 }
 
 // ─────────────────────────────────────────
+// OPPORTUNITY SCORE
+// ─────────────────────────────────────────
+function calcOpportunityScore(r,type){
+  let score=50;
+  if(r.rating){if(r.rating<3.5)score+=15;else if(r.rating>=4.5)score-=5;}
+  if(r.user_ratings_total){if(r.user_ratings_total>200)score+=10;else if(r.user_ratings_total<10)score+=15;}
+  const highValue=['restaurant','hotel','gym','beauty salon','estate agent','car dealer','nightclub','bar'];
+  if(highValue.some(h=>type.toLowerCase().includes(h)))score+=12;
+  return Math.min(100,Math.max(1,score));
+}
+
+// ─────────────────────────────────────────
+// DAILY CHECKLIST
+// ─────────────────────────────────────────
+const CL_KEY='las_checklist';
+const CL_DATE_KEY='las_checklist_date';
+const DEFAULT_TASKS=[
+  {id:'cl1',text:'Make 25 outreach calls',tag:'business',done:false},
+  {id:'cl2',text:'Follow up with leads',tag:'business',done:false},
+  {id:'cl3',text:'Post content for clients',tag:'content',done:false},
+  {id:'cl4',text:'Check & reply to messages',tag:'business',done:false},
+  {id:'cl5',text:'Gym session',tag:'personal',done:false},
+  {id:'cl6',text:'Plan tomorrow',tag:'business',done:false},
+];
+function getChecklist(){
+  const today=todayStr();
+  const stored=localStorage.getItem(CL_KEY);
+  const storedDate=localStorage.getItem(CL_DATE_KEY);
+  if(storedDate!==today){
+    const fresh=stored?JSON.parse(stored).map(t=>({...t,done:false})):JSON.parse(JSON.stringify(DEFAULT_TASKS));
+    localStorage.setItem(CL_KEY,JSON.stringify(fresh));
+    localStorage.setItem(CL_DATE_KEY,today);
+    return fresh;
+  }
+  return stored?JSON.parse(stored):JSON.parse(JSON.stringify(DEFAULT_TASKS));
+}
+function saveChecklist(tasks){localStorage.setItem(CL_KEY,JSON.stringify(tasks));}
+function renderChecklist(){
+  const tasks=getChecklist();
+  const done=tasks.filter(t=>t.done).length;
+  const pct=tasks.length?Math.round((done/tasks.length)*100):0;
+  const prog=document.getElementById('clProgress');
+  const bar=document.getElementById('clBar');
+  const el=document.getElementById('clItems');
+  if(prog)prog.textContent=`${done} / ${tasks.length} completed`;
+  if(bar)bar.style.width=pct+'%';
+  if(!el)return;
+  // Group by tag
+  const groups={business:[],content:[],personal:[]};
+  tasks.forEach(t=>{(groups[t.tag]||groups.business).push(t);});
+  let html='';
+  const labels={business:'Business',content:'Content',personal:'Personal'};
+  Object.entries(groups).forEach(([tag,items])=>{
+    if(!items.length)return;
+    html+=`<div class="cl-section-divider">${labels[tag]||tag}</div>`;
+    items.forEach(t=>{
+      html+=`<div class="cl-item" onclick="toggleTask('${t.id}')">
+        <div class="cl-cb${t.done?' checked':''}"></div>
+        <span class="cl-text${t.done?' done':''}">${esc(t.text)}</span>
+        <span class="cl-tag ${t.tag}">${labels[t.tag]||t.tag}</span>
+        <button class="cl-del" onclick="event.stopPropagation();deleteTask('${t.id}')">✕</button>
+      </div>`;
+    });
+  });
+  el.innerHTML=html;
+  renderDailyGoals(done,tasks.length);
+}
+function toggleTask(id){
+  const tasks=getChecklist();
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  t.done=!t.done;saveChecklist(tasks);renderChecklist();
+}
+function deleteTask(id){
+  const tasks=getChecklist().filter(x=>x.id!==id);
+  saveChecklist(tasks);renderChecklist();
+}
+function addChecklistItem(){
+  const input=document.getElementById('clNewText');
+  const tagSel=document.getElementById('clNewTag');
+  const text=input?.value.trim();
+  if(!text)return;
+  const tasks=getChecklist();
+  tasks.push({id:'cl_'+Date.now(),text,tag:tagSel?.value||'business',done:false});
+  saveChecklist(tasks);
+  if(input)input.value='';
+  renderChecklist();
+}
+function renderDailyGoals(tasksDone,tasksTotal){
+  const el=document.getElementById('dailyGoalRow');if(!el)return;
+  const callsTarget=25;
+  const clientTarget=4;
+  const today=todayStr().slice(0,7);
+  const monthClients=S.leads.filter(l=>l.stage==='Won'&&l.addedDate?.slice(0,7)===today).length;
+  const taskPct=tasksTotal?Math.round((tasksDone/tasksTotal)*100):0;
+  const clientPct=Math.min(100,Math.round((monthClients/clientTarget)*100));
+  el.innerHTML=`
+    <div class="daily-goal-card">
+      <div class="dgc-label">Daily Tasks</div>
+      <div class="dgc-val">${tasksDone}<span style="font-size:.9rem;color:var(--muted)"> / ${tasksTotal}</span></div>
+      <div class="dgc-sub">${taskPct}% complete</div>
+      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${taskPct}%;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div></div>
+    </div>
+    <div class="daily-goal-card">
+      <div class="dgc-label">Monthly Clients</div>
+      <div class="dgc-val">${monthClients}<span style="font-size:.9rem;color:var(--muted)"> / ${clientTarget}</span></div>
+      <div class="dgc-sub">Target: ${clientTarget} new clients</div>
+      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${clientPct}%;background:linear-gradient(90deg,#10b981,#22d3ee);"></div></div>
+    </div>
+    <div class="daily-goal-card">
+      <div class="dgc-label">Active Leads</div>
+      <div class="dgc-val">${S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length}</div>
+      <div class="dgc-sub">In pipeline</div>
+      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${Math.min(100,S.leads.filter(l=>!['Won','Lost'].includes(l.stage)).length*4)}%;background:linear-gradient(90deg,#f59e0b,#ef4444);"></div></div>
+    </div>
+    <div class="daily-goal-card">
+      <div class="dgc-label">MRR</div>
+      <div class="dgc-val">£${S.clients.reduce((s,c)=>s+c.fee,0)}</div>
+      <div class="dgc-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div>
+      <div class="dgc-bar-bg"><div class="dgc-bar-fill" style="width:${Math.min(100,Math.round((S.clients.reduce((s,c)=>s+c.fee,0)/5000)*100))}%;background:linear-gradient(90deg,#a5b4fc,#6366f1);"></div></div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────
+// SCRIPTS SECTION
+// ─────────────────────────────────────────
+const CALL_SCRIPTS={
+  'Hospitality':`Hi, is that [BUSINESS NAME]?\n\nGreat — my name's Lewis, I'm a social media videographer. I've actually been looking at your pages and I think there's a real opportunity to get some high-quality content working for you — the kind that actually brings people through the door.\n\nI work with bars, restaurants and hotels around [AREA] specifically on short-form video — Reels, TikToks, that kind of thing.\n\nWould you be open to a quick chat about what that could look like for you?`,
+  'Health & Fitness':`Hi, could I speak to the owner?\n\nHi — my name's Lewis. I'm a content creator and I specialise in fitness businesses. I've had a look at your social media and I genuinely think you're sitting on a massive opportunity — people are searching for gyms and PTs on TikTok and Instagram every single day, and high-quality video content is what converts browsers into members.\n\nI work with gyms and fitness studios creating professional Reels and short-form video. Would you have five minutes to see what I've done for similar businesses?`,
+  'Beauty':`Hi there, is the owner around?\n\nHi — I'm Lewis, I'm a social media videographer. I specialise in beauty businesses and I've been looking at your pages — you've got a really good thing going, but I think with the right video content you could be pulling in a lot more bookings.\n\nI create Reels and TikToks for salons, aesthetics clinics and beauty businesses that are designed to bring in new clients on autopilot.\n\nAre you open to a quick conversation about it?`,
+  'Trades':`Hi, is that [NAME]?\n\nHi — Lewis here. I help tradespeople get more enquiries through social media. I know most trades aren't big on video content but honestly that's exactly why it works — your competition isn't doing it, so you stand out immediately.\n\nI'd love to show you what a few well-made videos could do for your enquiry rate. Have you got two minutes?`,
+  'Automotive':`Hi — could I speak with the owner or manager?\n\nHi, I'm Lewis. I create social media video content for car dealerships and automotive businesses. I've had a look at your pages and the opportunity here is massive — car content performs incredibly well on TikTok and Instagram, and most dealerships in the area aren't capitalising on it.\n\nI work on a monthly basis producing professional walk-around videos, customer testimonials and behind-the-scenes content. Would that be something worth a chat?`,
+  'Property':`Hi — is the owner or director available?\n\nGreat, hi — my name's Lewis. I'm a social media content creator and I work specifically with estate agents and property developers. Video content is completely changing how properties get discovered and how agencies build their brand — buyers and sellers are making decisions based on what they see on social before they ever pick up the phone.\n\nI create professional walk-through videos, agent profile content and market update Reels. Would you be open to a quick conversation?`,
+};
+const OBJECTIONS={
+  'Already have someone':`Not a problem at all — out of curiosity, do they also create the video content, or are they mainly managing your pages?\n\n[If managing pages only:] That's actually where I come in — I handle the filming and editing side. Plenty of my clients have a page manager and use me for the creative content.\n\n[If they do both:] Totally understand. Can I ask — are you happy with the results you're getting from it? I only ask because I specialise specifically in video for [NICHE] and the results tend to be a bit different.`,
+  'Not interested':`No worries at all — I appreciate you being straight with me. Can I just ask, is it more that video content isn't something you see value in, or is it more about the timing?\n\n[If timing:] Understood. Would it be alright if I dropped you a quick message with some examples of what I've done — no pressure, just so you've got it if things change?`,
+  'No budget':`I completely get it — that's honestly most people's starting point. The way I structure things is on a monthly retainer, so it's a predictable cost rather than big one-off payments. Most clients see a return within the first month from new bookings alone.\n\nWould it be worth a quick chat just to see what the options look like? There's no obligation.`,
+  'Too busy':`Totally understand — that's actually exactly why most of my clients come to me. The whole point is you don't need to be involved much at all. I handle everything — filming, editing, posting. Most business owners spend about 30 minutes with me once a month.\n\nCould we find 10 minutes to chat this week or next?`,
+  'Call back later':`Of course — when would be a good time? I'll put it in my calendar now.\n\n[Note the name, business and callback date in your CRM immediately after the call.]`,
+  'Send info first':`Absolutely — what's the best email or number to send it to?\n\n[Send a brief intro message with 2-3 examples of your best work and a one-line pitch specific to their niche. Follow up 48 hours later.]`,
+};
+function initScriptsSection(){
+  const ns=document.getElementById('scriptNicheSelect');
+  const wp=document.getElementById('waParentSelect');
+  const op=document.getElementById('openingNicheSelect');
+  if(ns){Object.keys(CALL_SCRIPTS).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;ns.appendChild(o);});}
+  if(wp){Object.keys(NICHES).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;wp.appendChild(o);});}
+  if(op){Object.keys(CALL_SCRIPTS).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=k;op.appendChild(o);});}
+  // Objection buttons
+  const ob=document.getElementById('objectionBtns');
+  if(ob){ob.innerHTML=Object.keys(OBJECTIONS).map(k=>`<button class="objection-btn" onclick="showObjection(this,'${k.replace(/'/g,'\\\'')}')">${k}</button>`).join('');}
+}
+function renderCallScript(){
+  const niche=document.getElementById('scriptNicheSelect')?.value;
+  const el=document.getElementById('scriptOutput');
+  if(!el)return;
+  if(!niche){el.textContent='Select a niche to see the call script.';el.classList.add('empty');return;}
+  el.textContent=CALL_SCRIPTS[niche]||'No script for this niche yet.';
+  el.classList.remove('empty');
+}
+function showObjection(btn,key){
+  document.querySelectorAll('.objection-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const el=document.getElementById('objectionOutput');
+  if(!el)return;
+  el.textContent=OBJECTIONS[key]||'';
+  el.classList.remove('empty');
+}
+function buildWaSubSelect(){
+  const parent=document.getElementById('waParentSelect')?.value;
+  const sub=document.getElementById('waSubSelect');
+  if(!sub)return;
+  if(parent&&NICHES[parent]){
+    sub.innerHTML='<option value="">— Select sub-niche —</option>'+NICHES[parent].map(s=>`<option value="${s}">${s}</option>`).join('');
+  } else {
+    sub.innerHTML='<option value="">— Select sub-niche —</option>';
+  }
+}
+function generateWhatsApp(){
+  const parent=document.getElementById('waParentSelect')?.value;
+  const sub=document.getElementById('waSubSelect')?.value;
+  const name=document.getElementById('waBusinessName')?.value.trim();
+  const el=document.getElementById('waOutput');
+  if(!el)return;
+  if(!name){el.textContent='Please enter a business name.';el.classList.add('empty');return;}
+  const niche=sub||parent||'your industry';
+  const msg=`Hi ${name} 👋\n\nMy name's Lewis — I'm a social media videographer based locally and I specialise in creating short-form video content for ${niche} businesses.\n\nI had a look at your pages and I think there's a real opportunity to get some professional content working for you — the kind of Reels and TikToks that actually bring in new customers.\n\nI work with similar businesses on a monthly retainer and the results have been brilliant. Would you be open to a quick chat to see if it's something that could work for you?\n\nNo pressure at all — just wanted to reach out 🙏`;
+  el.textContent=msg;
+  el.classList.remove('empty');
+}
+function generateOpener(){
+  const niche=document.getElementById('openingNicheSelect')?.value;
+  const name=document.getElementById('openingBusinessName')?.value.trim();
+  const el=document.getElementById('openingOutput');
+  if(!el)return;
+  if(!name&&!niche){el.textContent='Fill in the fields above.';el.classList.add('empty');return;}
+  const nicheStr=niche||'your industry';
+  const nameStr=name||'your business';
+  const opener=`Hi, is that ${nameStr}?\n\nGreat — I'm Lewis, I'm a social media videographer and I specialise in ${nicheStr} businesses. I've actually had a look at your pages and I think there's a genuine opportunity here to get some high-quality video content working for you.\n\nWould you have 30 seconds to hear what I've got in mind?`;
+  el.textContent=opener;
+  el.classList.remove('empty');
+}
+function copyScript(elId){
+  const el=document.getElementById(elId);if(!el||el.classList.contains('empty'))return;
+  navigator.clipboard?.writeText(el.textContent).then(()=>{
+    const t=document.createElement('div');t.className='bug-toast';t.textContent='✓ Copied to clipboard';
+    document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+  });
+}
+
+// ─────────────────────────────────────────
+// CONTRACTS
+// ─────────────────────────────────────────
+const CONTRACT_KEY='las_contracts';
+let _activeContractId=null;
+function getContracts(){return JSON.parse(localStorage.getItem(CONTRACT_KEY)||'[]');}
+function saveContracts(arr){localStorage.setItem(CONTRACT_KEY,JSON.stringify(arr));}
+const CONTRACT_TEMPLATES={
+  'Monthly Content Agreement':`Monthly Content Agreement\n\nThis agreement is made between LAS Media ("Agency") and [Client Name] ("Client").\n\n1. SERVICES\nLAS Media will provide the following services:\n• 2 Reels per week\n• 1 Static Post per week\n• Content Planning\n• Filming, Editing & Delivery\n• Social Media Management (as agreed)\n\n2. PAYMENT\nThe Client agrees to pay £[AMOUNT] per month. Payment is due on the 1st of each month.\n\n3. TERM\nThis agreement begins on [START DATE] and continues on a rolling monthly basis. Either party may terminate with 30 days' written notice.\n\n4. OWNERSHIP\nAll content created remains the property of LAS Media until full payment is received, at which point full rights transfer to the Client.\n\nSigned by: _______________\nDate: _______________`,
+  'Content Retainer Agreement':`Content Retainer Agreement\n\nClient: [Client Name]\nAgency: LAS Media\nStart Date: [DATE]\nMonthly Fee: £[AMOUNT]\n\nSERVICES INCLUDED:\n[List services here]\n\nTERMS:\n• Payment due on the 1st of each month\n• 30 days notice to cancel\n• Content rights transfer on full payment\n\nSignature: _______________`,
+  'Blank Contract':`[Contract Title]\n\nParties:\n• LAS Media ("Agency")\n• [Client Name] ("Client")\n\nDate: [DATE]\n\n[Add your terms here]\n\nSignature: _______________`
+};
+function renderContracts(){
+  const contracts=getContracts();
+  const el=document.getElementById('contractsList');
+  if(!el)return;
+  // Update nav meta
+  const signed=contracts.filter(c=>c.status==='signed').length;
+  const draft=contracts.filter(c=>c.status==='draft').length;
+  const navMeta=document.getElementById('navContractsMeta');
+  if(navMeta)navMeta.textContent=`${signed} signed · ${draft} draft`;
+  if(!contracts.length){
+    el.innerHTML='<div class="empty-state">No contracts yet. Add your first one.</div>';
+    return;
+  }
+  el.innerHTML=contracts.map(c=>`
+    <div class="contract-item${_activeContractId===c.id?' active':''}" onclick="openContract('${c.id}')">
+      <span class="contract-status ${c.status}">${c.status}</span>
+      <div class="contract-item-name">${esc(c.name)}</div>
+      <div class="contract-item-meta">${c.client||'No client'} · ${c.updated||c.created||'—'}</div>
+    </div>`).join('');
+}
+function openContract(id){
+  _activeContractId=id;
+  const contracts=getContracts();
+  const c=contracts.find(x=>x.id===id);if(!c)return;
+  document.getElementById('contractEditorEmpty').style.display='none';
+  document.getElementById('contractEditorContent').style.display='block';
+  document.getElementById('contractEditorTitle').textContent=c.name;
+  document.getElementById('contractTextarea').value=c.content||'';
+  renderContracts();
+}
+function saveContractContent(){
+  if(!_activeContractId)return;
+  const contracts=getContracts();
+  const c=contracts.find(x=>x.id===_activeContractId);if(!c)return;
+  c.content=document.getElementById('contractTextarea')?.value||'';
+  c.updated=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  saveContracts(contracts);
+  const t=document.createElement('div');t.className='bug-toast';t.textContent='✓ Contract saved';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+  renderContracts();
+}
+function markContract(status){
+  if(!_activeContractId)return;
+  const contracts=getContracts();
+  const c=contracts.find(x=>x.id===_activeContractId);if(!c)return;
+  c.status=status;
+  c.updated=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  saveContracts(contracts);
+  renderContracts();
+  const t=document.createElement('div');t.className='bug-toast';t.textContent=`✓ Marked as ${status}`;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+function copyContractContent(){
+  const val=document.getElementById('contractTextarea')?.value;
+  if(!val)return;
+  navigator.clipboard?.writeText(val).then(()=>{
+    const t=document.createElement('div');t.className='bug-toast';t.textContent='✓ Contract copied to clipboard';
+    document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+  });
+}
+function deleteContract(){
+  if(!_activeContractId)return;
+  if(!confirm('Delete this contract?'))return;
+  saveContracts(getContracts().filter(c=>c.id!==_activeContractId));
+  _activeContractId=null;
+  document.getElementById('contractEditorEmpty').style.display='flex';
+  document.getElementById('contractEditorContent').style.display='none';
+  renderContracts();
+}
+function openAddContract(){
+  const templateOpts=Object.keys(CONTRACT_TEMPLATES).map(k=>`<option value="${k}">${k}</option>`).join('');
+  openModal('New Contract',`
+    <div class="m-field"><label>Contract Name</label><input class="m-input" id="cnName" placeholder="e.g. Monthly Content Agreement"></div>
+    <div class="m-field"><label>Client Name</label><input class="m-input" id="cnClient" placeholder="e.g. Café Mood"></div>
+    <div class="m-field"><label>Template</label>
+      <select class="m-select" id="cnTemplate">
+        <option value="">— Blank —</option>
+        ${templateOpts}
+      </select>
+    </div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="doAddContract()">Create</button>
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+    </div>`);
+}
+function doAddContract(){
+  const name=(document.getElementById('cnName')?.value||'').trim();
+  const client=(document.getElementById('cnClient')?.value||'').trim();
+  const tmpl=document.getElementById('cnTemplate')?.value||'';
+  if(!name)return alert('Contract name required.');
+  const contracts=getContracts();
+  const id='cnt_'+Date.now();
+  const content=tmpl&&CONTRACT_TEMPLATES[tmpl]?CONTRACT_TEMPLATES[tmpl].replace('[Client Name]',client||'[Client Name]'):'';
+  contracts.unshift({id,name,client,status:'draft',content,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})});
+  saveContracts(contracts);
+  closeModal();
+  renderContracts();
+  openContract(id);
+}
+
+// ─────────────────────────────────────────
 // BUG REPORT
 // ─────────────────────────────────────────
 function openBugReport(){
   const sectionLabels={
     homeSection:'Home',leadsSection:'Leads / Pipeline',clientsSection:'Clients',
-    calSection:'Calendar',bizSection:'Business',pkgSection:'Package Builder'
+    calSection:'Calendar',bizSection:'Business',pkgSection:'Package Builder',
+    scriptsSection:'Scripts',contractsSection:'Contracts'
   };
   const current=activeSection||'';
   openModal('🐛 Report a Bug',`
