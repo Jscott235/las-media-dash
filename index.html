@@ -4419,8 +4419,12 @@ function renderCallQueue(){
     }).join('');
   }
 
-  if(!ccActiveId || !ccQueue.includes(ccActiveId)){
-    selectCallLead(ccQueue[0]||null);
+  if((!ccActiveId || !ccQueue.includes(ccActiveId)) && ccQueue.length){
+    ccActiveId=ccQueue[0];
+    renderActiveCall();
+  } else if(!ccQueue.length && ccActiveId!==null){
+    ccActiveId=null;
+    renderActiveCall();
   }
   ccUpdateStatsBar();
 }
