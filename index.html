@@ -1025,6 +1025,44 @@ body::before{
   background:var(--surface);
 }
 
+/* ── TILE GRID DRAG SYSTEM ── */
+.home-tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;position:relative;}
+@media(max-width:900px){.home-tile-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.home-tile-grid{grid-template-columns:1fr;}}
+.home-tile{position:relative;transition:opacity .18s,transform .18s;touch-action:none;user-select:none;}
+.home-tile[data-size="1"]{grid-column:span 1;}
+.home-tile[data-size="2"]{grid-column:span 2;}
+.home-tile[data-size="4"]{grid-column:span 4;}
+@media(max-width:900px){.home-tile[data-size="4"]{grid-column:span 2;}}
+@media(max-width:580px){.home-tile[data-size="2"],.home-tile[data-size="4"]{grid-column:span 1;}}
+.home-tile.tile-dragging{opacity:.35;transform:scale(.97);}
+.home-tile.tile-drop-target{outline:2px dashed var(--accent);outline-offset:4px;border-radius:var(--r);}
+/* Tile inner fills the tile */
+.home-tile .checklist-wrap,.home-tile .home-focus-card,.home-tile .home-qa-card,.home-tile .home-pipe-card,.home-tile .home-bottom-card{margin-bottom:0;}
+/* Edit mode shake */
+.home-tile-grid.edit-mode .home-tile{animation:tileShake .35s ease-in-out infinite alternate;}
+@keyframes tileShake{from{transform:rotate(-.4deg) scale(1);}to{transform:rotate(.4deg) scale(1.005);}}
+.home-tile-grid.edit-mode .home-tile.tile-dragging{animation:none;}
+/* Remove button */
+.tile-remove-btn{position:absolute;top:-9px;right:-9px;width:22px;height:22px;border-radius:50%;background:var(--red);border:2px solid var(--bg);color:#fff;font-size:.65rem;font-weight:800;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:20;line-height:1;padding:0;transition:transform .15s;}
+.tile-remove-btn:hover{transform:scale(1.15);}
+.home-tile-grid.edit-mode .tile-remove-btn{display:flex;}
+/* Drag handle */
+.tile-drag-handle{position:absolute;top:8px;left:10px;font-size:.85rem;color:var(--dim);cursor:grab;z-index:20;display:none;opacity:.6;line-height:1;}
+.home-tile-grid.edit-mode .tile-drag-handle{display:block;}
+.tile-drag-handle:active{cursor:grabbing;}
+/* Manage bar */
+.home-manage-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;}
+.home-manage-hint{font-size:.62rem;color:var(--dim);}
+.home-manage-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:var(--rs);padding:.38rem .85rem;color:var(--muted);font-size:.7rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.home-manage-btn:hover{border-color:var(--border-h);color:var(--text);}
+.home-manage-btn.done{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-color:transparent;color:#fff;}
+.home-add-tile-btn{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:var(--rs);padding:.38rem .85rem;color:#a5b4fc;font-size:.7rem;font-weight:600;cursor:pointer;display:none;transition:all .15s;}
+.home-add-tile-btn:hover{background:rgba(99,102,241,0.2);}
+/* Stats inner grid */
+.home-stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;}
+@media(max-width:900px){.home-stats-inner{grid-template-columns:repeat(2,1fr);}}
+
 /* ── NICHE BADGE ── */
 .niche-badge{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .5rem;border-radius:99px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;margin-left:.4rem;}
 
@@ -1382,7 +1420,7 @@ body::before{
     <!-- HOME -->
     <div class="section" id="homeSection">
 
-      <!-- HEADER -->
+      <!-- HEADER (not a tile) -->
       <div class="home-header-row">
         <div>
           <div class="home-greeting" id="homeGreeting">Good evening, Lewis.</div>
@@ -1391,113 +1429,17 @@ body::before{
         <div class="home-date-badge" id="homeDateBadge"></div>
       </div>
 
-      <!-- 4 STAT CARDS -->
-      <div class="home-grid-4" id="homeStats"></div>
-
-      <!-- MAIN 2-COL: CHECKLIST + RIGHT PANEL -->
-      <div class="home-main-grid">
-
-        <!-- LEFT: CHECKLIST -->
-        <div class="checklist-wrap">
-          <div class="checklist-header">
-            <div class="checklist-title">Today's Checklist</div>
-            <div class="checklist-progress" id="clProgress">0 / 0 completed</div>
-          </div>
-          <div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div>
-          <div id="clItems"></div>
-          <div class="cl-add-row">
-            <input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()">
-            <select class="cl-add-select" id="clNewTag">
-              <option value="sales">Sales</option>
-              <option value="content">Content</option>
-              <option value="planning">Planning</option>
-              <option value="finance">Finance</option>
-              <option value="clients">Clients</option>
-              <option value="personal">Personal</option>
-            </select>
-            <button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button>
-          </div>
-        </div>
-
-        <!-- RIGHT: FOCUS + QUICK ACTIONS + PIPELINE -->
-        <div class="home-right-col">
-
-          <!-- TODAY'S FOCUS -->
-          <div class="home-focus-card" id="homeFocusCard">
-            <div class="hfc-label">Today's Focus</div>
-            <div class="hfc-icon">🎯</div>
-            <div class="hfc-task-label">High Impact Task</div>
-            <div class="hfc-task-name" id="hfcTaskName">Make 25 Outreach Calls</div>
-            <div class="hfc-task-sub" id="hfcTaskSub">More calls. More conversations. More clients.</div>
-            <button class="hfc-btn" id="hfcBtn" onclick="hfcAction()">Start Now →</button>
-          </div>
-
-          <!-- QUICK ACTIONS -->
-          <div class="home-qa-card">
-            <div class="hqac-title">Quick Actions</div>
-            <div class="hqac-item" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)">
-              <div class="hqac-icon">👤</div>
-              <div class="hqac-label">Add New Lead</div>
-              <div class="hqac-arrow">›</div>
-            </div>
-            <div class="hqac-item" onclick="showSection('scriptsSection')">
-              <div class="hqac-icon">📞</div>
-              <div class="hqac-label">Start Cold Call</div>
-              <div class="hqac-arrow">›</div>
-            </div>
-            <div class="hqac-item" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)">
-              <div class="hqac-icon">📅</div>
-              <div class="hqac-label">Schedule Content</div>
-              <div class="hqac-arrow">›</div>
-            </div>
-            <div class="hqac-item" onclick="showSection('contractsSection');setTimeout(()=>openAddContract(),100)">
-              <div class="hqac-icon">📄</div>
-              <div class="hqac-label">New Contract</div>
-              <div class="hqac-arrow">›</div>
-            </div>
-            <div class="hqac-item" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)">
-              <div class="hqac-icon">£</div>
-              <div class="hqac-label">Log Income</div>
-              <div class="hqac-arrow">›</div>
-            </div>
-          </div>
-
-          <!-- PIPELINE OVERVIEW -->
-          <div class="home-pipe-card">
-            <div class="hpc-title">Pipeline Overview</div>
-            <div id="homePipeline"></div>
-          </div>
-
+      <!-- MANAGE BAR -->
+      <div class="home-manage-bar">
+        <div class="home-manage-hint" id="editModeHint">Hold any tile to rearrange · tap ✕ to remove</div>
+        <div style="display:flex;gap:.5rem;">
+          <button class="home-add-tile-btn" id="addTileBtn" onclick="openAddTiles()">+ Add Tile</button>
+          <button class="home-manage-btn" id="editModeBtn" onclick="toggleEditMode()">Edit Layout</button>
         </div>
       </div>
 
-      <!-- BOTTOM: AT A GLANCE + UP NEXT -->
-      <div class="home-bottom-grid">
-        <div class="home-bottom-card">
-          <div class="hbc-title">At a Glance</div>
-          <div class="aag-grid" id="homeAtAGlance"></div>
-        </div>
-        <div class="home-bottom-card">
-          <div class="hbc-title">Up Next</div>
-          <div id="homeUpNext"></div>
-        </div>
-      </div>
-
-      <!-- PROGRESS BANNER -->
-      <div class="home-progress-banner">
-        <div class="hpb-left">
-          <div class="hpb-icon">📈</div>
-          <div>
-            <div class="hpb-quote">Progress is built daily, not overnight.</div>
-            <div class="hpb-sub">Stay consistent and the results will follow.</div>
-          </div>
-        </div>
-        <div class="hpb-right">
-          <div class="hpb-progress-label">Daily Progress</div>
-          <div class="hpb-progress-val" id="hpbVal">0%</div>
-          <div class="hpb-bar-bg"><div class="hpb-bar-fill" id="hpbBar" style="width:0%"></div></div>
-        </div>
-      </div>
+      <!-- DRAGGABLE TILE GRID — built by JS -->
+      <div class="home-tile-grid" id="homeTileGrid"></div>
 
     </div>
 
@@ -1881,82 +1823,155 @@ async function initApp(){
 // ─────────────────────────────────────────
 // HOME
 // ─────────────────────────────────────────
+// ─────────────────────────────────────────
+// TILE SYSTEM
+// ─────────────────────────────────────────
+const TILE_SIZES={'stats':4,'checklist':2,'focus':1,'quick-actions':1,'pipeline':1,'at-a-glance':2,'up-next':1,'progress':4};
+const TILE_LABELS={'stats':'Stats','checklist':'Checklist','focus':"Today's Focus",'quick-actions':'Quick Actions','pipeline':'Pipeline','at-a-glance':'At a Glance','up-next':'Up Next','progress':'Progress Banner'};
+const DEFAULT_TILE_ORDER=['stats','checklist','focus','quick-actions','pipeline','at-a-glance','up-next','progress'];
+
+function tileHTML(id){
+  switch(id){
+    case 'stats':return `<div class="home-stats-inner" id="homeStats"></div>`;
+    case 'checklist':return `<div class="checklist-wrap"><div class="checklist-header"><div class="checklist-title">Today's Checklist</div><div class="checklist-progress" id="clProgress">0 / 0</div></div><div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div><div id="clItems"></div><div class="cl-add-row"><input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()"><select class="cl-add-select" id="clNewTag"><option value="sales">Sales</option><option value="content">Content</option><option value="planning">Planning</option><option value="finance">Finance</option><option value="clients">Clients</option><option value="personal">Personal</option></select><button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button></div></div>`;
+    case 'focus':return `<div class="home-focus-card"><div class="hfc-label">Today's Focus</div><div class="hfc-icon">🎯</div><div class="hfc-task-label">High Impact Task</div><div class="hfc-task-name" id="hfcTaskName">—</div><div class="hfc-task-sub" id="hfcTaskSub"></div><button class="hfc-btn" onclick="hfcAction()">Start Now →</button></div>`;
+    case 'quick-actions':return `<div class="home-qa-card"><div class="hqac-title">Quick Actions</div><div class="hqac-item" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)"><div class="hqac-icon">👤</div><div class="hqac-label">Add New Lead</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('scriptsSection')"><div class="hqac-icon">📞</div><div class="hqac-label">Start Cold Call</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)"><div class="hqac-icon">📅</div><div class="hqac-label">Schedule Content</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('contractsSection');setTimeout(()=>openAddContract(),100)"><div class="hqac-icon">📄</div><div class="hqac-label">New Contract</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)"><div class="hqac-icon">£</div><div class="hqac-label">Log Income</div><div class="hqac-arrow">›</div></div></div>`;
+    case 'pipeline':return `<div class="home-pipe-card"><div class="hpc-title">Pipeline Overview</div><div id="homePipeline"></div></div>`;
+    case 'at-a-glance':return `<div class="home-bottom-card"><div class="hbc-title">At a Glance</div><div class="aag-grid" id="homeAtAGlance"></div></div>`;
+    case 'up-next':return `<div class="home-bottom-card"><div class="hbc-title">Up Next</div><div id="homeUpNext"></div></div>`;
+    case 'progress':return `<div class="home-progress-banner"><div class="hpb-left"><div class="hpb-icon">📈</div><div><div class="hpb-quote">Progress is built daily, not overnight.</div><div class="hpb-sub">Stay consistent and the results will follow.</div></div></div><div class="hpb-right"><div class="hpb-progress-label">Daily Progress</div><div class="hpb-progress-val" id="hpbVal">0%</div><div class="hpb-bar-bg"><div class="hpb-bar-fill" id="hpbBar" style="width:0%"></div></div></div></div>`;
+    default:return '';
+  }
+}
+
+function getTileOrder(){
+  try{const s=localStorage.getItem('las_tile_order');if(s){const p=JSON.parse(s);return[...new Set([...p.filter(t=>DEFAULT_TILE_ORDER.includes(t)),...DEFAULT_TILE_ORDER.filter(t=>!p.includes(t))])];}}catch(e){}
+  return[...DEFAULT_TILE_ORDER];
+}
+function saveTileOrder(){const tiles=[...document.querySelectorAll('.home-tile[data-tile]')];localStorage.setItem('las_tile_order',JSON.stringify(tiles.map(t=>t.dataset.tile)));}
+function getHiddenTiles(){try{return JSON.parse(localStorage.getItem('las_hidden_tiles')||'[]');}catch(e){return[];}}
+
+function buildTileGrid(){
+  const grid=document.getElementById('homeTileGrid');if(!grid)return;
+  const order=getTileOrder();const hidden=getHiddenTiles();
+  grid.innerHTML='';
+  order.forEach(id=>{
+    if(hidden.includes(id))return;
+    const size=TILE_SIZES[id]||1;
+    const tile=document.createElement('div');
+    tile.className='home-tile';tile.dataset.tile=id;tile.dataset.size=size;
+    tile.innerHTML=`<div class="tile-drag-handle" data-nodrag title="Drag to reorder">⠿</div><button class="tile-remove-btn" data-nodrag onclick="removeTile('${id}')">✕</button>${tileHTML(id)}`;
+    attachTileDrag(tile);
+    grid.appendChild(tile);
+  });
+  syncAddBtn();
+}
+
+let _dt=null,_lpt=null,_editMode=false,_lastDragTarget=null;
+
+function attachTileDrag(tile){
+  tile.addEventListener('pointerdown',e=>{
+    if(e.target.closest('[data-nodrag],button,input,select,textarea,a,.cl-item,.hqac-item,.aag-counter-btn,.hfc-btn'))return;
+    _lpt=setTimeout(()=>{if(!_editMode)toggleEditMode(true);beginDrag(tile,e);},420);
+  });
+  tile.addEventListener('pointermove',e=>{if(_lpt&&(Math.abs(e.movementX||0)>4||Math.abs(e.movementY||0)>4)){clearTimeout(_lpt);_lpt=null;}});
+  tile.addEventListener('pointerup',()=>{clearTimeout(_lpt);_lpt=null;});
+  tile.addEventListener('pointercancel',()=>{clearTimeout(_lpt);_lpt=null;});
+}
+
+function beginDrag(tile,e){
+  _dt=tile;_lastDragTarget=null;
+  tile.classList.add('tile-dragging');
+  tile.setPointerCapture(e.pointerId);
+  const onMove=ev=>{
+    ev.preventDefault();
+    const under=getTileUnder(ev.clientX,ev.clientY);
+    if(under&&under!==_dt&&under!==_lastDragTarget){
+      _lastDragTarget=under;
+      const r=under.getBoundingClientRect();
+      if(ev.clientY<r.top+r.height/2)under.before(_dt);else under.after(_dt);
+    }
+  };
+  const onUp=()=>{
+    tile.classList.remove('tile-dragging');
+    tile.removeEventListener('pointermove',onMove);tile.removeEventListener('pointerup',onUp);
+    _dt=null;_lastDragTarget=null;saveTileOrder();
+  };
+  tile.addEventListener('pointermove',onMove);tile.addEventListener('pointerup',onUp);
+}
+
+function getTileUnder(x,y){
+  for(const t of document.querySelectorAll('.home-tile[data-tile]')){
+    if(t===_dt)continue;
+    const r=t.getBoundingClientRect();
+    if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return t;
+  }
+  return null;
+}
+
+function toggleEditMode(force){
+  _editMode=force!==undefined?force:!_editMode;
+  const grid=document.getElementById('homeTileGrid');
+  const btn=document.getElementById('editModeBtn');
+  if(grid)grid.classList.toggle('edit-mode',_editMode);
+  if(btn){btn.textContent=_editMode?'Done':'Edit Layout';btn.classList.toggle('done',_editMode);}
+  syncAddBtn();
+}
+function syncAddBtn(){const btn=document.getElementById('addTileBtn');if(btn)btn.style.display=(_editMode&&getHiddenTiles().length)?'':'none';}
+
+function removeTile(id){
+  const tile=document.querySelector(`.home-tile[data-tile="${id}"]`);if(!tile)return;
+  tile.style.transition='transform .18s,opacity .18s';tile.style.transform='scale(0)';tile.style.opacity='0';
+  setTimeout(()=>{
+    tile.remove();
+    const h=getHiddenTiles();if(!h.includes(id))h.push(id);
+    localStorage.setItem('las_hidden_tiles',JSON.stringify(h));saveTileOrder();syncAddBtn();
+  },190);
+}
+
+function openAddTiles(){
+  const hidden=getHiddenTiles();if(!hidden.length)return;
+  openModal('Add Tiles',`<div style="font-size:.68rem;color:var(--muted);margin-bottom:.85rem;">Tap a tile to add it back to your dashboard</div>`+
+    hidden.map(id=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border);"><span style="font-size:.8rem;color:var(--text);">${TILE_LABELS[id]||id}</span><button class="section-add-btn" onclick="restoreTile('${id}')">+ Add</button></div>`).join('')+
+    `<div class="m-actions" style="margin-top:1rem;"><button class="m-btn" onclick="closeModal()">Close</button></div>`);
+}
+
+function restoreTile(id){
+  const h=getHiddenTiles().filter(t=>t!==id);
+  localStorage.setItem('las_hidden_tiles',JSON.stringify(h));
+  closeModal();buildTileGrid();renderHomeContent();
+  if(_editMode){const g=document.getElementById('homeTileGrid');if(g)g.classList.add('edit-mode');}
+  syncAddBtn();
+}
+
 function renderHome(){
-  const now=new Date();
-  const hour=now.getHours();
-  const greeting=hour<12?'Good morning':hour<17?'Good afternoon':'Good evening';
+  const now=new Date();const hour=now.getHours();
   const greetEl=document.getElementById('homeGreeting');
-  if(greetEl)greetEl.textContent=`${greeting}, Lewis.`;
-  // Date badge
-  const dateBadge=document.getElementById('homeDateBadge');
-  if(dateBadge)dateBadge.textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const today=todayStr();
-  const curMonth=today.slice(0,7);
-  // Stat cards
-  const mrr=S.clients.reduce((s,c)=>s+c.fee,0);
-  const monthIncome=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
-  const openLeads=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
-  document.getElementById('homeStats').innerHTML=`
-    <div class="home-card home-card-accent">
-      <div class="home-card-label">Monthly Retainers</div>
-      <div class="home-card-value">£${mrr}</div>
-      <div class="home-card-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div>
-    </div>
-    <div class="home-card">
-      <div class="home-card-label">Active Clients</div>
-      <div class="home-card-value">${S.clients.length}</div>
-      <div class="home-card-sub">Onboarded</div>
-    </div>
-    <div class="home-card">
-      <div class="home-card-label">Open Leads</div>
-      <div class="home-card-value">${openLeads.length}</div>
-      <div class="home-card-sub">Need attention</div>
-    </div>
-    <div class="home-card">
-      <div class="home-card-label">Income This Month</div>
-      <div class="home-card-value">£${monthIncome}</div>
-      <div class="home-card-sub">Goal: £5,000</div>
-    </div>`;
-  // Today's Focus — first uncompleted task
-  const tasks=getChecklist();
-  const nextTask=tasks.find(t=>!t.done);
-  const focusName=document.getElementById('hfcTaskName');
-  const focusSub=document.getElementById('hfcTaskSub');
-  if(nextTask&&focusName){
-    const meta=TAG_META[nextTask.tag]||{};
-    focusName.textContent=nextTask.text;
-    if(focusSub)focusSub.textContent=nextTask.time?`Estimated time: ${nextTask.time} min`:'Tap Start Now to get going.';
-  } else if(focusName){
-    focusName.textContent='All tasks complete! 🎉';
-    if(focusSub)focusSub.textContent='Great work today — you crushed it.';
-  }
-  // Pipeline bars
-  const pipeEl=document.getElementById('homePipeline');
-  if(pipeEl){
-    const maxCount=Math.max(1,...STAGES.map(s=>S.leads.filter(l=>l.stage===s).length));
-    pipeEl.innerHTML=STAGES.map(s=>{
-      const count=S.leads.filter(l=>l.stage===s).length;
-      const pct=Math.round((count/maxCount)*100);
-      const isWon=s==='Won';
-      return `<div class="home-pipe-row">
-        <div class="home-pipe-label">${s}</div>
-        <div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${count?pct:0}%;${isWon?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div>
-        <div class="home-pipe-count">${count}</div>
-      </div>`;
-    }).join('');
-  }
-  // At a Glance + Up Next
-  renderAtAGlance();
-  renderUpNext();
-  // Checklist
-  renderChecklist();
+  if(greetEl)greetEl.textContent=`${hour<12?'Good morning':hour<17?'Good afternoon':'Good evening'}, Lewis.`;
+  const db=document.getElementById('homeDateBadge');
+  if(db)db.textContent=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  buildTileGrid();renderHomeContent();
 }
-function hfcAction(){
-  const tasks=getChecklist();
-  const next=tasks.find(t=>!t.done);
-  if(next){toggleTask(next.id);}
-  else{showSection('leadsSection');}
+
+function renderHomeContent(){
+  const today=todayStr();const curMonth=today.slice(0,7);
+  const statsEl=document.getElementById('homeStats');
+  if(statsEl){
+    const mrr=S.clients.reduce((s,c)=>s+c.fee,0);
+    const mi=S.income.filter(i=>i.month===curMonth).reduce((s,i)=>s+i.amount,0);
+    const ol=S.leads.filter(l=>!['Won','Lost'].includes(l.stage));
+    statsEl.innerHTML=`<div class="home-card home-card-accent"><div class="home-card-label">Monthly Retainers</div><div class="home-card-value">£${mrr}</div><div class="home-card-sub">${S.clients.length} active client${S.clients.length!==1?'s':''}</div></div><div class="home-card"><div class="home-card-label">Active Clients</div><div class="home-card-value">${S.clients.length}</div><div class="home-card-sub">Onboarded</div></div><div class="home-card"><div class="home-card-label">Open Leads</div><div class="home-card-value">${ol.length}</div><div class="home-card-sub">Need attention</div></div><div class="home-card"><div class="home-card-label">Income This Month</div><div class="home-card-value">£${mi}</div><div class="home-card-sub">Goal: £5,000</div></div>`;
+  }
+  const nt=getChecklist().find(t=>!t.done);
+  const fn=document.getElementById('hfcTaskName');const fs=document.getElementById('hfcTaskSub');
+  if(fn){fn.textContent=nt?nt.text:'All done! 🎉';}
+  if(fs){fs.textContent=nt?(nt.time?`Est. ${nt.time} min`:'Tap Start Now.'):'Great work today.';}
+  const pe=document.getElementById('homePipeline');
+  if(pe){const mx=Math.max(1,...STAGES.map(s=>S.leads.filter(l=>l.stage===s).length));pe.innerHTML=STAGES.map(s=>{const c=S.leads.filter(l=>l.stage===s).length;const p=Math.round((c/mx)*100);return`<div class="home-pipe-row"><div class="home-pipe-label">${s}</div><div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${c?p:0}%;${s==='Won'?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div><div class="home-pipe-count">${c}</div></div>`;}).join('');}
+  renderAtAGlance();renderUpNext();renderChecklist();
 }
+
+function hfcAction(){const t=getChecklist().find(x=>!x.done);if(t)toggleTask(t.id);else showSection('leadsSection');}
 
 
 function renderStats(){
