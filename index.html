@@ -1486,7 +1486,7 @@ body::before{
       <div class="nav-card" id="nc_calSection" onclick="showSection('calSection')">
         <div class="nc-icon">▦</div>
         <div class="nc-content">
-          <div class="nc-title">Calendar</div>
+          <div class="nc-title">Client Schedule</div>
           <div class="nc-meta" id="navCalMeta">—</div>
         </div>
         <div class="nc-arrow">›</div>
@@ -1636,8 +1636,8 @@ body::before{
     <div class="section" id="calSection">
       <div class="section-header">
         <div>
-          <div class="section-title">Calendar</div>
-          <div class="section-sub">Shoots · Posts · Meetings — current week</div>
+          <div class="section-title">Client Schedule</div>
+          <div class="section-sub">Shoots · Editing · Contract End — current week</div>
         </div>
         <div class="section-btn-row">
           <button class="section-add-btn" onclick="openAddCalEntry(todayStr())">+ Add Entry</button>
@@ -1645,6 +1645,10 @@ body::before{
           <button class="section-add-btn" onclick="goToday()">Today</button>
           <button class="section-add-btn" onclick="shiftWeek(1)">Next →</button>
         </div>
+      </div>
+      <div class="os-cap-settings" style="margin-bottom:.75rem;">
+        <div class="os-cap-field">Max Shoots/day <input type="number" min="0" id="csCapShoot" onchange="csSaveCap('Shoot', this.value)"></div>
+        <div class="os-cap-field">Max Edits/day <input type="number" min="0" id="csCapEdit" onchange="csSaveCap('Edit', this.value)"></div>
       </div>
       <div class="cal-grid" id="calendarGrid"></div>
     </div>
@@ -2810,17 +2814,44 @@ let calWeekStart=getMonday(new Date());
 function shiftWeek(dir){calWeekStart=new Date(calWeekStart.getTime()+dir*7*86400000);renderCalendar();updateNavMeta();}
 function goToday(){calWeekStart=getMonday(new Date());renderCalendar();updateNavMeta();}
 
+function csGetCaps(){
+  const raw=localStorage.getItem('las_client_sched_caps');
+  return raw?JSON.parse(raw):{Shoot:5,Edit:5};
+}
+function csSaveCap(key,val){
+  const caps=csGetCaps();
+  caps[key]=Math.max(0,parseInt(val)||0);
+  localStorage.setItem('las_client_sched_caps',JSON.stringify(caps));
+  renderCalendar();
+}
+function csLoadCapInputs(){
+  const caps=csGetCaps();
+  const sh=document.getElementById('csCapShoot');
+  const ed=document.getElementById('csCapEdit');
+  if(sh)sh.value=caps.Shoot;
+  if(ed)ed.value=caps.Edit;
+}
 function renderCalendar(){
+  csLoadCapInputs();
+  const caps=csGetCaps();
   const days=Array.from({length:7},(_,i)=>{const d=new Date(calWeekStart);d.setDate(calWeekStart.getDate()+i);return d;});
   const today=todayStr();
   document.getElementById('calendarGrid').innerHTML=days.map(d=>{
     const ds=dateStr(d);
     const isToday=ds===today;
     const dayEntries=S.calendar.filter(e=>e.date===ds).sort((a,b)=>a.time.localeCompare(b.time));
+    const shootCount=dayEntries.filter(e=>e.contentType==='Shoot').length;
+    const editCount=dayEntries.filter(e=>e.contentType==='Edit').length;
+    const shootFull=caps.Shoot>0 && shootCount>=caps.Shoot;
+    const editFull=caps.Edit>0 && editCount>=caps.Edit;
     return `<div class="cal-day${isToday?' cal-today':''}">
       <div class="cal-day-head">
         <span class="cal-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</span>
         <span class="cal-day-num">${d.getDate()}</span>
+      </div>
+      <div class="os-day-counts">
+        <span class="os-count-chip ${shootFull?'full':'ok'}">Shoot ${shootCount}/${caps.Shoot}</span>
+        <span class="os-count-chip ${editFull?'full':'ok'}">Edit ${editCount}/${caps.Edit}</span>
       </div>
       <div class="cal-entries">
         ${dayEntries.map(e=>{
@@ -3018,7 +3049,7 @@ async function doSaveClient(){
 }
 
 // ── CALENDAR MODALS ──
-const CAL_TYPES=['Shoot','Post','Reel','Story','Meeting','Call','Edit'];
+const CAL_TYPES=['Shoot','Post','Reel','Story','Meeting','Call','Edit','Contract End'];
 function openAddCalEntry(date){modalState={type:'cal',id:null,date};openModal('Add Entry',calFormHTML(null,date));}
 function openEditCalEntry(id){const e=S.calendar.find(x=>x.id===id);if(!e)return;modalState={type:'cal',id};openModal('Edit Entry',calFormHTML(e,e.date));}
 function calFormHTML(e,date){
