@@ -62,6 +62,19 @@
   --panel-bg:#ffffff;
   --white-border:rgba(20,20,50,0.12);
 }
+/* These big stat numbers use a white-to-indigo gradient clipped to text, designed to glow on a
+   dark background. On light mode that's white-on-near-white = invisible. Swap the gradient's
+   start colour to the theme text colour instead so it stays legible in both modes. */
+:root[data-theme="light"] .ss-n,
+:root[data-theme="light"] .home-card-value,
+:root[data-theme="light"] .pkg-base-price,
+:root[data-theme="light"] .pkg-total-row.final .val,
+:root[data-theme="light"] .cc-fee,
+:root[data-theme="light"] .ar-n,
+:root[data-theme="light"] .inc-sum-n{
+  background:linear-gradient(135deg,var(--text),rgba(99,102,241,0.75));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
 html,body{min-height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
 select{background:var(--field-bg);color:var(--text);}
 select option{background:var(--field-bg);color:var(--text);}
