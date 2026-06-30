@@ -651,7 +651,7 @@ body::before{
   .scanner-row{flex-direction:column;}
   .scanner-btn{width:100%;}
   /* Pipeline — stack vertically on mobile instead of horizontal scroll */
-  .pipeline-strip{flex-direction:column;overflow-x:visible;gap:.5rem;}
+  .pipeline-strip{flex-direction:column;overflow-x:visible;gap:.35rem;}
   .pipe-col{min-width:unset;width:100%;}
   /* Workflow progress labels */
   .wf-prog-labels{display:none;}
@@ -818,14 +818,18 @@ body::before{
 }
 .pipe-col{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
-  padding:.85rem;min-width:150px;flex:1;
+  padding:.65rem .85rem;min-width:150px;flex:1;
   transition:border-color .18s;
 }
 .pipe-col:hover{border-color:var(--border-h);}
 .pipe-col-head{
+  display:flex;align-items:center;justify-content:space-between;
   font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--dim);margin-bottom:.65rem;padding-bottom:.55rem;border-bottom:1px solid var(--border);
+  color:var(--dim);margin-bottom:.5rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);
 }
+.pipe-col.empty{opacity:.55;}
+.pipe-col.empty .pipe-col-head{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.pipe-col-count{font-size:.6rem;font-weight:700;color:var(--muted);}
 .pipe-chip{
   font-size:.72rem;color:var(--muted);padding:.32rem .55rem;
   border:1px solid var(--border);border-radius:6px;
@@ -834,7 +838,6 @@ body::before{
 }
 .pipe-chip:hover{border-color:rgba(99,102,241,0.25);color:var(--text);}
 .pipe-chip.won{color:#a5b4fc;border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.06);}
-.pipe-empty{font-size:.68rem;color:var(--dim);}
 
 /* ── CLIENTS ── */
 .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.85rem;}
@@ -2808,12 +2811,14 @@ async function doDeleteLead(id){
 // ─────────────────────────────────────────
 // PIPELINE
 // ─────────────────────────────────────────
+const STAGE_SHORT_LABELS={'Freebie Offered':'Freebie','Shoot Booked':'Shoot','Contract Pending':'Contract'};
 function renderPipeline(){
-  document.getElementById('pipelineStrip').innerHTML=STAGES.map(s=>{
+  document.getElementById('pipelineStrip').innerHTML=ACTIVE_STAGES.map(s=>{
     const items=S.leads.filter(l=>l.stage===s);
-    return `<div class="pipe-col">
-      <div class="pipe-col-head">${s} (${items.length})</div>
-      ${items.length?items.map(l=>`<div class="pipe-chip${s==='Won'?' won':''}">${esc(l.name)}</div>`).join(''):'<div class="pipe-empty">—</div>'}
+    const label=STAGE_SHORT_LABELS[s]||s;
+    return `<div class="pipe-col${items.length?'':' empty'}">
+      <div class="pipe-col-head">${label} <span class="pipe-col-count">${items.length}</span></div>
+      ${items.length?items.map(l=>`<div class="pipe-chip${s==='Won'?' won':''}">${esc(l.name)}</div>`).join(''):''}
     </div>`;
   }).join('');
 }
