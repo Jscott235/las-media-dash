@@ -1364,6 +1364,40 @@ body::before{
 .cc-copy-btn:hover{color:var(--text);border-color:var(--border-accent);}
 .cc-reject-select{width:100%;background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.55rem;color:var(--text);font-size:.82rem;}
 
+
+/* ── OUTREACH SCHEDULE ── */
+.os-topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;}
+.os-legend{display:flex;gap:1rem;flex-wrap:wrap;}
+.os-legend-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--muted);}
+.os-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.os-dot.callback{background:#6366f1;}
+.os-dot.whatsapp{background:#10b981;}
+.os-cap-settings{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;}
+.os-cap-field{display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--muted);}
+.os-cap-field input{width:48px;background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.3rem .4rem;color:var(--text);text-align:center;font-family:inherit;}
+
+.os-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.6rem;}
+@media(max-width:900px){.os-grid{grid-template-columns:repeat(2,1fr);}}
+.os-day{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:.6rem;min-height:160px;display:flex;flex-direction:column;gap:.5rem;}
+.os-day.os-today{border-color:var(--border-accent);background:var(--surface-active);}
+.os-day.os-over{border-color:rgba(239,68,68,0.5);}
+.os-day-head{display:flex;justify-content:space-between;align-items:baseline;}
+.os-day-name{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.os-day-num{font-size:1rem;font-weight:700;}
+.os-day-counts{display:flex;gap:.4rem;flex-wrap:wrap;}
+.os-count-chip{font-size:.62rem;font-weight:600;padding:.12rem .4rem;border-radius:99px;}
+.os-count-chip.ok{background:var(--surface-h);color:var(--muted);}
+.os-count-chip.full{background:rgba(239,68,68,0.15);color:#f87171;}
+.os-entries{display:flex;flex-direction:column;gap:.35rem;flex:1;}
+.os-entry{padding:.4rem .5rem;border-radius:6px;font-size:.7rem;cursor:pointer;border-left:3px solid;}
+.os-entry.callback{background:rgba(99,102,241,0.1);border-color:#6366f1;}
+.os-entry.whatsapp{background:rgba(16,185,129,0.1);border-color:#10b981;}
+.os-entry.completed{opacity:.45;text-decoration:line-through;}
+.os-entry-name{font-weight:600;color:var(--text);}
+.os-entry-time{color:var(--dim);}
+.os-add-btn{width:100%;padding:.35rem;border-radius:6px;background:var(--surface-h);border:1px dashed var(--border);color:var(--dim);font-size:.75rem;cursor:pointer;}
+.os-add-btn:hover{color:var(--text);border-color:var(--border-accent);}
+
 </style>
 </head>
 <body>
@@ -1494,6 +1528,14 @@ body::before{
         <div class="nc-content">
           <div class="nc-title">Cold Call Mode</div>
           <div class="nc-meta">Queue · Scripts · Outcomes</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_outreachSection" onclick="showSection('outreachSection')">
+        <div class="nc-icon">🗓</div>
+        <div class="nc-content">
+          <div class="nc-title">Outreach Schedule</div>
+          <div class="nc-meta">Call backs &amp; WhatsApp</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
@@ -1815,6 +1857,33 @@ body::before{
       </div>
     </div>
 
+
+    <!-- OUTREACH SCHEDULE -->
+    <div class="section" id="outreachSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Outreach Schedule</div>
+          <div class="section-sub">Call backs &amp; WhatsApp follow-ups · current week</div>
+        </div>
+        <div class="section-btn-row">
+          <button class="section-add-btn" onclick="shiftOsWeek(-1)">← Prev</button>
+          <button class="section-add-btn" onclick="goOsToday()">Today</button>
+          <button class="section-add-btn" onclick="shiftOsWeek(1)">Next →</button>
+        </div>
+      </div>
+      <div class="os-topbar">
+        <div class="os-legend">
+          <div class="os-legend-item"><span class="os-dot callback"></span>Call Back</div>
+          <div class="os-legend-item"><span class="os-dot whatsapp"></span>WhatsApp Follow-up</div>
+        </div>
+        <div class="os-cap-settings">
+          <div class="os-cap-field">Max Call Backs/day <input type="number" min="0" id="osCapCallback" onchange="osSaveCap('callback', this.value)"></div>
+          <div class="os-cap-field">Max WhatsApp/day <input type="number" min="0" id="osCapWhatsapp" onchange="osSaveCap('whatsapp', this.value)"></div>
+        </div>
+      </div>
+      <div class="os-grid" id="outreachGrid"></div>
+    </div>
+
     <!-- CONTRACTS -->
     <div class="section" id="contractsSection">
       <div class="section-header">
@@ -1892,6 +1961,7 @@ async function loadAll(){
   S.calendar = (cal.data||[]).map(fromCal);
   S.income   = inc.data||[];
   S.goals    = g.data||[];
+  await loadOutreach();
 }
 
 // ─────────────────────────────────────────
@@ -1957,7 +2027,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection','callSection'];
+const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection','callSection','outreachSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
@@ -1983,7 +2053,7 @@ async function initApp(){
   await loadAll();
   buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
-  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); renderCallQueue(); showSection('homeSection');
+  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); renderCallQueue(); renderOutreachSchedule(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
@@ -4611,6 +4681,134 @@ function ccShowObjection(btn,key){
   if(!out)return;
   out.textContent=OBJECTIONS[key]||'';
   out.classList.remove('empty');
+}
+
+
+// ─────────────────────────────────────────
+// OUTREACH SCHEDULE
+// ─────────────────────────────────────────
+const OS_TYPES=['Call Back','WhatsApp Follow-up'];
+const OS_TYPE_CLASS={'Call Back':'callback','WhatsApp Follow-up':'whatsapp'};
+let osWeekStart=(()=>{const d=new Date();d.setDate(d.getDate()-d.getDay()+1);d.setHours(0,0,0,0);return d;})();
+
+function osGetCaps(){
+  const raw=localStorage.getItem('las_outreach_caps');
+  return raw?JSON.parse(raw):{callback:10,whatsapp:15};
+}
+function osSaveCap(key,val){
+  const caps=osGetCaps();
+  caps[key]=Math.max(0,parseInt(val)||0);
+  localStorage.setItem('las_outreach_caps',JSON.stringify(caps));
+  renderOutreachSchedule();
+}
+function osLoadCapInputs(){
+  const caps=osGetCaps();
+  const cb=document.getElementById('osCapCallback');
+  const wa=document.getElementById('osCapWhatsapp');
+  if(cb)cb.value=caps.callback;
+  if(wa)wa.value=caps.whatsapp;
+}
+
+function shiftOsWeek(n){osWeekStart.setDate(osWeekStart.getDate()+n*7);renderOutreachSchedule();}
+function goOsToday(){osWeekStart=(()=>{const d=new Date();d.setDate(d.getDate()-d.getDay()+1);d.setHours(0,0,0,0);return d;})();renderOutreachSchedule();}
+
+async function loadOutreach(){
+  const {data,error}=await sb.from('outreach_schedule').select('*').order('scheduled_date');
+  if(error){console.error('outreach_schedule load:',error.message);S.outreach=[];return;}
+  S.outreach=data||[];
+}
+
+function renderOutreachSchedule(){
+  osLoadCapInputs();
+  const caps=osGetCaps();
+  const days=Array.from({length:7},(_,i)=>{const d=new Date(osWeekStart);d.setDate(osWeekStart.getDate()+i);return d;});
+  const today=todayStr();
+  const grid=document.getElementById('outreachGrid');
+  if(!grid)return;
+  grid.innerHTML=days.map(d=>{
+    const ds=dateStr(d);
+    const isToday=ds===today;
+    const dayEntries=(S.outreach||[]).filter(e=>e.scheduled_date===ds)
+      .sort((a,b)=>(a.scheduled_time||'').localeCompare(b.scheduled_time||''));
+    const cbCount=dayEntries.filter(e=>e.type==='Call Back').length;
+    const waCount=dayEntries.filter(e=>e.type==='WhatsApp Follow-up').length;
+    const cbFull=caps.callback>0 && cbCount>=caps.callback;
+    const waFull=caps.whatsapp>0 && waCount>=caps.whatsapp;
+    const isOver=cbCount>caps.callback || waCount>caps.whatsapp;
+    return `<div class="os-day${isToday?' os-today':''}${isOver?' os-over':''}">
+      <div class="os-day-head">
+        <span class="os-day-name">${d.toLocaleDateString('en-GB',{weekday:'short'})}</span>
+        <span class="os-day-num">${d.getDate()}</span>
+      </div>
+      <div class="os-day-counts">
+        <span class="os-count-chip ${cbFull?'full':'ok'}">CB ${cbCount}/${caps.callback}</span>
+        <span class="os-count-chip ${waFull?'full':'ok'}">WA ${waCount}/${caps.whatsapp}</span>
+      </div>
+      <div class="os-entries">
+        ${dayEntries.map(e=>{
+          const lead=S.leads.find(l=>l.id===e.lead_id);
+          const cls=OS_TYPE_CLASS[e.type]||'callback';
+          return `<div class="os-entry ${cls}${e.completed?' completed':''}" onclick="openEditOutreach('${e.id}')">
+            <div class="os-entry-name">${esc(lead?lead.name:'(deleted lead)')}</div>
+            <div class="os-entry-time">${esc(e.scheduled_time||'')} · ${e.type}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <button class="os-add-btn" onclick="openAddOutreach('${ds}')">+ Add</button>
+    </div>`;
+  }).join('');
+}
+
+function openAddOutreach(date){
+  modalState={type:'outreach',id:null,date};
+  openModal('Schedule Follow-up',osFormHTML(null,date));
+}
+function openEditOutreach(id){
+  const e=(S.outreach||[]).find(x=>x.id===id);
+  if(!e)return;
+  modalState={type:'outreach',id};
+  openModal('Edit Follow-up',osFormHTML(e,e.scheduled_date));
+}
+function osFormHTML(e,date){
+  const leadOpts=S.leads.slice().sort((a,b)=>a.name.localeCompare(b.name))
+    .map(l=>`<option value="${l.id}"${e?.lead_id===l.id?' selected':''}>${esc(l.name)}</option>`).join('');
+  return `<div class="m-field"><label>Lead</label><select class="m-select" id="m_os_lead"><option value="">— select lead —</option>${leadOpts}</select></div>
+  <div class="m-field"><label>Type</label><select class="m-select" id="m_os_type">${OS_TYPES.map(t=>`<option${e?.type===t?' selected':''}>${t}</option>`).join('')}</select></div>
+  <div class="m-field"><label>Date</label><input class="m-input" id="m_os_date" type="date" value="${esc(date||todayStr())}"></div>
+  <div class="m-field"><label>Time (optional)</label><input class="m-input" id="m_os_time" type="time" value="${esc(e?.scheduled_time||'')}"></div>
+  <div class="m-field"><label>Notes</label><input class="m-input" id="m_os_notes" value="${esc(e?.notes||'')}"></div>
+  ${e?`<div class="m-field"><label><input type="checkbox" id="m_os_completed" ${e.completed?'checked':''}> Completed</label></div>`:''}
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="doSaveOutreach()">Save</button>
+    ${e?`<button class="m-btn" onclick="doDeleteOutreach('${e.id}')">Delete</button>`:''}
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+async function doSaveOutreach(){
+  const lead_id=document.getElementById('m_os_lead').value;
+  const type=document.getElementById('m_os_type').value;
+  const scheduled_date=document.getElementById('m_os_date').value;
+  if(!lead_id)return alert('Please select a lead.');
+  if(!scheduled_date)return alert('Date required.');
+  const id=modalState.id||uid();
+  const entry={
+    id,lead_id,type,scheduled_date,
+    scheduled_time:document.getElementById('m_os_time').value||null,
+    notes:document.getElementById('m_os_notes').value||null,
+    completed:document.getElementById('m_os_completed')?.checked||false,
+  };
+  await sbUp('outreach_schedule',entry);
+  const idx=(S.outreach||[]).findIndex(x=>x.id===id);
+  if(idx>-1)S.outreach[idx]=entry; else (S.outreach=S.outreach||[]).push(entry);
+  closeModal();
+  renderOutreachSchedule();
+}
+async function doDeleteOutreach(id){
+  if(!confirm('Delete this follow-up?'))return;
+  await sbDel('outreach_schedule',id);
+  S.outreach=(S.outreach||[]).filter(x=>x.id!==id);
+  closeModal();
+  renderOutreachSchedule();
 }
 
 function isMobile(){return window.innerWidth<=768;}
