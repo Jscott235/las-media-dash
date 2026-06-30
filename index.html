@@ -1962,7 +1962,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 // ─────────────────────────────────────────
 // IN-MEMORY STATE
 // ─────────────────────────────────────────
-const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[], pitches:[] };
+const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[], pitches:[], contracts:[] };
 
 // ─────────────────────────────────────────
 // FIELD MAPPERS  JS camelCase <-> DB snake_case
@@ -1993,6 +1993,13 @@ async function loadAll(){
   await loadOutreach();
   await loadObjections();
   await loadPitches();
+  await loadContracts();
+}
+
+async function loadContracts(){
+  const {data,error}=await sb.from('contracts').select('*').order('created',{ascending:false});
+  if(error){console.error('contracts load:',error.message);S.contracts=[];return;}
+  S.contracts=data||[];
 }
 
 async function loadPitches(){
@@ -4003,7 +4010,7 @@ function pbContractConfirmHTML(f){
   </div>`;
 }
 
-function pbConfirmGenerateContract(clientName){
+async function pbConfirmGenerateContract(clientName){
   const val=id=>document.getElementById(id)?.value;
   const checked=id=>!!document.getElementById(id)?.checked;
   const platforms=PCC_PLATFORMS.filter(p=>checked(`pcc_plat_${p.replace(/\s+/g,'')}`));
@@ -4024,13 +4031,13 @@ function pbConfirmGenerateContract(clientName){
     paymentDate:(val('pcc_paydate')||'').trim(),
   };
   const text=pbBuildContractText(f);
-  const contracts=getContracts();
   const id=uid();
-  contracts.unshift({
+  const entry={
     id,name:`${clientName||'New Client'} — Service Agreement`,client:clientName||'',
     status:'draft',content:text,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
-  });
-  saveContracts(contracts);
+  };
+  await sbUp('contracts',entry);
+  S.contracts.unshift(entry);
   closeModal();
   showSection('contractsSection');
   setTimeout(()=>openContract(id),50);
@@ -4433,10 +4440,8 @@ function copyScript(elId){
 // ─────────────────────────────────────────
 // CONTRACTS
 // ─────────────────────────────────────────
-const CONTRACT_KEY='las_contracts';
 let _activeContractId=null;
-function getContracts(){return JSON.parse(localStorage.getItem(CONTRACT_KEY)||'[]');}
-function saveContracts(arr){localStorage.setItem(CONTRACT_KEY,JSON.stringify(arr));}
+// contracts now persist via Supabase (S.contracts, sbUp/sbDel) — see loadContracts() in DATA LOAD
 const CONTRACT_TEMPLATES={
   'LAS Media Master Agreement':`LAS Media — Service Agreement\n\nClient: [Client Name]\nDate: [DATE]\n\n1. SCOPE OF WORK\n\nLAS Media shall serve as the content creator and social media manager for the Client.\n\nThe services included in this agreement are:\n\nMonthly Video Reels\nQuantity: ________ Reels per Month\n\nMonthly Static Posts\nQuantity: ________ Static Posts per Month\n\nMonthly On-Site Filming\nHours Included: ________ Hours per Month\n\nPlatforms Included\n☐ Facebook\n☐ Instagram\n☐ TikTok\n☐ LinkedIn\n☐ YouTube Shorts\n☐ Other: ________________________\n\nAdditional Services Included\n☐ Social Media Management\n☐ Content Scheduling\n☐ Caption Writing\n☐ Hashtag Research\n☐ Drone Footage\n☐ Photography\n☐ Graphic Design\n☐ Menu Design\n☐ Event Coverage\n☐ Other:\n\nNotes / Special Requirements\n\n\n\n\n2. INVESTMENT & TERMS\n\nPackage Name: ___________________________\nMonthly Investment: £_____________________\nContract Length: _________________________\nPayment Date: ____________________________\nPayment Method: Bank Transfer (BACS)\n\nSignature: _______________`,
   'Monthly Content Agreement':`Monthly Content Agreement\n\nThis agreement is made between LAS Media ("Agency") and [Client Name] ("Client").\n\n1. SERVICES\nLAS Media will provide the following services:\n• 2 Reels per week\n• 1 Static Post per week\n• Content Planning\n• Filming, Editing & Delivery\n• Social Media Management (as agreed)\n\n2. PAYMENT\nThe Client agrees to pay £[AMOUNT] per month. Payment is due on the 1st of each month.\n\n3. TERM\nThis agreement begins on [START DATE] and continues on a rolling monthly basis. Either party may terminate with 30 days' written notice.\n\n4. OWNERSHIP\nAll content created remains the property of LAS Media until full payment is received, at which point full rights transfer to the Client.\n\nSigned by: _______________\nDate: _______________`,
@@ -4444,7 +4449,7 @@ const CONTRACT_TEMPLATES={
   'Blank Contract':`[Contract Title]\n\nParties:\n• LAS Media ("Agency")\n• [Client Name] ("Client")\n\nDate: [DATE]\n\n[Add your terms here]\n\nSignature: _______________`
 };
 function renderContracts(){
-  const contracts=getContracts();
+  const contracts=S.contracts;
   const el=document.getElementById('contractsList');
   if(!el)return;
   // Update nav meta
@@ -4465,7 +4470,7 @@ function renderContracts(){
 }
 function openContract(id){
   _activeContractId=id;
-  const contracts=getContracts();
+  const contracts=S.contracts;
   const c=contracts.find(x=>x.id===id);if(!c)return;
   document.getElementById('contractEditorEmpty').style.display='none';
   document.getElementById('contractEditorContent').style.display='block';
@@ -4473,24 +4478,24 @@ function openContract(id){
   document.getElementById('contractTextarea').value=c.content||'';
   renderContracts();
 }
-function saveContractContent(){
+async function saveContractContent(){
   if(!_activeContractId)return;
-  const contracts=getContracts();
+  const contracts=S.contracts;
   const c=contracts.find(x=>x.id===_activeContractId);if(!c)return;
   c.content=document.getElementById('contractTextarea')?.value||'';
   c.updated=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  saveContracts(contracts);
+  await sbUp('contracts',c);
   const t=document.createElement('div');t.className='bug-toast';t.textContent='✓ Contract saved';
   document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
   renderContracts();
 }
-function markContract(status){
+async function markContract(status){
   if(!_activeContractId)return;
-  const contracts=getContracts();
+  const contracts=S.contracts;
   const c=contracts.find(x=>x.id===_activeContractId);if(!c)return;
   c.status=status;
   c.updated=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  saveContracts(contracts);
+  await sbUp('contracts',c);
   renderContracts();
   const t=document.createElement('div');t.className='bug-toast';t.textContent=`✓ Marked as ${status}`;
   document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
@@ -4503,10 +4508,11 @@ function copyContractContent(){
     document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
   });
 }
-function deleteContract(){
+async function deleteContract(){
   if(!_activeContractId)return;
   if(!confirm('Delete this contract?'))return;
-  saveContracts(getContracts().filter(c=>c.id!==_activeContractId));
+  await sbDel('contracts',_activeContractId);
+  S.contracts=S.contracts.filter(c=>c.id!==_activeContractId);
   _activeContractId=null;
   document.getElementById('contractEditorEmpty').style.display='flex';
   document.getElementById('contractEditorContent').style.display='none';
@@ -4528,16 +4534,16 @@ function openAddContract(){
       <button class="m-btn" onclick="closeModal()">Cancel</button>
     </div>`);
 }
-function doAddContract(){
+async function doAddContract(){
   const name=(document.getElementById('cnName')?.value||'').trim();
   const client=(document.getElementById('cnClient')?.value||'').trim();
   const tmpl=document.getElementById('cnTemplate')?.value||'';
   if(!name)return alert('Contract name required.');
-  const contracts=getContracts();
   const id='cnt_'+Date.now();
   const content=tmpl&&CONTRACT_TEMPLATES[tmpl]?CONTRACT_TEMPLATES[tmpl].replace('[Client Name]',client||'[Client Name]'):'';
-  contracts.unshift({id,name,client,status:'draft',content,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})});
-  saveContracts(contracts);
+  const entry={id,name,client,status:'draft',content,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})};
+  await sbUp('contracts',entry);
+  S.contracts.unshift(entry);
   closeModal();
   renderContracts();
   openContract(id);
