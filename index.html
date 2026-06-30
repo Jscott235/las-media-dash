@@ -1756,6 +1756,7 @@ body::before{
           <div class="pkg-action-row">
             <button class="pkg-action-btn primary" onclick="pbCopyProposal()">Copy Proposal</button>
             <button class="pkg-action-btn pkg-save-lead-btn" id="pbSaveLeadBtn" onclick="pbSaveToLead()" style="display:none;">Save to Lead</button>
+            <button class="pkg-action-btn" onclick="pbGenerateContract()">Generate Contract →</button>
             <button class="pkg-action-btn" onclick="pbSaveTemplate()">Save Template</button>
             <button class="pkg-action-btn" onclick="pbLoadTemplate()">Load Template</button>
           </div>
@@ -3580,10 +3581,10 @@ function processVoiceLead(text){
 // PACKAGE BUILDER v2
 // ─────────────────────────────────────────
 const BASE_PKGS={
-  starter:{id:'starter',name:'Starter',price:250,hours:14,popular:false,includes:['1 shoot per month','4 professionally edited reels','4 branded static posts','Content planning','Scheduling','Caption writing','Facebook & Instagram']},
-  growth:{id:'growth',name:'Growth',price:450,hours:27,popular:true,includes:['1 shoot per month','8 reels','8 static posts','Drone footage','Meta Glasses POV','Content planning','Scheduling','Captions','Monthly strategy call']},
-  premium:{id:'premium',name:'Premium',price:700,hours:48,popular:false,includes:['2 shoots per month','12–16 reels','12 static posts','Drone footage','Meta Glasses','Professional photography','Priority editing','Full social management','Monthly performance report']},
-  bespoke:{id:'bespoke',name:'Bespoke',price:0,hours:0,popular:false,includes:['Fully custom package — build with add-ons below']}
+  starter:{id:'starter',name:'Starter',price:250,hours:14,popular:false,reels:4,posts:4,filmHours:2,platforms:['Facebook','Instagram'],includes:['1 shoot per month','4 professionally edited reels','4 branded static posts','Content planning','Scheduling','Caption writing','Facebook & Instagram']},
+  growth:{id:'growth',name:'Growth',price:450,hours:27,popular:true,reels:8,posts:8,filmHours:2,platforms:['Facebook','Instagram'],includes:['1 shoot per month','8 reels','8 static posts','Drone footage','Meta Glasses POV','Content planning','Scheduling','Captions','Monthly strategy call']},
+  premium:{id:'premium',name:'Premium',price:700,hours:48,popular:false,reels:14,posts:12,filmHours:4,platforms:['Facebook','Instagram'],includes:['2 shoots per month','12–16 reels','12 static posts','Drone footage','Meta Glasses','Professional photography','Priority editing','Full social management','Monthly performance report']},
+  bespoke:{id:'bespoke',name:'Bespoke',price:0,hours:0,popular:false,reels:0,posts:0,filmHours:0,platforms:[],includes:['Fully custom package — build with add-ons below']}
 };
 const ADDON_CATS=[
   {id:'content',label:'Content',items:[
@@ -3767,7 +3768,7 @@ function pbCalc(){
       // Update line display
       const lineEl=document.getElementById('pbline_'+item.id);
       if(lineEl){lineEl.textContent='£'+line;lineEl.classList.toggle('active',st.on&&line>0);}
-      if(st.on){addonTotal+=line;addonHours+=(item.hours||0)*qty;catTotal+=line;enabledAddons.push({name:item.name,line,type:item.type});}
+      if(st.on){addonTotal+=line;addonHours+=(item.hours||0)*qty;catTotal+=line;enabledAddons.push({id:item.id,name:item.name,line,type:item.type,qty,hours:item.hours||0});}
     });
     // Cat meta
     const metaEl=document.getElementById('pbcatmeta_'+cat.id);
@@ -3847,6 +3848,121 @@ function pbCopyProposal(){
     const btn=document.querySelector('.pkg-action-btn.primary');
     const o=btn.textContent;btn.textContent='Copied ✓';setTimeout(()=>btn.textContent=o,2000);
   });
+}
+
+// ─────────────────────────────────────────
+// PACKAGE BUILDER → CONTRACT AUTO-FILL
+// ─────────────────────────────────────────
+const PB_SERVICE_CHECKBOX_MAP={
+  'Social Media Management':['fb_mgmt','ig_mgmt','tt_mgmt','li_mgmt','community_mgmt'],
+  'Content Scheduling':['scheduling'],
+  'Caption Writing':['captionwriting'],
+  'Hashtag Research':['hashtags'],
+  'Drone Footage':['drone'],
+  'Photography':['photography'],
+  'Graphic Design':['logo','poster','flyer','bizcard','giftvoucher','pricelist'],
+  'Menu Design':['menudesign'],
+  'Event Coverage':['event'],
+};
+const PB_FILM_HOUR_IDS=['xshoot','halfday','fullday','drone','metaglasses','sunrise'];
+const PB_MAPPED_ADDON_IDS=new Set([
+  'xreel','xstatic',...PB_FILM_HOUR_IDS,'fb_mgmt','ig_mgmt','tt_mgmt','li_mgmt','fb_ads','ig_ads','xplatform',
+  ...Object.values(PB_SERVICE_CHECKBOX_MAP).flat(),
+]);
+
+function pbContractFields(){
+  const base=PB._base||BASE_PKGS[PB.base]||BASE_PKGS.starter;
+  const addons=PB._enabledAddons||[];
+  const byId=id=>addons.find(a=>a.id===id);
+  let reels=base.reels||0,posts=base.posts||0,filmHours=base.filmHours||0;
+  const xreel=byId('xreel');if(xreel)reels+=(xreel.qty||1);
+  const xstatic=byId('xstatic');if(xstatic)posts+=(xstatic.qty||1);
+  PB_FILM_HOUR_IDS.forEach(id=>{const a=byId(id);if(a)filmHours+=(a.hours||0)*(a.qty||1);});
+  const platforms=new Set(base.platforms||[]);
+  if(byId('fb_mgmt')||byId('fb_ads'))platforms.add('Facebook');
+  if(byId('ig_mgmt')||byId('ig_ads'))platforms.add('Instagram');
+  if(byId('tt_mgmt'))platforms.add('TikTok');
+  if(byId('li_mgmt'))platforms.add('LinkedIn');
+  const otherPlatform=!!byId('xplatform');
+  const includesText=(base.includes||[]).join(' | ').toLowerCase();
+  const services=new Set();
+  Object.entries(PB_SERVICE_CHECKBOX_MAP).forEach(([label,ids])=>{
+    if(ids.some(id=>byId(id)))services.add(label);
+  });
+  if(includesText.includes('scheduling'))services.add('Content Scheduling');
+  if(includesText.includes('caption'))services.add('Caption Writing');
+  if(includesText.includes('drone'))services.add('Drone Footage');
+  if(includesText.includes('photography'))services.add('Photography');
+  if(includesText.includes('social management'))services.add('Social Media Management');
+  const otherServices=addons.filter(a=>!PB_MAPPED_ADDON_IDS.has(a.id)).map(a=>a.name);
+  return{
+    packageName:base.name,reels,posts,filmHours,
+    platforms:[...platforms],otherPlatform,
+    services:[...services],otherServices,
+    monthlyTotal:PB._total??base.price,
+    clientName:PB._client||'',
+  };
+}
+
+function pbBuildContractText(){
+  const f=pbContractFields();
+  const ck=on=>on?'☑':'☐';
+  const platformLines=['Facebook','Instagram','TikTok','LinkedIn','YouTube Shorts']
+    .map(p=>`${ck(f.platforms.includes(p))} ${p}`).join('\n');
+  const otherPlatformLine=`${ck(f.otherPlatform)} Other: ${f.otherPlatform?'________________________':''}`;
+  const serviceList=['Social Media Management','Content Scheduling','Caption Writing','Hashtag Research','Drone Footage','Photography','Graphic Design','Menu Design','Event Coverage'];
+  const serviceLines=serviceList.map(s=>`${ck(f.services.includes(s))} ${s}`).join('\n');
+  const otherServiceLine=`${ck(f.otherServices.length>0)} Other: ${f.otherServices.join(', ')}`;
+  return `1. SCOPE OF WORK
+
+LAS Media shall serve as the content creator and social media manager for the Client.
+
+The services included in this agreement are:
+
+Monthly Video Reels
+Quantity: ${f.reels} Reels per Month
+
+Monthly Static Posts
+Quantity: ${f.posts} Static Posts per Month
+
+Monthly On-Site Filming
+Hours Included: ${f.filmHours} Hours per Month
+
+Platforms Included
+${platformLines}
+${otherPlatformLine}
+
+Additional Services Included
+${serviceLines}
+${otherServiceLine}
+
+Notes / Special Requirements
+
+
+
+
+2. INVESTMENT & TERMS
+
+Package Name: ${f.packageName}
+Monthly Investment: £${f.monthlyTotal}
+Contract Length: ___________________________
+Payment Date: ____________________________
+Payment Method: Bank Transfer (BACS)`;
+}
+
+function pbGenerateContract(){
+  const f=pbContractFields();
+  if(!f.clientName&&!confirm('No client/quote name set in Package Builder — generate contract anyway?'))return;
+  const text=pbBuildContractText();
+  const contracts=getContracts();
+  const id=uid();
+  contracts.unshift({
+    id,name:`${f.clientName||'New Client'} — Service Agreement`,client:f.clientName||'',
+    status:'draft',content:text,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
+  });
+  saveContracts(contracts);
+  showSection('contractsSection');
+  setTimeout(()=>openContract(id),50);
 }
 
 function pbSaveTemplate(){
@@ -4251,6 +4367,7 @@ let _activeContractId=null;
 function getContracts(){return JSON.parse(localStorage.getItem(CONTRACT_KEY)||'[]');}
 function saveContracts(arr){localStorage.setItem(CONTRACT_KEY,JSON.stringify(arr));}
 const CONTRACT_TEMPLATES={
+  'LAS Media Master Agreement':`LAS Media — Service Agreement\n\nClient: [Client Name]\nDate: [DATE]\n\n1. SCOPE OF WORK\n\nLAS Media shall serve as the content creator and social media manager for the Client.\n\nThe services included in this agreement are:\n\nMonthly Video Reels\nQuantity: ________ Reels per Month\n\nMonthly Static Posts\nQuantity: ________ Static Posts per Month\n\nMonthly On-Site Filming\nHours Included: ________ Hours per Month\n\nPlatforms Included\n☐ Facebook\n☐ Instagram\n☐ TikTok\n☐ LinkedIn\n☐ YouTube Shorts\n☐ Other: ________________________\n\nAdditional Services Included\n☐ Social Media Management\n☐ Content Scheduling\n☐ Caption Writing\n☐ Hashtag Research\n☐ Drone Footage\n☐ Photography\n☐ Graphic Design\n☐ Menu Design\n☐ Event Coverage\n☐ Other:\n\nNotes / Special Requirements\n\n\n\n\n2. INVESTMENT & TERMS\n\nPackage Name: ___________________________\nMonthly Investment: £_____________________\nContract Length: _________________________\nPayment Date: ____________________________\nPayment Method: Bank Transfer (BACS)\n\nSignature: _______________`,
   'Monthly Content Agreement':`Monthly Content Agreement\n\nThis agreement is made between LAS Media ("Agency") and [Client Name] ("Client").\n\n1. SERVICES\nLAS Media will provide the following services:\n• 2 Reels per week\n• 1 Static Post per week\n• Content Planning\n• Filming, Editing & Delivery\n• Social Media Management (as agreed)\n\n2. PAYMENT\nThe Client agrees to pay £[AMOUNT] per month. Payment is due on the 1st of each month.\n\n3. TERM\nThis agreement begins on [START DATE] and continues on a rolling monthly basis. Either party may terminate with 30 days' written notice.\n\n4. OWNERSHIP\nAll content created remains the property of LAS Media until full payment is received, at which point full rights transfer to the Client.\n\nSigned by: _______________\nDate: _______________`,
   'Content Retainer Agreement':`Content Retainer Agreement\n\nClient: [Client Name]\nAgency: LAS Media\nStart Date: [DATE]\nMonthly Fee: £[AMOUNT]\n\nSERVICES INCLUDED:\n[List services here]\n\nTERMS:\n• Payment due on the 1st of each month\n• 30 days notice to cancel\n• Content rights transfer on full payment\n\nSignature: _______________`,
   'Blank Contract':`[Contract Title]\n\nParties:\n• LAS Media ("Agency")\n• [Client Name] ("Client")\n\nDate: [DATE]\n\n[Add your terms here]\n\nSignature: _______________`
