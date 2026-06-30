@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LAS Media — OS</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -150,6 +151,7 @@ body::before{
 }
 .sidebar-mark:hover{opacity:.8;}
 .sidebar-brand{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:-.01em;}
+.sidebar-brand-logo{height:24px;width:auto;display:block;cursor:pointer;}
 .sidebar-sub{font-size:.58rem;font-weight:500;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:.1rem;}
 
 /* ── SIDEBAR NAV ── */
@@ -229,6 +231,7 @@ body::before{
 .sidebar-toggle:hover{border-color:var(--accent);color:var(--text);}
 .sidebar.collapsed .sidebar-toggle{transform:rotate(180deg);}
 .sidebar.collapsed .sidebar-brand,
+.sidebar.collapsed .sidebar-brand-logo,
 .sidebar.collapsed .sidebar-sub,
 .sidebar.collapsed .sidebar-nav-label,
 .sidebar.collapsed .nc-content,
@@ -1480,7 +1483,7 @@ body::before{
   <aside class="sidebar" id="appSidebar">
     <div class="sidebar-head">
       <div class="sidebar-mark" onclick="toggleSidebar()" title="Toggle sidebar">L</div>
-      <div class="sidebar-brand">LAS Media</div>
+      <img class="sidebar-brand-logo" src="assets/logo.png" alt="LAS Media" onclick="toggleSidebar()" title="Toggle sidebar">
       <div class="sidebar-sub">Business OS</div>
     </div>
 
@@ -2120,7 +2123,7 @@ function tileHTML(id){
     case 'stats':return `<div class="home-stats-inner" id="homeStats"></div>`;
     case 'checklist':return `<div class="checklist-wrap"><div class="checklist-header"><div class="checklist-title">Today's Checklist</div><div class="checklist-progress" id="clProgress">0 / 0</div></div><div class="checklist-bar-bg"><div class="checklist-bar-fill" id="clBar" style="width:0%"></div></div><div id="clItems"></div><div class="cl-add-row"><input class="cl-add-input" id="clNewText" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addChecklistItem()"><select class="cl-add-select" id="clNewTag"><option value="sales">Sales</option><option value="content">Content</option><option value="planning">Planning</option><option value="finance">Finance</option><option value="clients">Clients</option><option value="personal">Personal</option></select><button class="cl-add-btn" onclick="addChecklistItem()">+ Add</button></div></div>`;
     case 'focus':return `<div class="home-focus-card"><div class="hfc-label">Today's Focus</div><div class="hfc-icon">🎯</div><div class="hfc-task-label">High Impact Task</div><div class="hfc-task-name" id="hfcTaskName">—</div><div class="hfc-task-sub" id="hfcTaskSub"></div><button class="hfc-btn" onclick="hfcAction()">Start Now →</button></div>`;
-    case 'quick-actions':return `<div class="home-qa-card"><div class="hqac-title">Quick Actions</div><div class="hqac-item" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)"><div class="hqac-icon">👤</div><div class="hqac-label">Add New Lead</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('scriptsSection')"><div class="hqac-icon">📞</div><div class="hqac-label">Start Cold Call</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)"><div class="hqac-icon">📅</div><div class="hqac-label">Schedule Content</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('contractsSection');setTimeout(()=>openAddContract(),100)"><div class="hqac-icon">📄</div><div class="hqac-label">New Contract</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)"><div class="hqac-icon">£</div><div class="hqac-label">Log Income</div><div class="hqac-arrow">›</div></div></div>`;
+    case 'quick-actions':return `<div class="home-qa-card"><div class="hqac-title">Quick Actions</div><div class="hqac-item" onclick="showSection('leadsSection');setTimeout(()=>openAddLead(),100)"><div class="hqac-icon">👤</div><div class="hqac-label">Add New Lead</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('callSection')"><div class="hqac-icon">📞</div><div class="hqac-label">Start Cold Call</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('outreachSection')"><div class="hqac-icon">🗓</div><div class="hqac-label">Outreach Schedule</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('calSection');setTimeout(()=>openAddCalEntry(todayStr()),100)"><div class="hqac-icon">📅</div><div class="hqac-label">Schedule Content</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('contractsSection');setTimeout(()=>openAddContract(),100)"><div class="hqac-icon">📄</div><div class="hqac-label">New Contract</div><div class="hqac-arrow">›</div></div><div class="hqac-item" onclick="showSection('bizSection');setTimeout(()=>openAddIncome(),100)"><div class="hqac-icon">£</div><div class="hqac-label">Log Income</div><div class="hqac-arrow">›</div></div></div>`;
     case 'pipeline':return `<div class="home-pipe-card"><div class="hpc-title">Pipeline Overview</div><div id="homePipeline"></div></div>`;
     case 'at-a-glance':return `<div class="home-bottom-card"><div class="hbc-title">At a Glance</div><div class="aag-grid" id="homeAtAGlance"></div></div>`;
     case 'up-next':return `<div class="home-bottom-card"><div class="hbc-title">Up Next</div><div id="homeUpNext"></div></div>`;
@@ -2267,11 +2270,17 @@ function renderHomeContent(){
   if(fn){fn.textContent=nt?nt.text:'All done! 🎉';}
   if(fs){fs.textContent=nt?(nt.time?`Est. ${nt.time} min`:'Tap Start Now.'):'Great work today.';}
   const pe=document.getElementById('homePipeline');
-  if(pe){const mx=Math.max(1,...STAGES.map(s=>S.leads.filter(l=>l.stage===s).length));pe.innerHTML=STAGES.map(s=>{const c=S.leads.filter(l=>l.stage===s).length;const p=Math.round((c/mx)*100);return`<div class="home-pipe-row"><div class="home-pipe-label">${s}</div><div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${c?p:0}%;${s==='Won'?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div><div class="home-pipe-count">${c}</div></div>`;}).join('');}
+  if(pe){const mx=Math.max(1,...ACTIVE_STAGES.map(s=>S.leads.filter(l=>l.stage===s).length));pe.innerHTML=ACTIVE_STAGES.map(s=>{const c=S.leads.filter(l=>l.stage===s).length;const p=Math.round((c/mx)*100);const label=STAGE_SHORT_LABELS[s]||s;return`<div class="home-pipe-row"><div class="home-pipe-label">${label}</div><div class="home-pipe-bar-wrap"><div class="home-pipe-bar" style="width:${c?p:0}%;${s==='Won'?'background:linear-gradient(90deg,#10b981,#22d3ee)':''}"></div></div><div class="home-pipe-count">${c}</div></div>`;}).join('');}
   renderAtAGlance();renderUpNext();renderChecklist();
 }
 
-function hfcAction(){const t=getChecklist().find(x=>!x.done);if(t)toggleTask(t.id);else showSection('leadsSection');}
+const FOCUS_TAG_SECTIONS={sales:'callSection',business:'callSection',content:'calSection',planning:'calSection',finance:'bizSection',clients:'clientsSection'};
+function hfcAction(){
+  const t=getChecklist().find(x=>!x.done);
+  if(!t){showSection('leadsSection');return;}
+  const target=FOCUS_TAG_SECTIONS[t.tag||'sales'];
+  if(target)showSection(target);
+}
 
 
 function renderStats(){
