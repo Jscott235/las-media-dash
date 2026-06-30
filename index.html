@@ -1502,35 +1502,11 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
-      <div class="nav-card" id="nc_clientsSection" onclick="showSection('clientsSection')">
-        <div class="nc-icon">◉</div>
+      <div class="nav-card" id="nc_callSection" onclick="showSection('callSection')">
+        <div class="nc-icon">📞</div>
         <div class="nc-content">
-          <div class="nc-title">Clients</div>
-          <div class="nc-meta" id="navClientsMeta">—</div>
-        </div>
-        <div class="nc-arrow">›</div>
-      </div>
-      <div class="nav-card" id="nc_calSection" onclick="showSection('calSection')">
-        <div class="nc-icon">▦</div>
-        <div class="nc-content">
-          <div class="nc-title">Client Schedule</div>
-          <div class="nc-meta" id="navCalMeta">—</div>
-        </div>
-        <div class="nc-arrow">›</div>
-      </div>
-      <div class="nav-card" id="nc_bizSection" onclick="showSection('bizSection')">
-        <div class="nc-icon">◆</div>
-        <div class="nc-content">
-          <div class="nc-title">Business</div>
-          <div class="nc-meta" id="navBizMeta">—</div>
-        </div>
-        <div class="nc-arrow">›</div>
-      </div>
-      <div class="nav-card" id="nc_pkgSection" onclick="showSection('pkgSection')">
-        <div class="nc-icon">⬡</div>
-        <div class="nc-content">
-          <div class="nc-title">Package Builder</div>
-          <div class="nc-meta">Build & generate content</div>
+          <div class="nc-title">Cold Call Mode</div>
+          <div class="nc-meta">Queue · Scripts · Outcomes</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
@@ -1542,6 +1518,22 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
+      <div class="nav-card" id="nc_outreachSection" onclick="showSection('outreachSection')">
+        <div class="nc-icon">🗓</div>
+        <div class="nc-content">
+          <div class="nc-title">Outreach Schedule</div>
+          <div class="nc-meta">Call backs &amp; WhatsApp</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_pkgSection" onclick="showSection('pkgSection')">
+        <div class="nc-icon">⬡</div>
+        <div class="nc-content">
+          <div class="nc-title">Package Builder</div>
+          <div class="nc-meta">Build & generate content</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
       <div class="nav-card" id="nc_contractsSection" onclick="showSection('contractsSection')">
         <div class="nc-icon">📄</div>
         <div class="nc-content">
@@ -1550,19 +1542,27 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
-      <div class="nav-card" id="nc_callSection" onclick="showSection('callSection')">
-        <div class="nc-icon">📞</div>
+      <div class="nav-card" id="nc_calSection" onclick="showSection('calSection')">
+        <div class="nc-icon">▦</div>
         <div class="nc-content">
-          <div class="nc-title">Cold Call Mode</div>
-          <div class="nc-meta">Queue · Scripts · Outcomes</div>
+          <div class="nc-title">Client Schedule</div>
+          <div class="nc-meta" id="navCalMeta">—</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
-      <div class="nav-card" id="nc_outreachSection" onclick="showSection('outreachSection')">
-        <div class="nc-icon">🗓</div>
+      <div class="nav-card" id="nc_clientsSection" onclick="showSection('clientsSection')">
+        <div class="nc-icon">◉</div>
         <div class="nc-content">
-          <div class="nc-title">Outreach Schedule</div>
-          <div class="nc-meta">Call backs &amp; WhatsApp</div>
+          <div class="nc-title">Clients</div>
+          <div class="nc-meta" id="navClientsMeta">—</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_bizSection" onclick="showSection('bizSection')">
+        <div class="nc-icon">◆</div>
+        <div class="nc-content">
+          <div class="nc-title">Business</div>
+          <div class="nc-meta" id="navBizMeta">—</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
@@ -2076,7 +2076,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','clientsSection','calSection','bizSection','pkgSection','scriptsSection','contractsSection','callSection','outreachSection'];
+const SECTION_IDS=['homeSection','leadsSection','callSection','scriptsSection','outreachSection','pkgSection','contractsSection','calSection','clientsSection','bizSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
