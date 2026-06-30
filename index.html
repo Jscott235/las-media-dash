@@ -414,6 +414,8 @@ body::before{
 .call-stage.freebie{color:var(--amber);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);}
 .call-stage.shoot{color:#f472b6;border-color:rgba(244,114,182,0.3);background:rgba(244,114,182,0.08);}
 .call-stage.proposal{color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.08);}
+.call-stage.contract-pending{color:#fbbf24;border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08);}
+.call-stage.agreed{color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);}
 .call-stage.won-stage{color:#10b981;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.08);}
 /* ── PACKAGE BUILDER ── */
 .pkg-layout{display:grid;grid-template-columns:340px 1fr;gap:1.25rem;align-items:start;}
@@ -2322,10 +2324,10 @@ function buildBrief(){
 // ─────────────────────────────────────────
 // LEADS
 // ─────────────────────────────────────────
-const STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won','Lost'];
-const ACTIVE_STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won'];
+const STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Contract Pending','Agreed','Won','Lost'];
+const ACTIVE_STAGES=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Contract Pending','Agreed','Won'];
 const LEAD_PLATS=['instagram','tiktok','facebook','twitter','youtube'];
-const STAGE_COLORS={Discover:'discover',Research:'research','Freebie Offered':'freebie','Shoot Booked':'shoot',Proposal:'proposal',Won:'won-stage',Lost:''};
+const STAGE_COLORS={Discover:'discover',Research:'research','Freebie Offered':'freebie','Shoot Booked':'shoot',Proposal:'proposal','Contract Pending':'contract-pending',Agreed:'agreed',Won:'won-stage',Lost:''};
 
 // ─────────────────────────────────────────
 // NICHES
@@ -2387,7 +2389,7 @@ function renderLeads(){
 }
 
 function wfProgress(currentStage){
-  const flow=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Won'];
+  const flow=['Discover','Research','Freebie Offered','Shoot Booked','Proposal','Contract Pending','Agreed','Won'];
   const ci=flow.indexOf(currentStage);
   return `<div class="wf-progress">${flow.map((s,i)=>{
     const cls=i<ci?'done':i===ci?'current':'';
@@ -2496,9 +2498,40 @@ function stageBodyHTML(l){
       </div>
       <textarea class="q-notes" placeholder="Package notes, what they're interested in..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
       <div class="q-action-row" style="margin-top:.75rem;">
-        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Won')">✓ Won — They're in!</button>
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Contract Pending')">→ Send For Signature</button>
         <button class="q-btn" onclick="setLeadStage('${id}','Shoot Booked')">← Back</button>
         <button class="q-btn" onclick="setLeadStage('${id}','Lost')">Mark Lost</button>
+      </div>`;
+    }
+    case 'Contract Pending':{
+      const cid=wf.contractId;
+      const c=cid?S.contracts.find(x=>x.id===cid):null;
+      const days=c?daysSince(c.created):null;
+      return `<div class="wf-cta">
+        <div class="wf-cta-title">📄 Contract Status</div>
+        ${c?`<div class="pkg-snap-preview">
+          <span class="pkg-snap-badge ${c.status==='signed'?'':''}">${c.status==='signed'?'✓ Signed':c.status==='sent'?'Sent':'Draft'}</span>
+          <span class="pkg-snap-detail">${esc(c.name)}</span>
+          <span class="pkg-snap-date">${days!==null?days+'d since sent':esc(c.created||'')}</span>
+        </div>`:`<div style="font-size:.7rem;color:var(--dim);margin-bottom:.6rem;">No contract linked yet — generate one from Package Builder, or open Contracts directly.</div>`}
+        <button class="wf-cta-btn" onclick="${c?`openContractForLead('${c.id}')`:`showSection('contractsSection')`}">${c?'View Contract →':'Open Contracts →'}</button>
+      </div>
+      <textarea class="q-notes" placeholder="Notes — chasing signature, queries raised..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Agreed')">✓ Signed — Move to Agreed</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Proposal')">← Back</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Lost')">Declined</button>
+      </div>`;
+    }
+    case 'Agreed':{
+      return `<div class="wf-field">
+        <label>Start date</label>
+        <input type="date" class="wf-input" value="${esc(wf.startDate||'')}" onchange="saveWorkflow('${id}','startDate',this.value)">
+      </div>
+      <textarea class="q-notes" placeholder="Onboarding notes — first shoot, kickoff call..." onblur="saveLeadNotes('${id}',this.value)">${esc(l.notes||'')}</textarea>
+      <div class="q-action-row" style="margin-top:.75rem;">
+        <button class="q-btn q-btn-primary" onclick="setLeadStage('${id}','Won')">✓ Won — They're in!</button>
+        <button class="q-btn" onclick="setLeadStage('${id}','Contract Pending')">← Back</button>
       </div>`;
     }
     case 'Won':
@@ -2992,7 +3025,7 @@ function openAddLead(){modalState={type:'lead',id:null};openModal('Add Lead',lea
 function openEditLead(id){const l=S.leads.find(x=>x.id===id);if(!l)return;modalState={type:'lead',id};openModal('Edit Lead',leadFormHTML(l));}
 function leadFormHTML(l,pre={}){
   const v=(f,d='')=>esc(l?.[f]??pre[f]??d);
-  const stg=l?.stage||pre.stage||'Identified';
+  const stg=l?.stage||pre.stage||'Discover';
   const curNiche=l?.niche||pre.niche||'';
   const curSub=l?.subNiche||pre.subNiche||'';
   const nicheOpts=Object.keys(NICHES).map(n=>`<option value="${n}"${curNiche===n?' selected':''}>${n}</option>`).join('');
@@ -3552,8 +3585,8 @@ function processVoiceLead(text){
   cancelVoice();
   // Parse: try comma-separated first, then keyword extraction
   const parts=text.split(/,|;/).map(s=>s.trim()).filter(Boolean);
-  let name='',type='',location='',stage='Identified',notes='';
-  const STAGE_WORDS={identified:'Identified',researched:'Researched',called:'Called',interested:'Interested',won:'Won',lost:'Lost'};
+  let name='',type='',location='',stage='Discover',notes='';
+  const STAGE_WORDS={discover:'Discover',research:'Research',freebie:'Freebie Offered',shoot:'Shoot Booked',proposal:'Proposal','contract pending':'Contract Pending',contract:'Contract Pending',agreed:'Agreed',won:'Won',lost:'Lost'};
   const TYPE_WORDS=['restaurant','pub','bar','cafe','coffee','shop','salon','barber','gym','hotel','takeaway','chippy','garage','plumber','electrician','decorator','roofer','builder','landscaper','cleaner','dentist','solicitor','accountant','estate agent','letting','tattoo','beauty','nail','spa','yoga','pilates'];
   // Detect stage anywhere in text
   const lc=text.toLowerCase();
@@ -4032,12 +4065,24 @@ async function pbConfirmGenerateContract(clientName){
   };
   const text=pbBuildContractText(f);
   const id=uid();
+  const leadId=PB._leadId||null;
   const entry={
     id,name:`${clientName||'New Client'} — Service Agreement`,client:clientName||'',
     status:'draft',content:text,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
+    lead_id:leadId,
   };
   await sbUp('contracts',entry);
   S.contracts.unshift(entry);
+  if(leadId){
+    const l=S.leads.find(x=>x.id===leadId);
+    if(l){
+      if(!l.socialCheck)l.socialCheck={};
+      if(!l.socialCheck.workflow)l.socialCheck.workflow={};
+      l.socialCheck.workflow.contractId=id;
+      if(l.stage==='Proposal')l.stage='Contract Pending';
+      await sbUp('leads',toLead(l));
+    }
+  }
   closeModal();
   showSection('contractsSection');
   setTimeout(()=>openContract(id),50);
@@ -4467,6 +4512,10 @@ function renderContracts(){
       <div class="contract-item-name">${esc(c.name)}</div>
       <div class="contract-item-meta">${c.client||'No client'} · ${c.updated||c.created||'—'}</div>
     </div>`).join('');
+}
+function openContractForLead(id){
+  showSection('contractsSection');
+  setTimeout(()=>openContract(id),50);
 }
 function openContract(id){
   _activeContractId=id;
