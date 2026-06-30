@@ -4506,27 +4506,26 @@ function renderCallQueue(){
   if(ccFilter!=='all')pool=pool.filter(l=>l.socials_rating===ccFilter);
   ccQueue=pool.map(l=>l.id);
 
-  const listEl=document.getElementById('ccQueueList');
-  if(!listEl)return;
-  if(!pool.length){
-    listEl.innerHTML='<div class="cc-empty-queue">No leads in this filter.<br>Add a business or switch filters.</div>';
-  } else {
-    listEl.innerHTML=pool.map(l=>{
-      const emoji=l.socials_rating==='Poor'?'😟':l.socials_rating==='Average'?'😐':l.socials_rating==='Good'?'🙂':'❔';
-      return `<div class="cc-queue-item ${ccActiveId===l.id?'active':''}" onclick="selectCallLead('${l.id}')">
-        <div><div class="cc-qi-name">${esc(l.name)}</div><div class="cc-qi-meta">${esc(l.subNiche||l.niche||l.type||'')}</div></div>
-        <div class="cc-qi-rating">${emoji}</div>
-      </div>`;
-    }).join('');
+  if(!ccActiveId || !ccQueue.includes(ccActiveId)){
+    ccActiveId=ccQueue[0]||null;
   }
 
-  if((!ccActiveId || !ccQueue.includes(ccActiveId)) && ccQueue.length){
-    ccActiveId=ccQueue[0];
-    renderActiveCall();
-  } else if(!ccQueue.length && ccActiveId!==null){
-    ccActiveId=null;
-    renderActiveCall();
+  const listEl=document.getElementById('ccQueueList');
+  if(listEl){
+    if(!pool.length){
+      listEl.innerHTML='<div class="cc-empty-queue">No leads in this filter.<br>Add a business or switch filters.</div>';
+    } else {
+      listEl.innerHTML=pool.map(l=>{
+        const emoji=l.socials_rating==='Poor'?'😟':l.socials_rating==='Average'?'😐':l.socials_rating==='Good'?'🙂':'❔';
+        return `<div class="cc-queue-item ${ccActiveId===l.id?'active':''}" onclick="selectCallLead('${l.id}')">
+          <div><div class="cc-qi-name">${esc(l.name)}</div><div class="cc-qi-meta">${esc(l.subNiche||l.niche||l.type||'')}</div></div>
+          <div class="cc-qi-rating">${emoji}</div>
+        </div>`;
+      }).join('');
+    }
   }
+
+  renderActiveCall();
   ccUpdateStatsBar();
 }
 
@@ -4534,7 +4533,6 @@ function ccSetFilter(f){ccFilter=f;renderCallQueue();}
 
 function selectCallLead(id){
   ccActiveId=id;
-  renderActiveCall();
   renderCallQueue();
 }
 
