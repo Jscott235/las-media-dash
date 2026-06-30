@@ -1398,6 +1398,28 @@ body::before{
 .os-add-btn{width:100%;padding:.35rem;border-radius:6px;background:var(--surface-h);border:1px dashed var(--border);color:var(--dim);font-size:.75rem;cursor:pointer;}
 .os-add-btn:hover{color:var(--text);border-color:var(--border-accent);}
 
+
+/* ── MANAGE OBJECTIONS ── */
+.om-manage-link{font-size:.68rem;color:var(--accent2);cursor:pointer;text-align:right;margin-top:.3rem;}
+.om-manage-link:hover{text-decoration:underline;}
+.om-row{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.5rem .6rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);margin-bottom:.4rem;}
+.om-row-label{font-size:.8rem;font-weight:600;}
+.om-row-actions{display:flex;gap:.4rem;flex-shrink:0;}
+.om-row-actions button{font-size:.68rem;padding:.25rem .5rem;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--muted);cursor:pointer;}
+.om-row-actions button:hover{color:var(--text);}
+
+/* ── PITCH PANEL ── */
+.cc-pitch-list{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.6rem;}
+.cc-pitch-chip{padding:.4rem .7rem;border-radius:99px;font-size:.72rem;font-weight:600;background:var(--surface-h);border:1px solid var(--border);cursor:pointer;}
+.cc-pitch-chip.active{background:var(--surface-active);border-color:var(--border-accent);color:var(--text);}
+.cc-pitch-add-chip{padding:.4rem .7rem;border-radius:99px;font-size:.72rem;font-weight:600;background:transparent;border:1px dashed var(--border);cursor:pointer;color:var(--dim);}
+.cc-pitch-add-chip:hover{color:var(--text);border-color:var(--border-accent);}
+.cc-pitch-output{background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);padding:.8rem;font-size:.85rem;line-height:1.6;white-space:pre-wrap;color:var(--text);min-height:60px;}
+.cc-pitch-output.empty{color:var(--dim);font-style:italic;}
+.cc-pitch-actions{display:flex;gap:.5rem;margin-top:.5rem;}
+.cc-pitch-actions button{font-size:.72rem;padding:.4rem .7rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);color:var(--muted);cursor:pointer;}
+.cc-pitch-actions button:hover{color:var(--text);}
+
 </style>
 </head>
 <body>
@@ -1762,6 +1784,7 @@ body::before{
         <!-- OBJECTION HANDLER -->
         <div class="scripts-card">
           <div class="scripts-card-title">🛡 Live Objection Handler</div>
+          <div class="om-manage-link" onclick="omOpenManage()">Manage Objections</div>
           <div class="objection-grid" id="objectionBtns"></div>
           <div class="scripts-output empty" id="objectionOutput">Tap an objection above for your response.</div>
           <button class="scripts-copy-btn" onclick="copyScript('objectionOutput')">Copy Response</button>
@@ -1838,6 +1861,7 @@ body::before{
             </div>
             <div class="cc-side-panel">
               <div class="cc-block-title">Quick Responses / Objections</div>
+              <div class="om-manage-link" onclick="omOpenManage()">Manage Objections</div>
               <div id="ccObjectionList"></div>
               <div class="cc-script-output empty" id="ccObjectionOutput">Tap an objection above for your response.</div>
               <button class="cc-copy-btn" onclick="copyScript('ccObjectionOutput')">Copy Response</button>
@@ -1937,7 +1961,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 // ─────────────────────────────────────────
 // IN-MEMORY STATE
 // ─────────────────────────────────────────
-const S = { leads:[], clients:[], calendar:[], income:[], goals:[] };
+const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[], pitches:[] };
 
 // ─────────────────────────────────────────
 // FIELD MAPPERS  JS camelCase <-> DB snake_case
@@ -1966,6 +1990,14 @@ async function loadAll(){
   S.income   = inc.data||[];
   S.goals    = g.data||[];
   await loadOutreach();
+  await loadObjections();
+  await loadPitches();
+}
+
+async function loadPitches(){
+  const {data,error}=await sb.from('lead_pitches').select('*').order('created_at');
+  if(error){console.error('lead_pitches load:',error.message);S.pitches=[];return;}
+  S.pitches=data||[];
 }
 
 // ─────────────────────────────────────────
@@ -4135,14 +4167,13 @@ const CALL_SCRIPTS={
   'Automotive':`Hi — could I speak with the owner or manager?\n\nHi, I'm Lewis. I create social media video content for car dealerships and automotive businesses. I've had a look at your pages and the opportunity here is massive — car content performs incredibly well on TikTok and Instagram, and most dealerships in the area aren't capitalising on it.\n\nI work on a monthly basis producing professional walk-around videos, customer testimonials and behind-the-scenes content. Would that be something worth a chat?`,
   'Property':`Hi — is the owner or director available?\n\nGreat, hi — my name's Lewis. I'm a social media content creator and I work specifically with estate agents and property developers. Video content is completely changing how properties get discovered and how agencies build their brand — buyers and sellers are making decisions based on what they see on social before they ever pick up the phone.\n\nI create professional walk-through videos, agent profile content and market update Reels. Would you be open to a quick conversation?`,
 };
-const OBJECTIONS={
-  'Already have someone':`Not a problem at all — out of curiosity, do they also create the video content, or are they mainly managing your pages?\n\n[If managing pages only:] That's actually where I come in — I handle the filming and editing side. Plenty of my clients have a page manager and use me for the creative content.\n\n[If they do both:] Totally understand. Can I ask — are you happy with the results you're getting from it? I only ask because I specialise specifically in video for [NICHE] and the results tend to be a bit different.`,
-  'Not interested':`No worries at all — I appreciate you being straight with me. Can I just ask, is it more that video content isn't something you see value in, or is it more about the timing?\n\n[If timing:] Understood. Would it be alright if I dropped you a quick message with some examples of what I've done — no pressure, just so you've got it if things change?`,
-  'No budget':`I completely get it — that's honestly most people's starting point. The way I structure things is on a monthly retainer, so it's a predictable cost rather than big one-off payments. Most clients see a return within the first month from new bookings alone.\n\nWould it be worth a quick chat just to see what the options look like? There's no obligation.`,
-  'Too busy':`Totally understand — that's actually exactly why most of my clients come to me. The whole point is you don't need to be involved much at all. I handle everything — filming, editing, posting. Most business owners spend about 30 minutes with me once a month.\n\nCould we find 10 minutes to chat this week or next?`,
-  'Call back later':`Of course — when would be a good time? I'll put it in my calendar now.\n\n[Note the name, business and callback date in your CRM immediately after the call.]`,
-  'Send info first':`Absolutely — what's the best email or number to send it to?\n\n[Send a brief intro message with 2-3 examples of your best work and a one-line pitch specific to their niche. Follow up 48 hours later.]`,
-};
+let OBJECTIONS_LIST=[];
+const OBJECTIONS=new Proxy({},{get(_,key){const o=OBJECTIONS_LIST.find(x=>x.label===key);return o?o.response:undefined;},ownKeys(){return OBJECTIONS_LIST.map(x=>x.label);},getOwnPropertyDescriptor(){return{enumerable:true,configurable:true};}});
+async function loadObjections(){
+  const {data,error}=await sb.from('objections').select('*').order('sort_order');
+  if(error){console.error('objections load:',error.message);OBJECTIONS_LIST=[];return;}
+  OBJECTIONS_LIST=data||[];
+}
 function initScriptsSection(){
   const ns=document.getElementById('scriptNicheSelect');
   const wp=document.getElementById('waParentSelect');
@@ -4560,6 +4591,10 @@ function renderActiveCall(){
     </div>
 
     <div>
+      ${ccRenderPitchPanel(l)}
+    </div>
+
+    <div>
       <div class="cc-block-title">Quick Notes (Optional)</div>
       <textarea class="cc-notes-input" id="ccNotes" placeholder="e.g. quiet socials, not posting regularly, low engagement..." onblur="ccSaveField('notes', this.value)">${esc(l.notes||'')}</textarea>
     </div>
@@ -4838,6 +4873,179 @@ async function doDeleteOutreach(id){
   S.outreach=(S.outreach||[]).filter(x=>x.id!==id);
   closeModal();
   renderOutreachSchedule();
+}
+
+
+// ─────────────────────────────────────────
+// PITCH GENERATOR
+// ─────────────────────────────────────────
+let ccActivePitchId=null;
+
+function ccPitchesFor(leadId){
+  return (S.pitches||[]).filter(p=>p.lead_id===leadId);
+}
+
+function ccRenderPitchPanel(l){
+  const pitches=ccPitchesFor(l.id);
+  if(!ccActivePitchId || !pitches.find(p=>p.id===ccActivePitchId)){
+    ccActivePitchId=pitches[0]?.id||null;
+  }
+  const selected=pitches.find(p=>p.id===ccActivePitchId);
+  const chips=pitches.map(p=>
+    `<div class="cc-pitch-chip ${p.id===ccActivePitchId?'active':''}" onclick="ccSelectPitch('${p.id}')">${esc(p.label||'Pitch')}</div>`
+  ).join('');
+  return `<div class="cc-block-title">Pitch</div>
+    <div class="cc-pitch-list">
+      ${chips}
+      <div class="cc-pitch-add-chip" onclick="ccOpenGeneratePitch()">+ Generate New Pitch</div>
+    </div>
+    <div class="cc-pitch-output ${selected?'':'empty'}">${selected?esc(selected.pitch_text):'No pitch saved yet for this lead. Generate one to get started.'}</div>
+    ${selected?`<div class="cc-pitch-actions">
+      <button onclick="copyPlainText('${selected.id}_pitch')">Copy Pitch</button>
+      <button onclick="ccDeletePitch('${selected.id}')">Delete</button>
+    </div>
+    <span style="display:none" id="${selected.id}_pitch">${esc(selected.pitch_text)}</span>`:''}`;
+}
+
+function ccSelectPitch(id){
+  ccActivePitchId=id;
+  renderActiveCall();
+}
+
+function ccBuildPitchPrompt(l){
+  return `You are a cold call pitch writer for a social media videographer called Lewis who creates short-form video content (Reels, TikToks) for local businesses.
+
+Write a confident, natural-sounding cold call pitch for the following business. The pitch should be conversational, last about 30-45 seconds when spoken, and end with a clear question to keep them on the line.
+
+Business Details:
+- Name: ${l.name||'not specified'}
+- Type: ${l.type||l.niche||'not specified'}
+- Niche: ${l.subNiche||l.niche||'not specified'}
+- Location: ${l.location||'not specified'}
+- Socials Rating: ${l.socials_rating||'not rated yet'}
+
+Notes: ${l.notes||'none'}
+
+The pitch should:
+1. Open with Lewis introducing himself as a local videographer
+2. Reference their business specifically
+3. Explain the opportunity (more customers, better short-form content)
+4. Be confident but not pushy
+5. End with an open question to keep them talking
+
+Write just the pitch script, no explanations or labels.`;
+}
+
+function ccOpenGeneratePitch(){
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l)return;
+  const prompt=ccBuildPitchPrompt(l);
+  openModal('Generate Pitch',`
+    <p style="font-size:.72rem;color:var(--muted);margin-bottom:.7rem;">Copy this into ChatGPT or Claude, then paste the response below and save it.</p>
+    <div class="m-field"><label>Prompt</label><textarea class="m-input" id="m_pitch_prompt" style="min-height:200px;font-size:.75rem;" readonly>${esc(prompt)}</textarea></div>
+    <button class="cc-copy-btn" style="margin-bottom:1rem;" onclick="ccCopyPitchPrompt()">Copy Prompt</button>
+    <div class="m-field"><label>Pitch Label</label><input class="m-input" id="m_pitch_label" placeholder="e.g. Direct angle, Social proof angle"></div>
+    <div class="m-field"><label>Paste AI Response Here</label><textarea class="m-input" id="m_pitch_text" style="min-height:140px;" placeholder="Paste the generated pitch here..."></textarea></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="ccSavePitch('${l.id}')">Save Pitch</button>
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `);
+}
+function ccCopyPitchPrompt(){
+  const text=document.getElementById('m_pitch_prompt')?.value||'';
+  navigator.clipboard?.writeText(text);
+}
+async function ccSavePitch(leadId){
+  const label=document.getElementById('m_pitch_label').value.trim()||'Pitch';
+  const pitch_text=document.getElementById('m_pitch_text').value.trim();
+  if(!pitch_text)return alert('Paste the pitch text first.');
+  const id=uid();
+  const entry={id,lead_id:leadId,label,pitch_text};
+  await sbUp('lead_pitches',entry);
+  (S.pitches=S.pitches||[]).push(entry);
+  ccActivePitchId=id;
+  closeModal();
+  renderActiveCall();
+}
+async function ccDeletePitch(id){
+  if(!confirm('Delete this pitch?'))return;
+  await sbDel('lead_pitches',id);
+  S.pitches=(S.pitches||[]).filter(x=>x.id!==id);
+  ccActivePitchId=null;
+  renderActiveCall();
+}
+function copyPlainText(elId){
+  const text=document.getElementById(elId)?.textContent||'';
+  navigator.clipboard?.writeText(text);
+}
+
+// ─────────────────────────────────────────
+// MANAGE OBJECTIONS
+// ─────────────────────────────────────────
+function omOpenManage(){
+  openModal('Manage Objections', omBodyHTML());
+}
+function omBodyHTML(){
+  const rows=OBJECTIONS_LIST.map(o=>`
+    <div class="om-row">
+      <div class="om-row-label">${esc(o.label)}</div>
+      <div class="om-row-actions">
+        <button onclick="omEdit('${o.id}')">Edit</button>
+        <button onclick="omDelete('${o.id}')">Delete</button>
+      </div>
+    </div>`).join('') || '<div class="empty-state">No objections yet.</div>';
+  return `${rows}
+    <div class="m-field" style="margin-top:1rem;"><label>New Objection — Trigger Phrase</label><input class="m-input" id="m_om_label" placeholder="e.g. I need to think about it"></div>
+    <div class="m-field"><label>Response</label><textarea class="m-input" id="m_om_response" style="min-height:120px;" placeholder="What should Lewis say back?"></textarea></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="omAdd()">Add Objection</button>
+      <button class="m-btn" onclick="closeModal()">Close</button>
+    </div>`;
+}
+async function omAdd(){
+  const label=document.getElementById('m_om_label').value.trim();
+  const response=document.getElementById('m_om_response').value.trim();
+  if(!label||!response)return alert('Both fields are required.');
+  const sort_order=(OBJECTIONS_LIST.length||0)+1;
+  const entry={id:uid(),label,response,sort_order};
+  await sbUp('objections',entry);
+  OBJECTIONS_LIST.push(entry);
+  omRefreshAllPanels();
+  openModal('Manage Objections', omBodyHTML());
+}
+function omEdit(id){
+  const o=OBJECTIONS_LIST.find(x=>x.id===id);
+  if(!o)return;
+  openModal('Edit Objection',`
+    <div class="m-field"><label>Trigger Phrase</label><input class="m-input" id="m_om_edit_label" value="${esc(o.label)}"></div>
+    <div class="m-field"><label>Response</label><textarea class="m-input" id="m_om_edit_response" style="min-height:140px;">${esc(o.response)}</textarea></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="omSaveEdit('${id}')">Save</button>
+      <button class="m-btn" onclick="omOpenManage()">Back</button>
+    </div>
+  `);
+}
+async function omSaveEdit(id){
+  const o=OBJECTIONS_LIST.find(x=>x.id===id);
+  if(!o)return;
+  o.label=document.getElementById('m_om_edit_label').value.trim();
+  o.response=document.getElementById('m_om_edit_response').value.trim();
+  await sbUp('objections',o);
+  omRefreshAllPanels();
+  omOpenManage();
+}
+async function omDelete(id){
+  if(!confirm('Delete this objection?'))return;
+  await sbDel('objections',id);
+  OBJECTIONS_LIST=OBJECTIONS_LIST.filter(x=>x.id!==id);
+  omRefreshAllPanels();
+  openModal('Manage Objections', omBodyHTML());
+}
+function omRefreshAllPanels(){
+  if(typeof ccRenderObjections==='function')ccRenderObjections();
+  const ob=document.getElementById('objectionBtns');
+  if(ob){ob.innerHTML=Object.keys(OBJECTIONS).map(k=>`<button class="objection-btn" onclick="showObjection(this,'${k.replace(/'/g,"\\\\'")}')">${k}</button>`).join('');}
 }
 
 function isMobile(){return window.innerWidth<=768;}
