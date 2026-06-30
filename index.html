@@ -3904,15 +3904,13 @@ function pbContractFields(){
   };
 }
 
-function pbBuildContractText(){
-  const f=pbContractFields();
+function pbBuildContractText(f){
   const ck=on=>on?'☑':'☐';
-  const platformLines=['Facebook','Instagram','TikTok','LinkedIn','YouTube Shorts']
+  const platformLines=PCC_PLATFORMS
     .map(p=>`${ck(f.platforms.includes(p))} ${p}`).join('\n');
-  const otherPlatformLine=`${ck(f.otherPlatform)} Other: ${f.otherPlatform?'________________________':''}`;
-  const serviceList=['Social Media Management','Content Scheduling','Caption Writing','Hashtag Research','Drone Footage','Photography','Graphic Design','Menu Design','Event Coverage'];
-  const serviceLines=serviceList.map(s=>`${ck(f.services.includes(s))} ${s}`).join('\n');
-  const otherServiceLine=`${ck(f.otherServices.length>0)} Other: ${f.otherServices.join(', ')}`;
+  const otherPlatformLine=`${ck(!!f.otherPlatform)} Other: ${f.otherPlatform||''}`;
+  const serviceLines=PCC_SERVICES.map(([s])=>`${ck(f.services.includes(s))} ${s}`).join('\n');
+  const otherServiceLine=`${ck(!!(f.otherServices&&f.otherServices.length))} Other: ${(f.otherServices||[]).join(', ')}`;
   return `1. SCOPE OF WORK
 
 LAS Media shall serve as the content creator and social media manager for the Client.
@@ -3938,29 +3936,102 @@ ${otherServiceLine}
 
 Notes / Special Requirements
 
-
+${f.notes||''}
 
 
 2. INVESTMENT & TERMS
 
 Package Name: ${f.packageName}
 Monthly Investment: £${f.monthlyTotal}
-Contract Length: ___________________________
-Payment Date: ____________________________
+Contract Length: ${f.contractLength||'___________________________'}
+Payment Date: ${f.paymentDate||'____________________________'}
 Payment Method: Bank Transfer (BACS)`;
 }
 
+const PCC_PLATFORMS=['Facebook','Instagram','TikTok','LinkedIn','YouTube Shorts'];
+const PCC_SERVICES=[
+  ['Social Media Management','pcc_svc_sm'],
+  ['Content Scheduling','pcc_svc_sched'],
+  ['Caption Writing','pcc_svc_caption'],
+  ['Hashtag Research','pcc_svc_hashtag'],
+  ['Drone Footage','pcc_svc_drone'],
+  ['Photography','pcc_svc_photo'],
+  ['Graphic Design','pcc_svc_graphic'],
+  ['Menu Design','pcc_svc_menu'],
+  ['Event Coverage','pcc_svc_event'],
+];
+
 function pbGenerateContract(){
   const f=pbContractFields();
-  if(!f.clientName&&!confirm('No client/quote name set in Package Builder — generate contract anyway?'))return;
-  const text=pbBuildContractText();
+  if(!f.clientName&&!confirm('No client/quote name set in Package Builder — continue anyway?'))return;
+  openModal('Confirm Contract Details',pbContractConfirmHTML(f));
+}
+
+function pbContractConfirmHTML(f){
+  const platformRows=PCC_PLATFORMS.map(p=>`
+    <label style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;margin-bottom:.4rem;">
+      <input type="checkbox" id="pcc_plat_${p.replace(/\s+/g,'')}" ${f.platforms.includes(p)?'checked':''}> ${p}
+    </label>`).join('');
+  const serviceRows=PCC_SERVICES.map(([label,id])=>`
+    <label style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;margin-bottom:.4rem;">
+      <input type="checkbox" id="${id}" ${f.services.includes(label)?'checked':''}> ${label}
+    </label>`).join('');
+  return `
+  <div class="m-field"><label>Reels per Month</label><input class="m-input" type="number" min="0" id="pcc_reels" value="${f.reels}"></div>
+  <div class="m-field"><label>Static Posts per Month</label><input class="m-input" type="number" min="0" id="pcc_posts" value="${f.posts}"></div>
+  <div class="m-field"><label>On-Site Filming Hours per Month</label><input class="m-input" type="number" min="0" step="0.5" id="pcc_filmhours" value="${f.filmHours}"></div>
+  <div class="m-field"><label>Platforms Included</label>${platformRows}
+    <label style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;margin-top:.3rem;">
+      <input type="checkbox" id="pcc_plat_other_on" ${f.otherPlatform?'checked':''}> Other:
+      <input class="m-input" style="flex:1;" id="pcc_plat_other" placeholder="Platform name" value="${esc(f.otherPlatform||'')}">
+    </label>
+  </div>
+  <div class="m-field"><label>Additional Services Included</label>${serviceRows}
+    <label style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;margin-top:.3rem;">
+      <input type="checkbox" id="pcc_svc_other_on" ${(f.otherServices&&f.otherServices.length)?'checked':''}> Other:
+      <input class="m-input" style="flex:1;" id="pcc_svc_other" placeholder="e.g. Logo Design, Drone Footage" value="${esc((f.otherServices||[]).join(', '))}">
+    </label>
+  </div>
+  <div class="m-field"><label>Notes / Special Requirements</label><textarea class="m-textarea" id="pcc_notes"></textarea></div>
+  <div class="m-field"><label>Package Name</label><input class="m-input" id="pcc_pkgname" value="${esc(f.packageName)}"></div>
+  <div class="m-field"><label>Monthly Investment (£)</label><input class="m-input" type="number" min="0" id="pcc_total" value="${f.monthlyTotal}"></div>
+  <div class="m-field"><label>Contract Length</label><input class="m-input" id="pcc_length" placeholder="e.g. 12 months"></div>
+  <div class="m-field"><label>Payment Date</label><input class="m-input" id="pcc_paydate" placeholder="e.g. 1st of each month"></div>
+  <div class="m-actions">
+    <button class="m-btn m-btn-primary" onclick="pbConfirmGenerateContract('${esc(f.clientName||'')}')">Confirm & Generate Contract</button>
+    <button class="m-btn" onclick="closeModal()">Cancel</button>
+  </div>`;
+}
+
+function pbConfirmGenerateContract(clientName){
+  const val=id=>document.getElementById(id)?.value;
+  const checked=id=>!!document.getElementById(id)?.checked;
+  const platforms=PCC_PLATFORMS.filter(p=>checked(`pcc_plat_${p.replace(/\s+/g,'')}`));
+  const otherPlatform=checked('pcc_plat_other_on')?(val('pcc_plat_other')||'').trim():'';
+  const services=PCC_SERVICES.filter(([,id])=>checked(id)).map(([label])=>label);
+  const otherServices=checked('pcc_svc_other_on')
+    ?(val('pcc_svc_other')||'').split(',').map(s=>s.trim()).filter(Boolean)
+    :[];
+  const f={
+    reels:parseFloat(val('pcc_reels'))||0,
+    posts:parseFloat(val('pcc_posts'))||0,
+    filmHours:parseFloat(val('pcc_filmhours'))||0,
+    platforms,otherPlatform,services,otherServices,
+    notes:val('pcc_notes')||'',
+    packageName:val('pcc_pkgname')||'',
+    monthlyTotal:parseFloat(val('pcc_total'))||0,
+    contractLength:(val('pcc_length')||'').trim(),
+    paymentDate:(val('pcc_paydate')||'').trim(),
+  };
+  const text=pbBuildContractText(f);
   const contracts=getContracts();
   const id=uid();
   contracts.unshift({
-    id,name:`${f.clientName||'New Client'} — Service Agreement`,client:f.clientName||'',
+    id,name:`${clientName||'New Client'} — Service Agreement`,client:clientName||'',
     status:'draft',content:text,created:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
   });
   saveContracts(contracts);
+  closeModal();
   showSection('contractsSection');
   setTimeout(()=>openContract(id),50);
 }
