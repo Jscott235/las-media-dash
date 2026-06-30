@@ -1966,8 +1966,8 @@ const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[],
 // ─────────────────────────────────────────
 // FIELD MAPPERS  JS camelCase <-> DB snake_case
 // ─────────────────────────────────────────
-const fromLead   = r => ({...r, followUpDate:r.follow_up_date, addedDate:r.added_date, socialCheck:r.questionnaire||{}});
-const toLead     = ({followUpDate,addedDate,socialCheck,...r}) => ({...r, follow_up_date:followUpDate||null, added_date:addedDate||null, questionnaire:socialCheck||{}});
+const fromLead   = r => ({...r, followUpDate:r.follow_up_date, addedDate:r.added_date, socialCheck:r.questionnaire||{}, subNiche:r.sub_niche||''});
+const toLead     = ({followUpDate,addedDate,socialCheck,subNiche,...r}) => ({...r, follow_up_date:followUpDate||null, added_date:addedDate||null, questionnaire:socialCheck||{}, sub_niche:subNiche||null});
 const fromClient = r => ({...r, startDate:r.start_date, lastPost:r.last_post});
 const toClient   = ({startDate,lastPost,...r}) => ({...r, start_date:startDate||null, last_post:lastPost||null});
 const fromCal    = r => ({...r, clientId:r.client_id, contentType:r.content_type});
