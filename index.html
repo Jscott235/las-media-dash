@@ -1479,6 +1479,44 @@ body::before{
 .cc-pitch-actions button{font-size:.72rem;padding:.4rem .7rem;border-radius:var(--rs);background:var(--surface-h);border:1px solid var(--border);color:var(--muted);cursor:pointer;}
 .cc-pitch-actions button:hover{color:var(--text);}
 
+/* ── CAMPAIGN ENGINE ─────────────────────────────────────── */
+.camp-info-strip{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:var(--rs);padding:.65rem 1rem;font-size:.75rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.5;}
+.camp-empty{color:var(--muted);font-size:.8rem;text-align:center;padding:2.5rem;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r);}
+.camp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:.75rem;transition:border .2s,background .2s;}
+.camp-card.active{border-color:var(--accent);background:var(--surface-active);}
+.camp-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.65rem;}
+.camp-card-name{font-size:.95rem;font-weight:700;color:var(--text);}
+.camp-card-meta{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+.camp-card-actions{display:flex;gap:.4rem;flex-shrink:0;}
+.camp-btn-set{padding:.3rem .75rem;border-radius:var(--rs);font-size:.7rem;font-weight:600;background:var(--surface-h);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.camp-btn-set.active{background:rgba(99,102,241,0.18);border-color:var(--accent);color:var(--accent);}
+.camp-btn-set:hover{border-color:var(--accent);color:var(--accent);}
+.camp-btn-edit{padding:.3rem .65rem;border-radius:var(--rs);font-size:.7rem;background:var(--surface-h);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.camp-btn-edit:hover{color:var(--text);border-color:var(--border-h);}
+.camp-btn-del{padding:.3rem .65rem;border-radius:var(--rs);font-size:.7rem;background:transparent;border:1px solid transparent;color:var(--dim);cursor:pointer;transition:all .15s;}
+.camp-btn-del:hover{color:var(--red);border-color:rgba(239,68,68,0.3);}
+.camp-card-pills{display:flex;gap:.45rem;flex-wrap:wrap;}
+.camp-pill{padding:.2rem .6rem;border-radius:99px;font-size:.67rem;font-weight:600;}
+.camp-pill.offer{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25);}
+.camp-pill.tone{background:rgba(99,102,241,0.12);color:var(--accent);border:1px solid rgba(99,102,241,0.25);}
+.camp-pill.cta{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);}
+.camp-niche-grid{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;}
+.camp-niche-item{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--muted);cursor:pointer;}
+.camp-tone-row{display:flex;gap:1rem;margin-top:.4rem;}
+.camp-tone-opt{display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--muted);cursor:pointer;}
+/* Cold call campaign bar */
+.cc-campaign-bar{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;padding:.55rem .9rem;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.18);border-radius:var(--rs);margin-bottom:1rem;}
+.camp-bar-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap;}
+.camp-bar-select{background:var(--field-bg);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-size:.77rem;padding:.28rem .55rem;cursor:pointer;}
+.camp-bar-active{font-size:.73rem;color:var(--accent);display:flex;align-items:center;gap:.4rem;}
+.camp-bar-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;flex-shrink:0;}
+.camp-bar-none{font-size:.71rem;color:var(--dim);}
+/* Generate pitch modal extras */
+.camp-gen-warning{background:rgba(245,158,11,0.09);border:1px solid rgba(245,158,11,0.3);border-radius:var(--rs);padding:.6rem .85rem;font-size:.74rem;color:#fbbf24;margin-bottom:.75rem;line-height:1.5;}
+.camp-gen-badge{background:rgba(99,102,241,0.09);border:1px solid rgba(99,102,241,0.2);border-radius:var(--rs);padding:.4rem .85rem;font-size:.73rem;color:var(--accent);margin-bottom:.75rem;}
+.camp-regen-btn{background:var(--surface-h);border:1px solid var(--border);border-radius:var(--rs);color:var(--muted);font-size:.74rem;padding:.38rem .85rem;cursor:pointer;margin-bottom:.75rem;transition:all .15s;}
+.camp-regen-btn:hover{color:var(--text);border-color:var(--border-h);}
+
 </style>
 </head>
 <body>
@@ -1615,6 +1653,14 @@ body::before{
         <div class="nc-content">
           <div class="nc-title">Business</div>
           <div class="nc-meta" id="navBizMeta">—</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
+      <div class="nav-card" id="nc_campaignSection" onclick="showSection('campaignSection')">
+        <div class="nc-icon">🎯</div>
+        <div class="nc-content">
+          <div class="nc-title">Campaign Engine</div>
+          <div class="nc-meta" id="navCampaignMeta">Outreach campaigns</div>
         </div>
         <div class="nc-arrow">›</div>
       </div>
@@ -1880,6 +1926,7 @@ body::before{
     <!-- COLD CALL MODE -->
     <div class="section" id="callSection">
       <div class="cc-wrap">
+        <div class="cc-campaign-bar" id="ccCampaignBar"></div>
         <div class="cc-topbar">
           <div class="section-header" style="margin-bottom:0;">
             <div>
@@ -2004,6 +2051,21 @@ body::before{
       </div>
     </div>
 
+    <!-- CAMPAIGN ENGINE -->
+    <div class="section" id="campaignSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">🎯 Campaign Engine</div>
+          <div class="section-sub">Build outreach campaigns · control every pitch generated in Cold Call Mode</div>
+        </div>
+        <button class="section-add-btn" onclick="openAddCampaign()">+ New Campaign</button>
+      </div>
+      <div class="camp-info-strip">
+        💡 Each campaign sets the tone, offer, and call-to-action for pitches generated in Cold Call Mode. Switch campaigns instantly to change your messaging for a new area or niche push.
+      </div>
+      <div id="campaignList"></div>
+    </div>
+
   </main>
 </div>
 </div><!-- /app -->
@@ -2020,7 +2082,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 // ─────────────────────────────────────────
 // IN-MEMORY STATE
 // ─────────────────────────────────────────
-const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[], pitches:[], contracts:[] };
+const S = { leads:[], clients:[], calendar:[], income:[], goals:[], outreach:[], pitches:[], contracts:[], campaigns:[] };
 
 // ─────────────────────────────────────────
 // FIELD MAPPERS  JS camelCase <-> DB snake_case
@@ -2052,6 +2114,7 @@ async function loadAll(){
   await loadObjections();
   await loadPitches();
   await loadContracts();
+  await loadCampaigns();
 }
 
 async function loadContracts(){
@@ -2129,7 +2192,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','callSection','scriptsSection','outreachSection','pkgSection','contractsSection','calSection','clientsSection','bizSection'];
+const SECTION_IDS=['homeSection','leadsSection','callSection','scriptsSection','outreachSection','pkgSection','contractsSection','calSection','clientsSection','bizSection','campaignSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
@@ -2155,7 +2218,7 @@ async function initApp(){
   await loadAll();
   buildBrief(); renderStats(); renderLeads(); renderPipeline();
   renderClients(); renderCalendar(); renderIncome(); renderGoals(); updateNavMeta();
-  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); renderCallQueue(); renderOutreachSchedule(); showSection('homeSection');
+  renderHome(); initPackageBuilder(); initScriptsSection(); renderContracts(); renderCallQueue(); renderOutreachSchedule(); renderCampaigns(); showSection('homeSection');
 }
 
 // ─────────────────────────────────────────
@@ -5246,22 +5309,30 @@ Write just the pitch script, no explanations or labels.`;
 function ccOpenGeneratePitch(){
   const l=S.leads.find(x=>x.id===ccActiveId);
   if(!l)return;
-  const prompt=ccBuildPitchPrompt(l);
+  const campaign=S.campaigns.find(x=>x.id===activeCampaignId)||null;
+  const pitchText=generateCampaignPitch(campaign||{tone:'Friendly',offer:'Free Reel',cta:'Would you be open to a quick chat about it?'},l);
+  const warningHTML=campaign?'':`<div class="camp-gen-warning">⚠️ No campaign selected — using default settings. <span onclick="closeModal();showSection('campaignSection')" style="cursor:pointer;text-decoration:underline;">Set up a campaign →</span></div>`;
+  const badgeHTML=campaign?`<div class="camp-gen-badge">Campaign: <strong>${esc(campaign.name)}</strong> · ${esc(campaign.tone)} · ${esc(campaign.offer)}</div>`:'';
+  const defaultLabel=campaign?esc(campaign.name)+' Pitch':'Pitch';
   openModal('Generate Pitch',`
-    <p style="font-size:.72rem;color:var(--muted);margin-bottom:.7rem;">Copy this into ChatGPT or Claude, then paste the response below and save it.</p>
-    <div class="m-field"><label>Prompt</label><textarea class="m-input" id="m_pitch_prompt" style="min-height:200px;font-size:.75rem;" readonly>${esc(prompt)}</textarea></div>
-    <button class="cc-copy-btn" style="margin-bottom:1rem;" onclick="ccCopyPitchPrompt()">Copy Prompt</button>
-    <div class="m-field"><label>Pitch Label</label><input class="m-input" id="m_pitch_label" placeholder="e.g. Direct angle, Social proof angle"></div>
-    <div class="m-field"><label>Paste AI Response Here</label><textarea class="m-input" id="m_pitch_text" style="min-height:140px;" placeholder="Paste the generated pitch here..."></textarea></div>
+    ${warningHTML}
+    ${badgeHTML}
+    <div class="m-field"><label>Pitch Label</label><input class="m-input" id="m_pitch_label" value="${defaultLabel}" placeholder="e.g. Direct angle, Social proof angle"></div>
+    <div class="m-field"><label>Generated Pitch</label><textarea class="m-input" id="m_pitch_text" style="min-height:180px;">${esc(pitchText)}</textarea></div>
+    <button class="camp-regen-btn" onclick="ccRegenPitch()">↻ Regenerate</button>
     <div class="m-actions">
       <button class="m-btn m-btn-primary" onclick="ccSavePitch('${l.id}')">Save Pitch</button>
       <button class="m-btn" onclick="closeModal()">Cancel</button>
     </div>
   `);
 }
-function ccCopyPitchPrompt(){
-  const text=document.getElementById('m_pitch_prompt')?.value||'';
-  navigator.clipboard?.writeText(text);
+function ccRegenPitch(){
+  const l=S.leads.find(x=>x.id===ccActiveId);
+  if(!l)return;
+  const campaign=S.campaigns.find(x=>x.id===activeCampaignId)||null;
+  const pitchText=generateCampaignPitch(campaign||{tone:'Friendly',offer:'Free Reel',cta:'Would you be open to a quick chat?'},l);
+  const el=document.getElementById('m_pitch_text');
+  if(el)el.value=pitchText;
 }
 async function ccSavePitch(leadId){
   const label=document.getElementById('m_pitch_label').value.trim()||'Pitch';
@@ -5282,6 +5353,244 @@ async function ccDeletePitch(id){
   ccActivePitchId=null;
   renderActiveCall();
 }
+// ─────────────────────────────────────────
+// CAMPAIGN ENGINE
+// ─────────────────────────────────────────
+let activeCampaignId = null;
+
+async function loadCampaigns(){
+  const {data,error}=await sb.from('campaigns').select('*').order('created_at',{ascending:false});
+  if(error){console.error('campaigns load:',error.message);S.campaigns=[];return;}
+  S.campaigns=data||[];
+  // Auto-set first campaign as active if none set
+  if(!activeCampaignId && S.campaigns.length) activeCampaignId=S.campaigns[0].id;
+}
+
+function renderCampaigns(){
+  const list=document.getElementById('campaignList');
+  if(!list)return;
+  updateNavCampaignMeta();
+  if(!S.campaigns.length){
+    list.innerHTML='<div class="camp-empty">No campaigns yet. Hit "+ New Campaign" to create your first one.</div>';
+  } else {
+    list.innerHTML=S.campaigns.map(c=>`
+      <div class="camp-card ${c.id===activeCampaignId?'active':''}">
+        <div class="camp-card-head">
+          <div>
+            <div class="camp-card-name">${esc(c.name)}</div>
+            <div class="camp-card-meta">${esc(c.location||'All locations')} · ${(c.niches||[]).length?c.niches.join(', '):'All niches'}</div>
+          </div>
+          <div class="camp-card-actions">
+            <button class="camp-btn-set ${c.id===activeCampaignId?'active':''}" onclick="setActiveCampaign('${c.id}')">${c.id===activeCampaignId?'✓ Active':'Set Active'}</button>
+            <button class="camp-btn-edit" onclick="openEditCampaign('${c.id}')">Edit</button>
+            <button class="camp-btn-del" onclick="deleteCampaign('${c.id}')">Delete</button>
+          </div>
+        </div>
+        <div class="camp-card-pills">
+          <span class="camp-pill offer">${esc(c.offer||'Free Reel')}</span>
+          <span class="camp-pill tone">${esc(c.tone||'Friendly')}</span>
+          ${c.cta?`<span class="camp-pill cta">${esc(c.cta.length>40?c.cta.slice(0,40)+'…':c.cta)}</span>`:''}
+        </div>
+      </div>`).join('');
+  }
+  updateCcCampaignBar();
+}
+
+function setActiveCampaign(id){
+  activeCampaignId=id;
+  renderCampaigns();
+}
+
+function updateCcCampaignBar(){
+  const bar=document.getElementById('ccCampaignBar');
+  if(!bar)return;
+  const opts=S.campaigns.map(x=>`<option value="${x.id}" ${x.id===activeCampaignId?'selected':''}>${esc(x.name)}</option>`).join('');
+  const c=S.campaigns.find(x=>x.id===activeCampaignId);
+  const detail=c?`<span class="camp-bar-active"><span class="camp-bar-dot"></span>${esc(c.name)} · ${esc(c.offer||'Free Reel')} · ${esc(c.tone||'Friendly')}</span>`
+               :`<span class="camp-bar-none">No active campaign — pitches will use default settings</span>`;
+  bar.innerHTML=`<span class="camp-bar-label">Campaign</span>
+    <select class="camp-bar-select" onchange="setActiveCampaign(this.value)">
+      <option value="">— None —</option>${opts}
+    </select>
+    ${detail}`;
+}
+
+function updateNavCampaignMeta(){
+  const el=document.getElementById('navCampaignMeta');
+  if(!el)return;
+  const c=S.campaigns.find(x=>x.id===activeCampaignId);
+  el.textContent=c?`Active: ${c.name}`:`${S.campaigns.length} campaign${S.campaigns.length===1?'':'s'}`;
+}
+
+function openAddCampaign(){ openModal('New Campaign',campFormHTML(null)); }
+function openEditCampaign(id){
+  const c=S.campaigns.find(x=>x.id===id);
+  if(!c)return;
+  openModal('Edit Campaign',campFormHTML(c));
+}
+
+function campFormHTML(c){
+  const niches=Object.keys(NICHES);
+  const sel=c?.niches||[];
+  return `
+    <div class="m-field"><label>Campaign Name</label><input class="m-input" id="cf_name" value="${esc(c?.name||'')}" placeholder="e.g. Hartlepool 50, Stockton Spotlight, Benidorm Hospitality"></div>
+    <div class="m-field"><label>Target Location</label><input class="m-input" id="cf_location" value="${esc(c?.location||'')}" placeholder="e.g. Hartlepool, Stockton-on-Tees, Benidorm"></div>
+    <div class="m-field">
+      <label>Target Niches <small style="color:var(--dim);font-weight:400;">(leave all unchecked = all niches)</small></label>
+      <div class="camp-niche-grid" id="cf_niches">
+        ${niches.map(n=>`<label class="camp-niche-item"><input type="checkbox" value="${n}" ${sel.includes(n)?'checked':''}> ${n}</label>`).join('')}
+      </div>
+    </div>
+    <div class="m-field">
+      <label>Offer</label>
+      <select class="m-input" id="cf_offer">
+        <option value="Free Reel" ${(!c||c.offer==='Free Reel')?'selected':''}>Free Reel</option>
+        <option value="Free Photo Shoot" ${c?.offer==='Free Photo Shoot'?'selected':''}>Free Photo Shoot</option>
+        <option value="Free Content Audit" ${c?.offer==='Free Content Audit'?'selected':''}>Free Content Audit</option>
+        <option value="Free Short-Form Pack" ${c?.offer==='Free Short-Form Pack'?'selected':''}>Free Short-Form Pack</option>
+      </select>
+    </div>
+    <div class="m-field">
+      <label>Tone of Voice</label>
+      <div class="camp-tone-row">
+        <label class="camp-tone-opt"><input type="radio" name="cf_tone" value="Friendly" ${(!c||c.tone==='Friendly')?'checked':''}> Friendly</label>
+        <label class="camp-tone-opt"><input type="radio" name="cf_tone" value="Confident" ${c?.tone==='Confident'?'checked':''}> Confident</label>
+        <label class="camp-tone-opt"><input type="radio" name="cf_tone" value="Professional" ${c?.tone==='Professional'?'checked':''}> Professional</label>
+      </div>
+    </div>
+    <div class="m-field"><label>Call to Action</label><input class="m-input" id="cf_cta" value="${esc(c?.cta||'')}" placeholder="e.g. Would you be open to a quick chat this week?"></div>
+    <div class="m-actions">
+      <button class="m-btn m-btn-primary" onclick="saveCampaignForm('${c?.id||''}')">Save Campaign</button>
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+    </div>`;
+}
+
+async function saveCampaignForm(existingId){
+  const name=document.getElementById('cf_name')?.value.trim();
+  if(!name)return alert('Campaign name is required.');
+  const location=document.getElementById('cf_location')?.value.trim()||'';
+  const offer=document.getElementById('cf_offer')?.value||'Free Reel';
+  const tone=document.querySelector('input[name="cf_tone"]:checked')?.value||'Friendly';
+  const cta=document.getElementById('cf_cta')?.value.trim()||'Would you be open to a quick chat about it?';
+  const niches=[...document.querySelectorAll('#cf_niches input:checked')].map(x=>x.value);
+  const id=existingId||uid();
+  const record={id,name,location,niches,offer,tone,cta,created_at:new Date().toISOString()};
+  await sbUp('campaigns',record);
+  if(existingId){
+    const idx=S.campaigns.findIndex(x=>x.id===existingId);
+    if(idx>=0)S.campaigns[idx]=record; else S.campaigns.unshift(record);
+  } else {
+    S.campaigns.unshift(record);
+    if(!activeCampaignId) activeCampaignId=id;
+  }
+  closeModal();
+  renderCampaigns();
+}
+
+async function deleteCampaign(id){
+  if(!confirm('Delete this campaign?'))return;
+  await sbDel('campaigns',id);
+  S.campaigns=S.campaigns.filter(x=>x.id!==id);
+  if(activeCampaignId===id) activeCampaignId=S.campaigns[0]?.id||null;
+  renderCampaigns();
+}
+
+// ─────────────────────────────────────────
+// PITCH TEMPLATE ENGINE
+// ─────────────────────────────────────────
+const PITCH_OPENERS={
+  Friendly:[
+    "Hi [name]! My name's Lewis, I'm a local videographer based in [location].",
+    "Hey [name], hope you're having a good one — I'm Lewis, I do short-form video for local businesses.",
+    "Hi there [name], my name's Lewis — I work with businesses in [location] on their social media content.",
+    "Hey [name]! I'm Lewis, I create short-form video content for local businesses like yours.",
+    "Hi [name], Lewis here — I'm a videographer working with businesses across [location].",
+  ],
+  Confident:[
+    "Hi [name], I'm Lewis — I specialise in short-form video content for local businesses.",
+    "[name], hi — Lewis here. I create short-form video that drives real results for businesses in [location].",
+    "Hi [name], my name's Lewis. I help businesses in [location] grow their social presence with professional video.",
+    "[name]? Perfect. I'm Lewis — I produce short-form reels and content for businesses like yours.",
+    "Hi [name], Lewis speaking — I work with businesses across [location] to level up their social media.",
+  ],
+  Professional:[
+    "Good [time] [name], my name's Lewis — I'm a video content producer working with businesses in [location].",
+    "Hi [name], I hope I've caught you at a good time. I'm Lewis, a professional videographer specialising in social content.",
+    "Hello [name], my name's Lewis. I work with local businesses on their short-form video and social media strategy.",
+    "[name], hi — my name's Lewis. I'm a content producer working with businesses in the [location] area.",
+    "Hi [name], I'm Lewis. I produce short-form video content for businesses looking to strengthen their social presence.",
+  ],
+};
+
+const PITCH_NICHE_HOOKS={
+  'Hospitality':"Restaurants and hospitality businesses are absolutely killing it with short-form video right now — a good reel showing the atmosphere, the food, the experience — it brings people through the door without them spending a penny on ads.",
+  'Food & Drink':"Food and drink businesses are one of the best fits for short-form video — the visuals literally sell themselves. A reel showing your product can go seriously viral in the local area.",
+  'Health & Fitness':"Fitness and wellness businesses that post consistently are seeing a constant stream of new enquiries just from their social content — people want to see results before they commit.",
+  'Beauty & Wellness':"Beauty businesses are one of the strongest performers on short-form video right now — showcasing transformations, treatments, results — it converts like nothing else.",
+  'Retail':"Retail businesses that show their products on social media are seeing a huge uplift in footfall. A quick reel showing what's in stock or a behind-the-scenes look drives people straight to you.",
+  'Trades':"Tradespeople who post before-and-afters are building massive local followings. People want to see the quality of the work before they pick up the phone — video does that better than anything.",
+  'Professional Services':"Professional service businesses that show the human side of what they do — behind the scenes, client wins, team culture — are building serious trust with potential clients online.",
+  'Events':"Event businesses that capture and share their events as content are building audiences who are already excited to book before they've even had a conversation.",
+  'Education':"Education businesses are using short-form video brilliantly to showcase their environment, student outcomes, and culture — it's one of the most powerful conversion tools in their space.",
+};
+
+const SOCIALS_OBSERVATIONS={
+  'Poor':"I had a quick look at your socials and I can see there's a real opportunity there — the content just needs some love and it could be doing so much more for the business.",
+  'Average':"I checked out your socials — there's a decent base there, but with consistent, high-quality video content I think you could push it to a completely different level.",
+  'Good':"I had a look at your socials and you're already doing solid work — I think with professional short-form video we could push that even further and really accelerate what you've already built.",
+};
+
+const OFFER_LINES={
+  'Free Reel':"I'd love to come and film a free reel for you — completely free, no strings attached. If you like what we produce, we can talk about doing more. If not, you keep the reel.",
+  'Free Photo Shoot':"I want to offer you a free professional photo shoot — product shots, team, premises, whatever works best for you. Completely free, no catch.",
+  'Free Content Audit':"I'd like to offer you a free content audit — I'll review your socials and put together a clear breakdown of what's working, what's not, and exactly what would move the needle.",
+  'Free Short-Form Pack':"I want to put together a free short-form content pack for you — a reel, a few clips, ready to post — so you can see exactly the quality I produce before committing to anything.",
+};
+
+function campPick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function generateCampaignPitch(campaign,lead){
+  const tone=campaign?.tone||'Friendly';
+  const offer=campaign?.offer||'Free Reel';
+  const cta=campaign?.cta||'Would you be open to a quick chat about it?';
+  const location=lead.location||campaign?.location||'your area';
+  const businessName=lead.name||'your business';
+  const niche=lead.subNiche||lead.niche||lead.type||'';
+  const time=new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening';
+  const firstName=lead.contact_name?lead.contact_name.trim().split(' ')[0]:'there';
+
+  // Opener
+  let opener=campPick(PITCH_OPENERS[tone]||PITCH_OPENERS['Friendly']);
+  opener=opener.replace('[name]',firstName).replace('[location]',location).replace('[time]',time);
+
+  // Niche hook
+  let nicheHook='';
+  for(const key of Object.keys(PITCH_NICHE_HOOKS)){
+    if(niche.toLowerCase().includes(key.toLowerCase())||key.toLowerCase().includes((niche.split(' ')[0]||'').toLowerCase())){
+      nicheHook=PITCH_NICHE_HOOKS[key]; break;
+    }
+  }
+  if(!nicheHook) nicheHook=`Businesses in ${location} that post consistently on social media are seeing a real difference in the enquiries they get — it's becoming a must-have, not a nice-to-have.`;
+
+  // Socials observation
+  const socialsObs=lead.socials_rating?SOCIALS_OBSERVATIONS[lead.socials_rating]||'':'';
+
+  // Notes
+  const notesLine=(lead.notes&&lead.notes.trim())?`I noticed ${lead.notes.trim().replace(/\.$/,'').toLowerCase()} — that's exactly the kind of thing good video content can help with. `:'';
+
+  // Offer
+  const offerLine=OFFER_LINES[offer]||OFFER_LINES['Free Reel'];
+
+  return [
+    opener,
+    `The reason I'm calling is I work with businesses like ${businessName} on their short-form video content — Instagram Reels, TikTok, that kind of thing.`,
+    nicheHook,
+    socialsObs,
+    notesLine+offerLine,
+    cta,
+  ].filter(Boolean).join(' ');
+}
+
 function copyPlainText(elId){
   const text=document.getElementById(elId)?.textContent||'';
   navigator.clipboard?.writeText(text);
