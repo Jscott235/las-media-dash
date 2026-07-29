@@ -312,6 +312,55 @@ body::before{
 .brief-item-label{color:var(--muted);font-size:.72rem;}
 .brief-sep{color:var(--border);font-size:.8rem;}
 
+/* ── UPLOADS SECTION ── */
+.upload-link-strip{
+  display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;
+  background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);
+  border-radius:var(--r);margin-bottom:1rem;flex-wrap:wrap;
+}
+.uls-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);white-space:nowrap;}
+.uls-url{font-size:.78rem;color:var(--cyan);font-family:'Space Grotesk',sans-serif;font-weight:500;flex:1;word-break:break-all;}
+.uls-copy{
+  padding:.4rem .9rem;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);
+  border-radius:6px;color:#a5b4fc;font-size:.68rem;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.uls-copy:hover{background:rgba(99,102,241,0.25);color:#c7d2fe;}
+.upload-filter-row{margin-bottom:1rem;}
+.upload-search{
+  width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  border-radius:var(--rs);color:var(--text);padding:.7rem 1rem;font-size:.85rem;
+  font-family:'Inter',sans-serif;outline:none;transition:all .18s;
+}
+.upload-search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);}
+.uploads-loading{font-size:.8rem;color:var(--muted);text-align:center;padding:3rem;animation:pulse 1.5s infinite;}
+.uploads-empty{text-align:center;padding:3rem 1rem;}
+.ue-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.ue-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;margin-bottom:.35rem;}
+.ue-sub{font-size:.75rem;color:var(--muted);line-height:1.6;}
+.upload-row{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+  padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--r);
+  margin-bottom:.5rem;background:rgba(255,255,255,0.02);transition:all .15s;
+}
+.upload-row:hover{border-color:rgba(99,102,241,0.2);background:rgba(99,102,241,0.04);}
+.ur-left{display:flex;align-items:flex-start;gap:.75rem;flex:1;min-width:0;}
+.ur-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem;}
+.ur-info{flex:1;min-width:0;}
+.ur-filename{font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ur-meta{display:flex;align-items:center;gap:.6rem;margin-top:.25rem;flex-wrap:wrap;}
+.ur-client{font-size:.7rem;font-weight:600;color:var(--accent);background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);border-radius:4px;padding:.15rem .5rem;}
+.ur-project{font-size:.7rem;color:var(--muted);}
+.ur-size{font-size:.65rem;color:var(--dim);}
+.ur-date{font-size:.65rem;color:var(--dim);}
+.ur-download{
+  padding:.45rem 1rem;background:none;border:1px solid var(--border);border-radius:var(--rs);
+  color:var(--muted);font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  font-family:'Inter',sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0;
+}
+.ur-download:hover{border-color:var(--green);color:var(--green);}
+.uploads-count{font-size:.68rem;color:var(--dim);margin-bottom:.75rem;padding:.4rem 0;}
+
 /* ── SECTIONS ── */
 .section{display:none;padding:2rem;animation:fadeUp .25s var(--ease);}
 .section.active{display:block;}
@@ -1664,6 +1713,14 @@ body::before{
         </div>
         <div class="nc-arrow">›</div>
       </div>
+      <div class="nav-card" id="nc_uploadsSection" onclick="showSection('uploadsSection')">
+        <div class="nc-icon">📥</div>
+        <div class="nc-content">
+          <div class="nc-title">Client Uploads</div>
+          <div class="nc-meta" id="navUploadsMeta">Files from clients</div>
+        </div>
+        <div class="nc-arrow">›</div>
+      </div>
     </nav>
 
     <div class="sidebar-stats">
@@ -2066,6 +2123,38 @@ body::before{
       <div id="campaignList"></div>
     </div>
 
+    <!-- UPLOADS -->
+    <div class="section" id="uploadsSection">
+      <div class="section-header">
+        <div>
+          <div class="section-title">📥 Client Uploads</div>
+          <div class="section-sub">Full-quality files sent by your clients — no compression, straight from the source</div>
+        </div>
+        <div class="section-btn-row">
+          <button class="section-add-btn" onclick="copyUploadLink()">🔗 Copy Upload Link</button>
+          <button class="section-add-btn" onclick="loadUploads()">↻ Refresh</button>
+        </div>
+      </div>
+
+      <div class="upload-link-strip" id="uploadLinkStrip">
+        <span class="uls-label">Client Upload URL</span>
+        <span class="uls-url" id="ulsUrl">—</span>
+        <button class="uls-copy" onclick="copyUploadLink()">Copy</button>
+      </div>
+
+      <div class="upload-filter-row">
+        <input class="upload-search" id="uploadSearch" type="text" placeholder="Filter by client name or project..." oninput="filterUploads()">
+      </div>
+
+      <div id="uploadsLoading" class="uploads-loading">Loading files…</div>
+      <div id="uploadsEmpty" class="uploads-empty" style="display:none;">
+        <div class="ue-icon">📭</div>
+        <div class="ue-title">No uploads yet</div>
+        <div class="ue-sub">Share the upload link with your clients and their files will appear here</div>
+      </div>
+      <div id="uploadsList" style="display:none;"></div>
+    </div>
+
   </main>
 </div>
 </div><!-- /app -->
@@ -2194,7 +2283,7 @@ function monthLabel(m){return new Date(m+'-01').toLocaleDateString('en-GB',{mont
 // ─────────────────────────────────────────
 // SECTION SWITCHER
 // ─────────────────────────────────────────
-const SECTION_IDS=['homeSection','leadsSection','callSection','scriptsSection','outreachSection','pkgSection','contractsSection','calSection','clientsSection','bizSection','campaignSection'];
+const SECTION_IDS=['homeSection','leadsSection','callSection','scriptsSection','outreachSection','pkgSection','contractsSection','calSection','clientsSection','bizSection','campaignSection','uploadsSection'];
 let activeSection=null;
 function showSection(id){
   if(isMobile()) setTimeout(closeMobileSidebar, 150);
@@ -5735,6 +5824,130 @@ async function pgGetIP(){
   catch{return 'unknown';}
 }
 
+// ─────────────────────────────────────────
+// UPLOADS
+// ─────────────────────────────────────────
+const UPLOAD_WORKER_URL = 'https://las-media-upload.jscott55124.workers.dev';
+const UPLOAD_AUTH_KEY   = 'las-media-key'; // must match LIST_SECRET in Worker env vars
+
+let allUploads = [];
+
+function uploadFileIcon(name){
+  const ext=(name||'').split('.').pop().toLowerCase();
+  if(['mp4','mov','avi','mkv','webm','m4v','mts'].includes(ext))return'🎬';
+  if(['jpg','jpeg','png','gif','webp','heic','raw','cr2','nef'].includes(ext))return'🖼️';
+  if(['mp3','wav','aac','flac','m4a','ogg','aiff'].includes(ext))return'🎵';
+  if(['zip','rar','7z'].includes(ext))return'🗜️';
+  if(['pdf'].includes(ext))return'📄';
+  return'📁';
+}
+
+function uploadFormatSize(bytes){
+  if(!bytes)return'—';
+  if(bytes<1024)return bytes+' B';
+  if(bytes<1024*1024)return(bytes/1024).toFixed(1)+' KB';
+  if(bytes<1024*1024*1024)return(bytes/1024/1024).toFixed(1)+' MB';
+  return(bytes/1024/1024/1024).toFixed(2)+' GB';
+}
+
+function uploadFormatDate(iso){
+  if(!iso)return'—';
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+async function loadUploads(){
+  document.getElementById('uploadsLoading').style.display='block';
+  document.getElementById('uploadsList').style.display='none';
+  document.getElementById('uploadsEmpty').style.display='none';
+  try{
+    const res=await fetch(`${UPLOAD_WORKER_URL}/api/list`,{
+      headers:{'X-Auth':UPLOAD_AUTH_KEY}
+    });
+    if(!res.ok)throw new Error('Auth failed or Worker not deployed');
+    allUploads=await res.json();
+    renderUploads(allUploads);
+  }catch(e){
+    document.getElementById('uploadsLoading').textContent='⚠ Could not load uploads — check Worker is deployed. ('+e.message+')';
+  }
+}
+
+function renderUploads(uploads){
+  document.getElementById('uploadsLoading').style.display='none';
+  const listEl=document.getElementById('uploadsList');
+  const emptyEl=document.getElementById('uploadsEmpty');
+  if(!uploads.length){emptyEl.style.display='block';listEl.style.display='none';return;}
+  emptyEl.style.display='none';
+  listEl.style.display='block';
+  listEl.innerHTML=`<div class="uploads-count">${uploads.length} file${uploads.length!==1?'s':''}</div>`+
+    uploads.map(u=>`
+    <div class="upload-row">
+      <div class="ur-left">
+        <div class="ur-icon">${uploadFileIcon(u.filename)}</div>
+        <div class="ur-info">
+          <div class="ur-filename">${u.filename||'—'}</div>
+          <div class="ur-meta">
+            <span class="ur-client">${u.uploader_name||'Unknown'}</span>
+            <span class="ur-project">${u.project||'—'}</span>
+            <span class="ur-size">${uploadFormatSize(u.file_size)}</span>
+            <span class="ur-date">${uploadFormatDate(u.created_at)}</span>
+          </div>
+        </div>
+      </div>
+      <button class="ur-download" onclick="downloadUpload('${u.r2_key}')">⬇ Download</button>
+    </div>
+  `).join('');
+}
+
+function filterUploads(){
+  const q=document.getElementById('uploadSearch').value.toLowerCase();
+  if(!q){renderUploads(allUploads);return;}
+  renderUploads(allUploads.filter(u=>
+    (u.uploader_name||'').toLowerCase().includes(q)||
+    (u.project||'').toLowerCase().includes(q)||
+    (u.filename||'').toLowerCase().includes(q)
+  ));
+}
+
+async function downloadUpload(key){
+  const url=`${UPLOAD_WORKER_URL}/download/${encodeURIComponent(key)}`;
+  const a=document.createElement('a');
+  a.href=url;
+  a.setAttribute('download','');
+  // Add auth via fetch + blob (Worker requires X-Auth header)
+  try{
+    const res=await fetch(url,{headers:{'X-Auth':UPLOAD_AUTH_KEY}});
+    if(!res.ok)throw new Error('Download failed');
+    const blob=await res.blob();
+    const cd=res.headers.get('Content-Disposition')||'';
+    const nameMatch=cd.match(/filename="?([^"]+)"?/);
+    const fname=nameMatch?nameMatch[1]:key.split('/').pop();
+    const burl=URL.createObjectURL(blob);
+    a.href=burl;a.download=fname;
+    document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(burl);a.remove();},1000);
+  }catch(e){alert('Download error: '+e.message);}
+}
+
+function copyUploadLink(){
+  const url=UPLOAD_WORKER_URL+'/';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=event.target;
+    const orig=btn.textContent;
+    btn.textContent='Copied!';
+    setTimeout(()=>{btn.textContent=orig;},1800);
+  });
+}
+
+// Load uploads when section becomes active
+const _origShowSection=showSection;
+function showSection(id){
+  _origShowSection(id);
+  if(id==='uploadsSection'&&!allUploads.length){loadUploads();}
+}
+// Update nav meta with upload URL
+document.getElementById('navUploadsMeta').textContent=UPLOAD_WORKER_URL.replace('https://','');
+
 async function pgHash(text){
   try{
     const enc=new TextEncoder().encode(text);
@@ -5929,3 +6142,4 @@ async function checkDailyLogout(){
 </script>
 </body>
 </html>
+
