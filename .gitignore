@@ -1,0 +1,2 @@
+# Local secrets — never commit real payment links or keys
+config.js

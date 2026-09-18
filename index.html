@@ -2159,7 +2159,8 @@ body::before{
 </div>
 </div><!-- /app -->
 
-
+<!-- config.js holds real local secrets/links and is NOT committed to git — copy config.example.js to create it -->
+<script src="config.js"></script>
 <script>
 // ─────────────────────────────────────────
 // SUPABASE CONFIG — swap these two values before deploying
@@ -5813,7 +5814,10 @@ window.addEventListener('load',async()=>{
 // ─────────────────────────────────────────
 // PAYMENT GATE — Launchpad Digital Solutions Ltd
 // ─────────────────────────────────────────
-const PG_STRIPE_LINK = 'https://buy.stripe.com/5kQcN79icgSl6un3GLgIo00';
+// PG_STRIPE_LINK is now loaded from config.js (not committed to git — see config.example.js).
+// SECURITY NOTE: a real Stripe payment link was previously hardcoded here and pushed to
+// GitHub in this public repo. Treat that link as exposed — check on Stripe's dashboard
+// whether it needs to be deactivated/replaced, and put the real one only in config.js.
 const PG_GOCARDLESS_LINK = 'https://pay.gocardless.com/BRT01KWWBHKPABGRBF0B0A7XDXEMK';
 const PG_HARD_BLOCK_DATE = '2026-07-13';
 const PG_AGREEMENT_VERSION = 'v1.0';
