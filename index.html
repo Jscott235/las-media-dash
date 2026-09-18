@@ -2262,6 +2262,23 @@ async function doLogout(){
 async function showApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('loadingScreen').style.display='flex';
+
+  // Payment status has to be settled BEFORE the dashboard is built or
+  // shown to the browser. Checking it afterwards (as this used to do)
+  // meant the whole dashboard was already rendered and working, and the
+  // "blocked" message was just a box sat on top of it — closing the box,
+  // or deleting it with devtools, left a fully working dashboard behind.
+  // Now, while blocked, the dashboard itself is never built at all.
+  const {data:{user}}=await sb.auth.getUser();
+  if(user){
+    const status=await pgGetStatus();
+    if(!status.payment_paid && todayStr()>=status.hard_block_date){
+      document.getElementById('loadingScreen').style.display='none';
+      pgShowHardBlock();
+      return;
+    }
+  }
+
   await initApp();
   document.getElementById('loadingScreen').style.display='none';
   document.getElementById('app').style.display='block';
