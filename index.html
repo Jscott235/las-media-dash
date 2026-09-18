@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>This project has ended — Launchpad Digital Solutions</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #09090B;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 100%, rgba(37,99,235,.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 20%, rgba(139,98,196,.08) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .wrap { position: relative; z-index: 1; max-width: 480px; }
+  .logo {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+  }
+  .logo-dot { color: #2563EB; }
+  h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin-bottom: 2.25rem;
+  }
+  .btn {
+    display: inline-block;
+    background: #2563EB;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.8rem 1.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .btn:hover { background: #1d4ed8; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="https://launchpadme.co.uk" class="logo">Launchpad<span class="logo-dot">.</span></a>
+    <h1>This project has wrapped up</h1>
+    <p>This dashboard is no longer active. If you're looking for Launchpad Digital Solutions, head back to our main site.</p>
+    <a href="https://launchpadme.co.uk" class="btn">Go to launchpadme.co.uk →</a>
+  </div>
+</body>
+</html>
